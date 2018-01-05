@@ -82,7 +82,7 @@
 											<td class='center'>${var.INTIME}</td>
 											<td class='center'>${var.BZ}</td>
 											<td class='center'>
-												<a class="btn btn-mini btn-success" onclick="edit();">修改</a>
+												<a class="btn btn-mini btn-success" onclick="edit('${var.INTOKU_ID}');">修改</a>
 												<a class="btn btn-mini btn-danger" onclick="del();">删除</a>
 											</td>
 										</tr>
@@ -173,7 +173,7 @@
             diag.Title ="商品入库";
             diag.URL = '<%=basePath%>intoku/goAdd.do';
             diag.Width = 450;
-            diag.Height = 438;
+            diag.Height = 380;
             diag.Modal = false;			//有无遮罩窗口
             diag. ShowMaxButton = true;	//最大化按钮
             diag.ShowMinButton = true;		//最小化按钮
@@ -193,15 +193,14 @@
 
 
         //修改
-        function edit(){
-
+        function edit(id){
             top.jzts();
             var diag = new top.Dialog();
             diag.Drag=true;
-            diag.Title ="商品入库";
-            diag.URL = '<%=basePath%>intoku/goAdd.do';
+            diag.Title ="商品修改";
+            diag.URL = '<%=basePath%>intoku/goEdit.do?INTOKU_ID='+id;
             diag.Width = 450;
-            diag.Height = 438;
+            diag.Height = 400;
             diag.Modal = false;			//有无遮罩窗口
             diag. ShowMaxButton = true;	//最大化按钮
             diag.ShowMinButton = true;		//最小化按钮
