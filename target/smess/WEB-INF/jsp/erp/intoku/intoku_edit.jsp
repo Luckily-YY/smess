@@ -26,24 +26,10 @@
                     <div class="col-xs-12">
 
                         <form action="intoku/${msg }.do" name="Form" id="Form" method="post">
-                            <input type="hidden" name="GOODS_ID" id="INTOKU_ID" value="${pd.INTOKU_ID}"/>
+                            <input type="hidden" name="INTOKU_ID" id="INTOKU_ID" value="${pd.INTOKU_ID}"/>
                             <div id="zhongxin" style="padding-top: 13px;">
                                 <table id="table_report" class="table table-striped table-bordered table-hover">
-                                    <%--<tr>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品编码:</td>
-                                        <td><input type="text" name="BIANMA" id="BIANMA" value="${goodslist.BIANMA}" maxlength="32" placeholder="请输入商品编码" title="商品商品编码" style="width:99%;" /></td>
-                                    </tr>--%>
-                                    <%--<tr>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">手动选择:</td>
-                                        <td id="xzsp">
-                                        <select onchange="setGoogsName();" class="chosen-select form-control" name="SGOODS_ID" id="SGOODS_ID" data-placeholder="请选择商品(录入商品编码就不用选择了)" style="vertical-align:top;width:100px;" >
-                                                <option value=""></option>
-                                                <c:forEach items="${goodsList}" var="var">
-                                                    <option value="${var.GOODS_ID }" <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.TITLE }&nbsp;(${var.NAME })</option>
-                                                </c:forEach>
-                                        </select>
-                                        </td>
-                                    </tr>--%>
+
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
                                         <td><input type="text" name="GOODS_NAME" id="GOODS_NAME"
@@ -98,17 +84,11 @@
                             </div>
                         </form>
                     </div>
-                    <!-- /.col -->
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /.page-content -->
         </div>
     </div>
-    <!-- /.main-content -->
 </div>
-<!-- /.main-container -->
-
 
 <!-- 页面底部js¨ -->
 <%@ include file="../../system/index/foot.jsp" %>
@@ -120,30 +100,6 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());
-
-    /*//通过商品编码读取数据
-     function getByBm(BIANMA){
-     $.ajax({
-     type: "POST",
-     url: 'goods/getByBm.do',
-     data: {BIANMA:BIANMA,tm:new Date().getTime()},
-     dataType:'json',
-     cache: false,
-     success: function(data){
-     if("success" == data.result){
-     $("#GOODS_ID").val(data.pd.GOODS_ID);
-     $("#GOODS_NAME").val(data.pd.TITLE);
-     }else{
-     $("#BIANMA").tips({
-     side : 3,
-     msg : "此编码不存在",
-     bg : '#FF5080',
-     time : 15
-     });
-     }
-     }
-     });
-     }*/
 
     //计算总价
     function jisuanz() {
@@ -172,36 +128,9 @@
         $("#ZPRICE").val(INCOUNT * PRICE);
     }
 
-    /*		//设置商品ID和名称
-     function setGoogsName(){
-     var selectVale = $("#SGOODS_ID").val();
-     var selectText = $("#SGOODS_ID").find("option:selected").text();
-     $("#GOODS_ID").val(selectVale);
-     $("#GOODS_NAME").val(selectText);
-     }*/
-
     //保存
     function save() {
-        /*if($("#GOODS_ID").val()==""){
-         $("#xzsp").tips({
-         side:3,
-         msg:'请选择商品',
-         bg:'#AE81FF',
-         time:2
-         });
-         $("#GOODS_ID").focus();
-         return false;
-         }*/
-        /*    if($("#BIANMA").val()==""){
-         $("#BIANMA").tips({
-         side:3,
-         msg:'请填写商品编码',
-         bg:'#AE81FF',
-         time:2
-         });
-         $("#BIANMA").focus();
-         return false;
-         }*/
+
 
         if ($("#GOODS_NAME").val() == "") {
             $("#GOODS_NAME").tips({
@@ -260,7 +189,7 @@
         $("#zhongxin2").show();
     }
 
-    //保存
+    //修改
     function edit() {
 
         if ($("#GOODS_NAME").val() == "") {
@@ -321,35 +250,36 @@
     }
 
 
-    $(function () {
-        $("#ZPRICE").attr("readonly", "readonly");
-        $("#ZPRICE").css("color", "gray");
-        //下拉框
-        if (!ace.vars['touch']) {
-            $('.chosen-select').chosen({allow_single_deselect: true});
-            $(window)
-                .off('resize.chosen')
-                .on('resize.chosen', function () {
-                    $('.chosen-select').each(function () {
-                        var $this = $(this);
-                        $this.next().css({'width': $this.parent().width()});
-                    });
-                }).trigger('resize.chosen');
-            $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
-                if (event_name != 'sidebar_collapsed') return;
-                $('.chosen-select').each(function () {
-                    var $this = $(this);
-                    $this.next().css({'width': $this.parent().width()});
-                });
-            });
-            $('#chosen-multiple-style .btn').on('click', function (e) {
-                var target = $(this).find('input[type=radio]');
-                var which = parseInt(target.val());
-                if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
-                else $('#form-field-select-4').removeClass('tag-input-style');
-            });
-        }
-    });
+
+    /* $(function () {
+         $("#ZPRICE").attr("readonly", "readonly");
+         $("#ZPRICE").css("color", "gray");
+         //下拉框
+         if (!ace.vars['touch']) {
+             $('.chosen-select').chosen({allow_single_deselect: true});
+             $(window)
+                 .off('resize.chosen')
+                 .on('resize.chosen', function () {
+                     $('.chosen-select').each(function () {
+                         var $this = $(this);
+                         $this.next().css({'width': $this.parent().width()});
+                     });
+                 }).trigger('resize.chosen');
+             $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
+                 if (event_name != 'sidebar_collapsed') return;
+                 $('.chosen-select').each(function () {
+                     var $this = $(this);
+                     $this.next().css({'width': $this.parent().width()});
+                 });
+             });
+             $('#chosen-multiple-style .btn').on('click', function (e) {
+                 var target = $(this).find('input[type=radio]');
+                 var which = parseInt(target.val());
+                 if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
+                 else $('#form-field-select-4').removeClass('tag-input-style');
+             });
+         }
+     });*/
 </script>
 </body>
 </html>
