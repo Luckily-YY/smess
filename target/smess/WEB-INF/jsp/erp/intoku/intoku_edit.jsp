@@ -36,22 +36,52 @@
                                                    value="${pd.GOODS_NAME}" maxlength="32" title="商品名称"
                                                    style="width:99%;"/></td>
                                     </tr>
+
+                                    <tr>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品类别:</td>
+                                        <td>
+                                            <select class="chosen-select form-control" name="SPTYPE_ID" id="SPTYPE_ID"
+                                                    data-placeholder="请选择商品类别" style="vertical-align:top;width:340px;">
+                                                <option value="">无分类</option>
+                                                <c:forEach items="${sptypeList}" var="var">
+                                                    <option value="${var.SPTYPE_ID }"
+                                                            <c:if test="${var.SPTYPE_ID == pd.SPTYPE_ID }">selected</c:if>>${var.NAME }</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
+                                    </tr>
+
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">数量:</td>
-                                        <td><input onblur="jisuanz();" type="number" name="INCOUNT"
+                                        <c:if test="${pd.INCOUNT !=null}">
+                                        <td><input onblur="jisuanz();" type="number" name="INCOUNT" readonly
                                                    value="${pd.INCOUNT}" id="INCOUNT" maxlength="32" title="数量"
                                                    style="width:99%;"/></td>
+                                        </c:if>
+                                        <c:if test="${pd.INCOUNT == null}">
+                                            <td><input onblur="jisuanz();" type="number" name="INCOUNT"
+                                                        id="INCOUNT" maxlength="32" title="数量"
+                                                       style="width:99%;"/></td>
+                                        </c:if>
                                     </tr>
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">单价:</td>
-                                        <td><input onblur="jisuanz();" type="number" name="PRICE" id="PRICE"
+                                        <c:if test="${pd.PRICE!=null&&pd.PRICE!=''}">
+                                        <td><input onblur="jisuanz();" type="number" name="PRICE" id="PRICE" readonly
                                                    VALUE="${pd.PRICE}" maxlength="32" placeholder="这里输入单价（进价）"
                                                    title="单价" style="width:89%;"/>&nbsp;元
                                         </td>
+                                        </c:if>
+                                        <c:if test="${pd.PRICE==null || pd.PRICE==''}">
+                                        <td><input onblur="jisuanz();" type="number" name="PRICE" id="PRICE"
+                                                    maxlength="32" placeholder="这里输入单价（进价）"
+                                                   title="单价" style="width:89%;"/>&nbsp;元
+                                        </td>
+                                        </c:if>
                                     </tr>
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">总价:</td>
-                                        <td><input type="number" name="ZPRICE" id="ZPRICE" maxlength="32"
+                                        <td><input type="number" name="ZPRICE" id="ZPRICE" maxlength="32" readonly
                                                    VALUE="${pd.ZPRICE}" placeholder="总价" title="总价" style="width:89%;"/>&nbsp;元
                                         </td>
                                     </tr>
@@ -250,35 +280,34 @@
     }
 
 
-
-    /* $(function () {
-         $("#ZPRICE").attr("readonly", "readonly");
-         $("#ZPRICE").css("color", "gray");
-         //下拉框
-         if (!ace.vars['touch']) {
-             $('.chosen-select').chosen({allow_single_deselect: true});
-             $(window)
-                 .off('resize.chosen')
-                 .on('resize.chosen', function () {
-                     $('.chosen-select').each(function () {
-                         var $this = $(this);
-                         $this.next().css({'width': $this.parent().width()});
-                     });
-                 }).trigger('resize.chosen');
-             $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
-                 if (event_name != 'sidebar_collapsed') return;
-                 $('.chosen-select').each(function () {
-                     var $this = $(this);
-                     $this.next().css({'width': $this.parent().width()});
-                 });
-             });
-             $('#chosen-multiple-style .btn').on('click', function (e) {
-                 var target = $(this).find('input[type=radio]');
-                 var which = parseInt(target.val());
-                 if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
-                 else $('#form-field-select-4').removeClass('tag-input-style');
-             });
-         }
+    /*  $(function () {
+     $("#ZPRICE").attr("readonly", "readonly");
+     $("#ZPRICE").css("color", "gray");
+     //下拉框
+     if (!ace.vars['touch']) {
+     $('.chosen-select').chosen({allow_single_deselect: true});
+     $(window)
+     .off('resize.chosen')
+     .on('resize.chosen', function () {
+     $('.chosen-select').each(function () {
+     var $this = $(this);
+     $this.next().css({'width': $this.parent().width()});
+     });
+     }).trigger('resize.chosen');
+     $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
+     if (event_name != 'sidebar_collapsed') return;
+     $('.chosen-select').each(function () {
+     var $this = $(this);
+     $this.next().css({'width': $this.parent().width()});
+     });
+     });
+     $('#chosen-multiple-style .btn').on('click', function (e) {
+     var target = $(this).find('input[type=radio]');
+     var which = parseInt(target.val());
+     if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
+     else $('#form-field-select-4').removeClass('tag-input-style');
+     });
+     }
      });*/
 </script>
 </body>

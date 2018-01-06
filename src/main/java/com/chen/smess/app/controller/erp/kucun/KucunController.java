@@ -55,7 +55,7 @@ public class KucunController extends BaseController {
 		page.setPd(pd);
 		List<PageData>	varList = goodsService.list(page);			//列出Goods列表
 		List<PageData> spbrandList = spbrandService.listAll(Jurisdiction.getUsername()); 	//品牌列表
-		List<PageData> sptypeList = sptypeService.listAll(Jurisdiction.getUsername()); 		//类别列表
+		List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
 		List<PageData> spunitList = spunitService.listAll(Jurisdiction.getUsername()); 		//计量单位列表
 		mv.setViewName("erp/kucun/kucun_list");
 		mv.addObject("varList", varList);

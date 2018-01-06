@@ -21,9 +21,7 @@
 </head>
 <body class="no-skin">
 
-<!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
-    <!-- /section:basics/sidebar -->
     <div class="main-content">
         <div class="main-content-inner">
             <div class="page-content">
@@ -80,12 +78,17 @@
                                    style="margin-top:5px;">
                                 <thead>
                                 <tr>
+                                    <th class="center" style="width:35px;">
+                                        <label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
+                                    </th>
                                     <th class="center" style="width:50px;">序号</th>
                                     <th class="center">商品名称</th>
                                     <th class="center">数量</th>
                                     <th class="center">单价</th>
                                     <th class="center">总价</th>
+                                    <th class="center">商品类型</th>
                                     <th class="center">入库时间</th>
+                                    <th class="center">登记人</th>
                                     <th class="center">备注</th>
                                     <th class="center">操作</th>
                                 </tr>
@@ -98,18 +101,34 @@
                                         <c:if test="${QX.cha == 1 }">
                                             <c:forEach items="${varList}" var="var" varStatus="vs">
                                                 <tr>
+                                                    <td class='center'>
+                                                        <label class="pos-rel"><input type='checkbox' name='ids' value="${var.INTOKU_ID}" class="ace" /><span class="lbl"></span></label>
+                                                    </td>
                                                     <td class='center' style="width: 30px;">${vs.index+1}</td>
                                                     <td class='center'>${var.GOODS_NAME}</td>
                                                     <td class='center'>${var.INCOUNT}</td>
                                                     <td class='center'>${var.PRICE}</td>
                                                     <td class='center'>${var.ZPRICE}</td>
+                                                    <c:if test="${var.NAME != '' && var.NAME!=null}">
+                                                    <td class='center'>${var.NAME}</td>
+                                                    </c:if>
+                                                    <c:if test="${var.NAME == '' || var.NAME==null}">
+                                                    <td class='center'>无类别</td>
+                                                    </c:if>
                                                     <td class='center'>${var.INTIME}</td>
+                                                    <td class='center'>${var.USERNAME}</td>
                                                     <td class='center'>${var.BZ}</td>
                                                     <td class='center'>
                                                         <a class="btn btn-mini btn-success"
-                                                           onclick="edit('${var.INTOKU_ID}');">修改</a>
+                                                           onclick="edit('${var.INTOKU_ID}');">
+                                                            <i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
+                                                        </a>
+                                                        <c:if test="${QX.del == 1 }">
                                                         <a class="btn btn-mini btn-danger"
-                                                           onclick="del('${var.INTOKU_ID}','${var.GOODS_NAME}');">删除</a>
+                                                           onclick="del('${var.INTOKU_ID}','${var.GOODS_NAME}');">
+                                                            <i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
+                                                        </a>
+                                                        </c:if>
                                                     </td>
                                                 </tr>
 
@@ -135,6 +154,9 @@
                                         <td style="vertical-align:top;">
                                             <c:if test="${QX.add == 1 }">
                                                 <a class="btn btn-mini btn-success" onclick="add();">新录商品入库</a>
+                                            </c:if>
+                                            <c:if test="${QX.del == 1 }">
+                                                <a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
                                             </c:if>
                                             &nbsp;&nbsp;进货总金额：<font color="red"><b>${zprice }</b></font>&nbsp;元
                                         </td>
@@ -192,6 +214,17 @@
             autoclose: true,
             todayHighlight: true
         });
+
+        //复选框全选控制
+        var active_class = 'active';
+        $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+            $(this).closest('table').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
+                else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
+            });
+        });
     });
 
     //新增
@@ -202,7 +235,7 @@
         diag.Title = "商品入库";
         diag.URL = '<%=basePath%>intoku/goAdd.do';
         diag.Width = 450;
-        diag.Height = 380;
+        diag.Height = 420;
         diag.Modal = false;			//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
@@ -228,7 +261,7 @@
         diag.Title = "商品修改";
         diag.URL = '<%=basePath%>intoku/goEdit.do?INTOKU_ID=' + id;
         diag.Width = 450;
-        diag.Height = 400;
+        diag.Height = 420;
         diag.Modal = false;			//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
@@ -262,6 +295,56 @@
 
 
     }
+
+
+
+
+
+    //批量操作
+    function makeAll(msg){
+        bootbox.confirm(msg, function(result) {
+            if(result) {
+                var str = '';
+                for(var i=0;i < document.getElementsByName('ids').length;i++){
+                    if(document.getElementsByName('ids')[i].checked){
+                        if(str=='') str += document.getElementsByName('ids')[i].value;
+                        else str += ',' + document.getElementsByName('ids')[i].value;
+                    }
+                }
+                if(str==''){
+                    bootbox.dialog({
+                        message: "<span class='bigger-110'>您没有选择任何内容!</span>",
+                        buttons:
+                            { "button":{ "label":"确定", "className":"btn-sm btn-success"}}
+                    });
+                    $("#zcheckbox").tips({
+                        side:1,
+                        msg:'点这里全选',
+                        bg:'#AE81FF',
+                        time:8
+                    });
+                    return;
+                }else{
+                    if(msg == '确定要删除选中的数据吗?'){
+                        top.jzts();
+                        $.ajax({
+                            type: "POST",
+                            url: '<%=basePath%>intoku/deleteAll.do',
+                            data: {DATA_IDS:str},
+                            dataType:'json',
+                            //beforeSend: validateData,
+                            cache: false,
+                            success: function(data){
+                                $.each(data.list, function(i, list){
+                                    nextPage(${page.currentPage});
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    };
 
 
     //导出excel

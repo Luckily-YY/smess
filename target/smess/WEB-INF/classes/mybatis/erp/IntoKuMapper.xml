@@ -12,7 +12,8 @@
 		GOODS_ID,	
 		INCOUNT,	
 		PRICE,	
-		ZPRICE,	
+		ZPRICE,
+		SPTYPE_ID,
 		INTIME,	
 		BZ,	
 		USERNAME,	
@@ -25,7 +26,8 @@
 		#{GOODS_ID},	
 		#{INCOUNT},	
 		#{PRICE},	
-		#{ZPRICE},	
+		#{ZPRICE},
+		#{SPTYPE_ID},
 		#{INTIME},	
 		#{BZ},	
 		#{USERNAME},	
@@ -61,6 +63,7 @@
 			INCOUNT = #{INCOUNT},
 			PRICE = #{PRICE},
 			ZPRICE = #{ZPRICE},
+			SPTYPE_ID=#{SPTYPE_ID},
 			BZ = #{BZ},
 		INTOKU_ID = INTOKU_ID
 		where 
@@ -83,17 +86,21 @@
 			a.GOODS_ID,
 			a.GOODS_NAME,
 			a.INCOUNT,	
-			a.PRICE,	
-			a.ZPRICE,	
+			a.PRICE,
+			a.SPTYPE_ID,
+			a.ZPRICE,
 			a.INTIME,	
 			a.USERNAME,	
 			a.INTOKU_ID,
 			a.BZ,
-			b.TITLE
+			b.TITLE,
+			c.NAME
 		from 
 		<include refid="tableName"></include> a
 		left join cp_goods b
 		on a.GOODS_ID = b.GOODS_ID
+		left join cp_sptype c
+		on a.SPTYPE_ID = C.SPTYPE_ID
 		where 1=1
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
@@ -107,8 +114,6 @@
 		<if test="pd.lastEnd!=null and pd.lastEnd!=''"><!-- 结束时间检索 -->
 			and a.INTIME &lt;= #{pd.lastEnd} 
 		</if>
-		and
-			a.USERNAME = #{pd.USERNAME}
 		order by a.INTIME desc
 	</select>
 	
@@ -133,8 +138,7 @@
 		<if test="lastEnd!=null and lastEnd!=''"><!-- 结束时间检索 -->
 			and a.INTIME &lt;= #{lastEnd} 
 		</if>
-		and
-			a.USERNAME = #{USERNAME}
+
 	</select>
 	
 	<!-- 列表(全部) -->
@@ -143,8 +147,6 @@
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
-		where 
-			USERNAME = #{USERNAME}
 	</select>
 	
 	<!-- 批量删除 -->
@@ -158,5 +160,4 @@
 		</foreach>
 	</delete>
 	
-	<!-- fh313596790qq(青苔) -->
 </mapper>

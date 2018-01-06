@@ -182,7 +182,7 @@ public class SptypeController extends BaseController {
 		titles.add("备注");	//2
 		titles.add("用户名");	//3
 		dataMap.put("titles", titles);
-		List<PageData> varOList = sptypeService.listAll(Jurisdiction.getUsername());
+		List<PageData> varOList = sptypeService.listAll( );
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();

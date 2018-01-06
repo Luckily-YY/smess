@@ -56,8 +56,8 @@ public class SptypeService implements SptypeManager {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public List<PageData> listAll(String USERNAME)throws Exception{
-		return (List<PageData>)dao.findForList("SptypeMapper.listAll", USERNAME);
+	public List<PageData> listAll()throws Exception{
+		return (List<PageData>)dao.findForList("SptypeMapper.listAll", null);
 	}
 	
 	/**通过id获取数据

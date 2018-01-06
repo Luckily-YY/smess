@@ -5,6 +5,7 @@ import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
 import com.chen.smess.domain.service.erp.intoku.IntoKuManager;
+import com.chen.smess.domain.service.erp.sptype.impl.SptypeService;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import org.apache.poi.util.SystemOutLogger;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -34,6 +35,8 @@ public class IntoKuController extends BaseController {
     private IntoKuManager intokuService;
     @Resource(name = "goodsService")
     private GoodsManager goodsService;
+    @Resource(name = "sptypeService")
+    private SptypeService sptypeService;
 
     /**
      * 保存
@@ -102,6 +105,7 @@ public class IntoKuController extends BaseController {
         pd2.put("PRICE", pd.getString("PRICE"));
         pd2.put("ZPRICE", pd.getString("ZPRICE"));
         pd2.put("BZ", pd.getString("BZ"));
+        pd2.put("SPTYPE_ID",pd.getString("SPTYPE_ID"));
         intokuService.edit(pd2);
         mv.addObject("msg", "success");
         mv.setViewName("save_result");
@@ -141,6 +145,7 @@ public class IntoKuController extends BaseController {
         }
         page.setPd(pd);
         List<PageData> varList = intokuService.list(page);    //列出IntoKu列表
+
         mv.setViewName("erp/intoku/intoku_list");
         mv.addObject("varList", varList);
         mv.addObject("pd", pd);
@@ -161,11 +166,11 @@ public class IntoKuController extends BaseController {
         PageData pd = new PageData();
         pd = this.getPageData();
         pd.put("USERNAME", Jurisdiction.getUsername());
-        List<PageData> goodsList = goodsService.listAll(pd);
+        List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
         mv.setViewName("erp/intoku/intoku_edit");
         mv.addObject("msg", "save");
+        mv.addObject("sptypeList", sptypeList);
         mv.addObject("pd", pd);
-        mv.addObject("goodsList", goodsList);
         return mv;
     }
 
@@ -182,8 +187,10 @@ public class IntoKuController extends BaseController {
         PageData pd = new PageData();
         pd = this.getPageData();
         pd = intokuService.findById(pd);    //根据ID读取
+        List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
         mv.setViewName("erp/intoku/intoku_edit");
         mv.addObject("msg", "edit");
+        mv.addObject("sptypeList", sptypeList);
         mv.addObject("pd", pd);
         return mv;
     }

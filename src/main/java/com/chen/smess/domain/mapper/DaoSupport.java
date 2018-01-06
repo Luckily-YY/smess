@@ -107,6 +107,8 @@ public class DaoSupport implements DAO {
 		return sqlSessionTemplate.selectOne(str, obj);
 	}
 
+
+
 	/**
 	 * 查找对象
 	 * @param str

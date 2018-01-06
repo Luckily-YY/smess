@@ -149,9 +149,9 @@
 		<include refid="tableName"></include>
 		where
 			1=1
-		<if test="USERNAME!=null and USERNAME!=''">
+		<!--<if test="USERNAME!=null and USERNAME!=''">
 			and USERNAME = #{USERNAME} 
-		</if>
+		</if>-->
 		<if test="days!=null and days!=''"><!-- 几天内 -->
 			and DATE_SUB(CURDATE(), INTERVAL ${days} DAY) &lt;= date(CTIME)
 		</if>

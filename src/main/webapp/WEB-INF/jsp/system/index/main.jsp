@@ -28,28 +28,20 @@
 	
 </head>
 	<body class="no-skin">
-		<!-- #section:basics/navbar.layout -->
-		
 		<!-- 页面顶部¨ -->
 		<%@ include file="head.jsp"%>
 		<div id="websocket_button"></div><!-- 少了此处，聊天窗口就无法关闭 -->
-		<!-- /section:basics/navbar.layout -->
 		<div class="main-container" id="main-container">
 			<script type="text/javascript">
 				try{ace.settings.check('main-container' , 'fixed')}catch(e){}
 			</script>
-
-			<!-- #section:basics/sidebar -->
 			<!-- 左侧菜单 -->
 			<%@ include file="left.jsp"%>
 
-			<!-- /section:basics/sidebar -->
 			<div class="main-content">
 				<div class="main-content-inner">
 
-					<!-- /section:basics/content.breadcrumbs -->
 					<div class="page-content">
-						<!-- #section:settings.box -->
 						<div class="ace-settings-container" id="ace-settings-container">
 							<div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
 								<i class="ace-icon fa fa-cog bigger-130"></i>
@@ -57,7 +49,6 @@
 
 							<div class="ace-settings-box clearfix" id="ace-settings-box">
 								<div class="pull-left width-50">
-									<!-- #section:settings.skins -->
 									<div class="ace-settings-item">
 										<div class="pull-left">
 											<select id="skin-colorpicker" class="hide">
@@ -69,31 +60,22 @@
 										</div>
 										<span>&nbsp; 选择皮肤</span>
 									</div>
-
-									<!-- #section:settings.container -->
 									<div class="ace-settings-item">
 										<input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
 										<label class="lbl" for="ace-settings-add-container">
 											居中风格
 										</label>
 									</div>
-									<!-- #section:settings.container -->
 									<div class="ace-settings-item">
 										<label class="lbl" for="ace-settings-add-container">
 											<a title="关闭所有标签" class="btn btn-mini btn-warning" href="main/index">关闭所有标签</a>
 										</label>
 									</div>
-
-									<!-- /section:settings.container -->
-								</div><!-- /.pull-left -->
-
+								</div>
 								<div class="pull-left width-50">
-
-									<!-- /section:basics/sidebar.options -->
-								</div><!-- /.pull-left -->
-							</div><!-- /.ace-settings-box -->
-							
-						</div><!-- /.ace-settings-container -->
+								</div>
+							</div>
+						</div>
 						<div class="row">	
 						<div id="jzts" style="display:none; width:100%; position:fixed; z-index:99999999;">
 						<div class="commitopacity" id="bkbgjz"></div>
@@ -106,20 +88,14 @@
 							<iframe name="mainFrame" id="mainFrame" frameborder="0" src="tab.do" style="margin:0 auto;width:100%;height:100%;"></iframe>
 						</div>
 						</div><!-- /.row -->	
-					</div><!-- /.page-content -->
+					</div>
 					
 				</div>
-			</div><!-- /.main-content -->
+			</div>
 
-		</div><!-- /.main-container -->
-
-		<!-- basic scripts -->
+		</div>
 		<!-- 页面底部js¨ -->
 		<%@ include file="foot.jsp"%>
-		
-		<!-- page specific plugin scripts -->
-
-		<!-- ace scripts -->
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/elements.scroller.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/elements.colorpicker.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/elements.fileinput.js"></script>
@@ -141,20 +117,14 @@
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.settings-skin.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.widget-on-reload.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.searchbox-autocomplete.js"></script>
-		<!-- inline scripts related to this page -->
-
-		<!-- the following scripts are used in demo only for onpage help and you don't need them -->
 		<link rel="stylesheet" href="static/ace/css/ace.onpage-help.css" />
-
 		<script type="text/javascript"> ace.vars['base'] = '..'; </script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/elements.onpage-help.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.onpage-help.js"></script>
-	
 		<!--引入属于此页面的js -->
 		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/myjs/head.js"></script>
 		<!--引入属于此页面的js -->
 		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/myjs/index.js"></script>
-		
 		<!--引入弹窗组件1start-->
 		<!--<script type="text/javascript" src="plugins/attention/zDialog/zDrag.js"></script>-->
 		<!--<script type="text/javascript" src="plugins/attention/zDialog/zDialog.js"></script>-->
@@ -165,7 +135,6 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/plugins/attention/drag/dialog.js"></script>
 		<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/plugins/attention/drag/style.css"  />
 		<!--引入弹窗组件2end-->
-		
 		<!--提示框-->
 		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.tips.js"></script>
 	</body>

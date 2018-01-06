@@ -38,7 +38,7 @@ public interface SptypeManager{
 	/**列表(全部)
 	 * @throws Exception
 	 */
-	public List<PageData> listAll(String USERNAME)throws Exception;
+	public List<PageData> listAll()throws Exception;
 	
 	/**通过id获取数据
 	 * @param pd

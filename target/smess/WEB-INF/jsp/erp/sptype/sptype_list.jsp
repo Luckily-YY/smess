@@ -194,13 +194,13 @@
 			$("#Form").submit();
 		}
 		$(function() {
-		
+
 			//日期框
 			$('.date-picker').datepicker({
 				autoclose: true,
 				todayHighlight: true
 			});
-			
+
 			//下拉框
 			if(!ace.vars['touch']) {
 				$('.chosen-select').chosen({allow_single_deselect:true}); 
@@ -227,7 +227,7 @@
 				});
 			}
 			
-			
+
 			//复选框全选控制
 			var active_class = 'active';
 			$('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
