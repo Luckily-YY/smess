@@ -1,20 +1,19 @@
 package com.chen.smess.app.controller.erp.kucun;
 
 import com.chen.smess.app.controller.base.BaseController;
-import com.chen.smess.domain.common.utils.Jurisdiction;
-import com.chen.smess.domain.common.utils.ObjectExcelView;
-import com.chen.smess.domain.common.utils.PageData;
-import com.chen.smess.domain.common.utils.Tools;
+import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
-import com.chen.smess.domain.service.erp.goods.GoodsManager;
+import com.chen.smess.domain.service.erp.kucun.KucunManager;
 import com.chen.smess.domain.service.erp.spbrand.SpbrandManager;
 import com.chen.smess.domain.service.erp.sptype.SptypeManager;
 import com.chen.smess.domain.service.erp.spunit.SpunitManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -26,8 +25,8 @@ import java.util.*;
 public class KucunController extends BaseController {
 
 	String menuUrl = "kucun/list.do"; //菜单地址(权限用)
-	@Resource(name="goodsService")
-	private GoodsManager goodsService;
+	@Resource(name="kucunService")
+	private KucunManager kucunService;
 	@Resource(name="spbrandService")
 	private SpbrandManager spbrandService;
 	@Resource(name="sptypeService")
@@ -50,13 +49,12 @@ public class KucunController extends BaseController {
 		if(null != keywords && !"".equals(keywords)){
 			pd.put("keywords", keywords.trim());
 		}
-		pd.put("USERNAME", "admin".equals(Jurisdiction.getUsername())?"":Jurisdiction.getUsername());//admin用户看到的是全部,否则是本用户
 		pd.put("isKucun", "yes");
 		page.setPd(pd);
-		List<PageData>	varList = goodsService.list(page);			//列出Goods列表
-		List<PageData> spbrandList = spbrandService.listAll(Jurisdiction.getUsername()); 	//品牌列表
-		List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
-		List<PageData> spunitList = spunitService.listAll(Jurisdiction.getUsername()); 		//计量单位列表
+		List<PageData> spbrandList = spbrandService.listAll(); 	//品牌列表
+		List<PageData> sptypeList = sptypeService.listAll();
+		List<PageData> spunitList = spunitService.listAll();
+		List<PageData>	varList = kucunService.list(page);
 		mv.setViewName("erp/kucun/kucun_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -79,20 +77,122 @@ public class KucunController extends BaseController {
 		String USERNAME = pd.getString("USERNAME");
 		USERNAME = Tools.notEmpty(USERNAME)?USERNAME:Jurisdiction.getUsername();
 		pd.put("USERNAME", USERNAME);
-		List<PageData> goodsList = goodsService.listAll(pd);
+		List<PageData> goodsList = kucunService.listAll(pd);
 		String[] color = {"AFD8F8","F6BD0F","8BBA00","FF8E46","008E8E","D64646","8E468E","588526","B3AA00","008ED6","9D080D","A186BE"};
 	 	String strXML = "<graph caption='商品库存盘点' xAxisName='商品名' yAxisName='库存' decimalPrecision='0' formatNumberScale='0' baseFontSize='13'>";
 	 	Random rand = new Random();
 	 	for(int i=0;i<goodsList.size();i++){
 	 		PageData goodsPd = goodsList.get(i);
-	 		strXML += "<set name='"+goodsPd.getString("TITLE")+"' value='"+goodsPd.get("ZCOUNT").toString()+"' color='"+color[rand.nextInt(11)]+"'/>";
+	 		strXML += "<set name='"+goodsPd.getString("GOODS_NAME")+"' value='"+goodsPd.get("ZCOUNT").toString()+"' color='"+color[rand.nextInt(11)]+"'/>";
 	 	}
 	 	mv.addObject("strXML", strXML+"</graph>");
 		mv.setViewName("erp/kucun/kucun_char");
 		return mv;
 	}
-	
-	 /**导出到excel
+
+
+	/**
+	 * 删除
+	 *
+	 * @param out
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/delete")
+	public void delete(PrintWriter out) throws Exception {
+		logBefore(logger, Jurisdiction.getUsername() + "删除IntoKu");
+		if (!Jurisdiction.buttonJurisdiction(menuUrl, "del")) {
+			return;
+		} //校验权限
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		kucunService.delete(pd);
+		out.write("success");
+		out.close();
+	}
+
+	/**
+	 * 修改
+	 *
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/edit")
+	public ModelAndView edit() throws Exception {
+		logBefore(logger, Jurisdiction.getUsername() + "修改IntoKu");
+		if (!Jurisdiction.buttonJurisdiction(menuUrl, "edit")) {
+			return null;
+		} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		PageData pd2 = kucunService.findById(pd);
+		pd2.put("GOODS_NAME", pd.getString("GOODS_NAME"));
+		pd2.put("INCOUNT", pd.getString("INCOUNT"));
+		pd2.put("PRICE", pd.getString("PRICE"));
+		pd2.put("ZPRICE", pd.getString("ZPRICE"));
+		pd2.put("BZ", pd.getString("BZ"));
+		pd2.put("SPTYPE_ID",pd.getString("SPTYPE_ID"));
+		kucunService.edit(pd2);
+		mv.addObject("msg", "success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+
+
+	/**
+	 * 去修改页面
+	 *
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/goEdit")
+	public ModelAndView goEdit() throws Exception {
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = kucunService.findById(pd);    //根据ID读取
+		List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
+		mv.setViewName("erp/intoku/intoku_edit");
+		mv.addObject("msg", "edit");
+		mv.addObject("sptypeList", sptypeList);
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+
+	/**
+	 * 批量删除
+	 *
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/deleteAll")
+	@ResponseBody
+	public Object deleteAll() throws Exception {
+		logBefore(logger, Jurisdiction.getUsername() + "批量删除IntoKu");
+		if (!Jurisdiction.buttonJurisdiction(menuUrl, "del")) {
+			return null;
+		} //校验权限
+		PageData pd = new PageData();
+		Map<String, Object> map = new HashMap<String, Object>();
+		pd = this.getPageData();
+		List<PageData> pdList = new ArrayList<PageData>();
+		String DATA_IDS = pd.getString("DATA_IDS");
+		if (null != DATA_IDS && !"".equals(DATA_IDS)) {
+			String ArrayDATA_IDS[] = DATA_IDS.split(",");
+			kucunService.deleteAll(ArrayDATA_IDS);
+			pd.put("msg", "ok");
+		} else {
+			pd.put("msg", "no");
+		}
+		pdList.add(pd);
+		map.put("list", pdList);
+		return AppUtil.returnObject(pd, map);
+	}
+
+
+
+	/**导出到excel
 	 * @param
 	 * @throws Exception
 	 */
@@ -107,7 +207,7 @@ public class KucunController extends BaseController {
 		List<String> titles = new ArrayList<String>();
 		titles.add("商品名称");	//1
 		titles.add("仓库存量");	//2
-		titles.add("商品编码");	//3
+		titles.add("商品成本");	//3
 		titles.add("商品类别");	//4
 		titles.add("品牌");	//5
 		dataMap.put("titles", titles);
@@ -115,17 +215,16 @@ public class KucunController extends BaseController {
 		if(null != keywords && !"".equals(keywords)){
 			pd.put("keywords", keywords.trim());
 		}
-		pd.put("USERNAME", "admin".equals(Jurisdiction.getUsername())?"":Jurisdiction.getUsername());//admin用户看到的是全部,否则是本用户
 		pd.put("isKucun", "yes");
 		page.setShowCount(30000);									//最大条数 3万条
 		page.setPd(pd);
-		List<PageData>	varOList = goodsService.list(page);			//列出Goods列表
+		List<PageData>	varOList = kucunService.list(page);			//列出Kuncun列表
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).getString("TITLE"));	    //1
+			vpd.put("var1", varOList.get(i).getString("GOODS_NAME"));	    //1
 			vpd.put("var2", varOList.get(i).get("ZCOUNT").toString()+"("+varOList.get(i).getString("UNAME")+")");	//2
-			vpd.put("var3", varOList.get(i).getString("BIANMA"));		//3
+			vpd.put("var3", varOList.get(i).getString("PRICE"));		//3
 			vpd.put("var4", varOList.get(i).getString("TNAME"));		//4
 			vpd.put("var5", varOList.get(i).getString("BNAME"));	    //5
 			varList.add(vpd);

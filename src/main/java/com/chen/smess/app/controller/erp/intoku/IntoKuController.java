@@ -5,6 +5,7 @@ import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
 import com.chen.smess.domain.service.erp.intoku.IntoKuManager;
+import com.chen.smess.domain.service.erp.kucun.impl.KucunService;
 import com.chen.smess.domain.service.erp.sptype.impl.SptypeService;
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import org.apache.poi.util.SystemOutLogger;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.print.attribute.standard.PDLOverrideSupported;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,7 +39,8 @@ public class IntoKuController extends BaseController {
     private GoodsManager goodsService;
     @Resource(name = "sptypeService")
     private SptypeService sptypeService;
-
+    @Resource(name = "kucunService")
+    private KucunService kucunService;
     /**
      * 保存
      *
@@ -58,7 +61,27 @@ public class IntoKuController extends BaseController {
         pd.put("INTIME", Tools.date2Str(new Date()));    //入库时间
         pd.put("USERNAME", Jurisdiction.getUsername());    //用户名
         /*pd.put("GOODS_NAME", goodsService.findById(pd).getString("TITLE"));*/    //商品名称
+        PageData pd2 = new PageData();
+        pd2.put("GOODS_NAME",pd.getString("GOODS_NAME"));
+        pd2.put("PRICE",pd.getString("PRICE"));
         intokuService.save(pd);
+        List<PageData> pageData = kucunService.findByObject(pd2);
+        if(pageData!=null && pageData.size()>0)
+        {
+            for (int i=0;i<pageData.size();i++) {
+                PageData vpd = new PageData();
+                vpd.put("KUCUN_ID",pageData.get(i).getString("KUCUN_ID"));
+                vpd.put("ZCOUNT",pageData.get(i).getString("ZCOUNT"));
+                vpd.put("INCOUNT",pd.getString("INCOUNT"));
+                kucunService.editZCOUNT(vpd);
+            }
+        }
+        else if(pageData==null || pageData.size()==0)
+        {
+            pd.put("KUCUN_ID", this.get32UUID());
+            pd.put("ZCOUNT", pd.getString("INCOUNT"));
+            kucunService.save(pd);
+        }
         //goodsService.editZCOUNT(pd); //修改库存
         mv.addObject("msg", "success");
         mv.setViewName("save_result");

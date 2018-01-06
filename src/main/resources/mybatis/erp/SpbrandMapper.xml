@@ -60,8 +60,7 @@
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
-		where 
-			SPBRAND_ID = #{SPBRAND_ID}
+
 	</select>
 	
 	<!-- 列表 -->
@@ -77,8 +76,7 @@
 				NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
 				)
 		</if>
-		and
-			USERNAME = #{pd.USERNAME}
+
 		order by NAME
 	</select>
 	
@@ -88,8 +86,7 @@
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
-		where 
-		USERNAME = #{USERNAME}
+
 	</select>
 	
 	<!-- 批量删除 -->
@@ -103,5 +100,4 @@
 		</foreach>
 	</delete>
 	
-	<!-- fh313596790qq(青苔) -->
 </mapper>

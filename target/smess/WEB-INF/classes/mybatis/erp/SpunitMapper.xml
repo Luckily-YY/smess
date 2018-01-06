@@ -87,7 +87,6 @@
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
-
 	</select>
 	
 	<!-- 批量删除 -->

@@ -66,15 +66,19 @@
 						</table>
 						<!-- 检索  -->
 					
-						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">	
+						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
+							<input type="hidden" name="KUCUN_ID" id="KUCUN_ID" value="${pd.KUCUN_ID}"/>
 							<thead>
 								<tr>
+									<th class="center" style="width:35px;">
+										<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
+									</th>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">商品名称</th>
 									<th class="center">仓库存量</th>
-									<th class="center">商品编码</th>
 									<th class="center">商品类别</th>
 									<th class="center">品牌</th>
+									<th class="center">操作</th>
 								</tr>
 							</thead>
 													
@@ -85,17 +89,36 @@
 									<c:if test="${QX.cha == 1 }">
 									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr>
+											<td class='center'>
+												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.INTOKU_ID}" class="ace" /><span class="lbl"></span></label>
+											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class='center'>${var.TITLE}</td>
+											<td class='center'>${var.GOODS_NAME}</td>
 											<td class='center'>
 												<c:if test="${var.ZCOUNT < 6}"><font color="red"><b>${var.ZCOUNT}</b></font></c:if>
 												<c:if test="${var.ZCOUNT < 11 && var.ZCOUNT > 5}"><font color="#FF8000"><b>${var.ZCOUNT}</b></font></c:if>
 												<c:if test="${var.ZCOUNT > 10}"><font color="#008000"><b>${var.ZCOUNT}</b></font></c:if>
+												<c:if test="${var.UNAME != null && var.UNAME != ''}">
 												&nbsp;&nbsp;(${var.UNAME})
+												</c:if>
+												<c:if test="${var.UNAME == null || var.UNAME == ''}">
+													&nbsp;&nbsp;(暂无单位)
+												</c:if>
 											</td>
-											<td class='center'>${var.BIANMA}</td>
 											<td class='center'>${var.TNAME}</td>
 											<td class='center'>${var.BNAME}</td>
+											<td class='center'>
+												<a class="btn btn-mini btn-success"
+												   onclick="edit('${var.INTOKU_ID}');">
+													<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
+												</a>
+												<c:if test="${QX.del == 1 }">
+													<a class="btn btn-mini btn-danger"
+													   onclick="del('${var.KUCUN_ID}','${var.GOODS_NAME}');">
+														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
+													</a>
+												</c:if>
+											</td>
 										</tr>
 									
 									</c:forEach>
@@ -119,12 +142,12 @@
 							<tr>
 								<td style="vertical-align:top;">
 								</td>
-								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
+								<td style="vertical-align:top;">
+									<div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
 						</table>
 						</div>
 						</form>
-					
 						</div>
 						<!-- /.col -->
 					</div>
@@ -170,7 +193,18 @@
 				autoclose: true,
 				todayHighlight: true
 			});
-			
+
+            //复选框全选控制
+            var active_class = 'active';
+            $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
+                var th_checked = this.checked;//checkbox inside "TH" table header
+                $(this).closest('table').find('tbody > tr').each(function(){
+                    var row = this;
+                    if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
+                    else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
+                });
+            });
+
 			//下拉框
 			if(!ace.vars['touch']) {
 				$('.chosen-select').chosen({allow_single_deselect:true}); 
@@ -198,8 +232,102 @@
 			}
 			
 		});
-		
-		//导出excel
+
+
+        //修改
+        function edit(id) {
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag = true;
+            diag.Title = "库存商品修改";
+            diag.URL = '<%=basePath%>kucun/goEdit.do?KUNCUN_ID=' + id;
+            diag.Width = 460;
+            diag.Height = 420;
+            diag.Modal = false;			//有无遮罩窗口
+            diag.ShowMaxButton = true;	//最大化按钮
+            diag.ShowMinButton = true;		//最小化按钮
+            diag.CancelEvent = function () { //关闭事件
+                if (diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none') {
+                    if ('${page.currentPage}' == '0') {
+                        top.jzts();
+                        setTimeout("self.location=self.location", 100);
+                    } else {
+                        nextPage(${page.currentPage});
+                    }
+                }
+                diag.close();
+            };
+            diag.show();
+        }
+
+        //删除
+        function del(id, msg) {
+
+            bootbox.confirm("确定要删除[" + msg + "]吗?", function (result) {
+                if (result) {
+                    top.jzts();
+                    var url = "${pageContext.request.contextPath}/kucun/delete?KUCUN_ID=" + id;
+                    $.get(url, function (data) {
+                        nextPage(${page.currentPage});
+                    });
+                }
+                ;
+            });
+
+
+        }
+
+
+
+
+        //批量操作
+        function makeAll(msg){
+            bootbox.confirm(msg, function(result) {
+                if(result) {
+                    var str = '';
+                    for(var i=0;i < document.getElementsByName('ids').length;i++){
+                        if(document.getElementsByName('ids')[i].checked){
+                            if(str=='') str += document.getElementsByName('ids')[i].value;
+                            else str += ',' + document.getElementsByName('ids')[i].value;
+                        }
+                    }
+                    if(str==''){
+                        bootbox.dialog({
+                            message: "<span class='bigger-110'>您没有选择任何内容!</span>",
+                            buttons:
+                                { "button":{ "label":"确定", "className":"btn-sm btn-success"}}
+                        });
+                        $("#zcheckbox").tips({
+                            side:1,
+                            msg:'点这里全选',
+                            bg:'#AE81FF',
+                            time:8
+                        });
+                        return;
+                    }else{
+                        if(msg == '确定要删除选中的数据吗?'){
+                            top.jzts();
+                            $.ajax({
+                                type: "POST",
+                                url: '<%=basePath%>intoku/deleteAll.do',
+                                data: {DATA_IDS:str},
+                                dataType:'json',
+                                //beforeSend: validateData,
+                                cache: false,
+                                success: function(data){
+                                    $.each(data.list, function(i, list){
+                                        nextPage(${page.currentPage});
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        };
+
+
+        //导出excel
 		function toExcel(){
 			$("#Form").attr("action", "<%=basePath%>kucun/excel.do");
 			setTimeout(function() {

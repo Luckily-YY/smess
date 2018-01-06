@@ -56,8 +56,8 @@ public class SpbrandService implements SpbrandManager {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public List<PageData> listAll(String USERNAME)throws Exception{
-		return (List<PageData>)dao.findForList("SpbrandMapper.listAll", USERNAME);
+	public List<PageData> listAll()throws Exception{
+		return (List<PageData>)dao.findForList("SpbrandMapper.listAll", null);
 	}
 	
 	/**通过id获取数据

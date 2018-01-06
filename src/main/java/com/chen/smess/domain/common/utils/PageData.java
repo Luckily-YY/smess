@@ -1,12 +1,8 @@
 package com.chen.smess.domain.common.utils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
+import java.util.*;
 /** 
  * 说明：参数封装Map
  */
@@ -57,10 +53,21 @@ public class PageData extends HashMap implements Map{
 		} else {
 			obj = map.get(key);
 		}
+		if(obj instanceof Double)
+		{
+			DecimalFormat format = new DecimalFormat("#.00");
+			return format.format(obj);
+		}
+		else if(obj instanceof Integer)
+		{
+			DecimalFormat format = new DecimalFormat("#");
+			return format.format(obj);
+		}
 		return obj;
 	}
 	
 	public String getString(Object key) {
+
 		return (String)get(key);
 	}
 	

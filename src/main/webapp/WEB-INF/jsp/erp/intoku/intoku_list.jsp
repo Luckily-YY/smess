@@ -215,6 +215,7 @@
             todayHighlight: true
         });
 
+
         //复选框全选控制
         var active_class = 'active';
         $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
@@ -234,7 +235,7 @@
         diag.Drag = true;
         diag.Title = "商品入库";
         diag.URL = '<%=basePath%>intoku/goAdd.do';
-        diag.Width = 450;
+        diag.Width = 460;
         diag.Height = 420;
         diag.Modal = false;			//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
@@ -260,7 +261,7 @@
         diag.Drag = true;
         diag.Title = "商品修改";
         diag.URL = '<%=basePath%>intoku/goEdit.do?INTOKU_ID=' + id;
-        diag.Width = 450;
+        diag.Width = 460;
         diag.Height = 420;
         diag.Modal = false;			//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
