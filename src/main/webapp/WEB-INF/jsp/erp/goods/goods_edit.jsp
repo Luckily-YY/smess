@@ -19,7 +19,7 @@
     <style type="text/css">
         .plainstyle {
             width: 88%;
-            height: 130px;
+            height: 100px;
         }
     </style>
 </head>
@@ -41,14 +41,25 @@
                                 <table id="table_report" class="table table-striped table-bordered table-hover">
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
-                                        <td colspan="10"><input type="text" name="TITLE" id="TITLE" value="${pd.TITLE}"
+                                        <%--<td colspan="10"><input type="text" name="TITLE" id="TITLE" value="${pd.TITLE}"
                                                                 maxlength="255" placeholder="这里输入商品名称" title="商品名称"
-                                                                style="width:98%;"/></td>
+                                                                style="width:98%;"/></td>--%>
+                                        <td colspan="10">
+                                            <select class="chosen-select form-control" name="SPBRAND_ID" id="SPBRAND_ID"
+                                                    data-placeholder="请选择品牌" style="vertical-align:top;width:98%;">
+                                                <option value="">--商品名称--</option>
+                                                <c:forEach items="${goodsList}" var="var">
+                                                    <option value="${var.GOODS_ID }"
+                                                            onclick="getGoods(${var.GOODS_ID });"
+                                                            <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
+                                                </c:forEach>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品编码:</td>
                                         <td><input type="text" name="BIANMA" id="BIANMA" value="${pd.BIANMA}"
-                                                   maxlength="30" placeholder="这里输入商品编码" title="商品编码"
+                                                   maxlength="30" placeholder="上一个商品编码为${pd.BIANMA}" title="商品编码"
                                                    style="width:98%;"/></td>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品品牌:</td>
                                         <td>
@@ -86,8 +97,32 @@
                                             </select>
                                         </td>
                                     </tr>
+                                    <c:if test="${msg !='edit'}">
                                     <tr>
-                                        <td style="width:75px;height:225px; text-align: right;padding-top: 13px;">
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">仓库库存:</td>
+                                        <td><input type="text" name="ZCOUNT" id="ZCOUNT" value="${pd.ZCOUNT}"
+                                                   maxlength="30" title="商品库存量" readonly
+                                                   style="width:98%;"/></td>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品成本:</td>
+                                        <td><input type="text" name="GCOUNT" id="GCOUNT" value="${pd.PRIZE}"
+                                                   maxlength="30"  title="商品成本价"
+                                                   style="width:98%;"/></td>
+                                    </tr>
+                                    </c:if>
+                                    <tr>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">上架数量:</td>
+                                        <td><input type="text" name="GCOUNT" id="GCOUNT" value="${pd.GCOUNT}"
+                                                   maxlength="30" title="商品上架数量" readonly
+                                                   style="width:98%;"/></td>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品现价:</td>
+                                        <td><input type="text" name="GPRIZE" id="GPRIZE" value="${pd.GPRIZE}"
+                                                   maxlength="30" title="商品价格"
+                                                   style="width:98%;"/></td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td style="width:75px;height:190px; text-align: right;padding-top: 13px;">
                                             商品描述:
                                         </td>
                                         <td colspan="10">
@@ -150,6 +185,38 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());
+
+    //通过商品id读取数据
+    function getGoods(id) {
+        $.ajax({
+            type: "POST",
+            url: 'goods/getById.do',
+            data: {GOODS_ID: id},
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                if ("success" == data.result) {
+                    $("#GOODS_ID").val(data.pd.GOODS_ID);
+                    $("#SPBRAND_ID").val(data.pd.SPBRAND_ID);
+                    $("#SPTYPE_ID").val(data.pd.SPTYPE_ID);
+                    $("#SPUNIT_ID").val(data.pd.SPUNIT_ID);
+                    $("#SPBRAND_ID").val(data.pd.SPBRAND_ID);
+                    $("#ZCOUNT").val(data.pd.ZCOUNT);
+                    $("#PRICE").val(data.pd.PRICE);
+
+                } else {
+                    $("#GOODS_ID").tips({
+                        side: 1,
+                        msg: "此商品不存在",
+                        bg: '#FF5080',
+                        time: 15
+                    });
+                }
+            }
+        });
+    }
+
+
     //保存
     function save() {
         if ($("#TITLE").val() == "") {

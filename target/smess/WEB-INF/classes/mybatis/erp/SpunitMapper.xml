@@ -82,13 +82,12 @@
 	</select>
 	
 	<!-- 列表(全部) -->
-	<select id="listAll" parameterType="String" resultType="pd">
+	<select id="listAll"  resultType="pd">
 		select
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
 	</select>
-	
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
 		delete from

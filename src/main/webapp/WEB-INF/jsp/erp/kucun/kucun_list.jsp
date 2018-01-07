@@ -90,7 +90,7 @@
 									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr>
 											<td class='center'>
-												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.INTOKU_ID}" class="ace" /><span class="lbl"></span></label>
+												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.KUCUN_ID}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class='center'>${var.GOODS_NAME}</td>
@@ -109,7 +109,7 @@
 											<td class='center'>${var.BNAME}</td>
 											<td class='center'>
 												<a class="btn btn-mini btn-success"
-												   onclick="edit('${var.INTOKU_ID}');">
+												   onclick="edit('${var.KUCUN_ID}');">
 													<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 												</a>
 												<c:if test="${QX.del == 1 }">
@@ -141,6 +141,7 @@
 						<table style="width:100%;">
 							<tr>
 								<td style="vertical-align:top;">
+									<a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
 								</td>
 								<td style="vertical-align:top;">
 									<div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
@@ -240,9 +241,9 @@
             var diag = new top.Dialog();
             diag.Drag = true;
             diag.Title = "库存商品修改";
-            diag.URL = '<%=basePath%>kucun/goEdit.do?KUNCUN_ID=' + id;
+            diag.URL = '<%=basePath%>kucun/goEdit.do?KUCUN_ID=' + id;
             diag.Width = 460;
-            diag.Height = 420;
+            diag.Height = 480;
             diag.Modal = false;			//有无遮罩窗口
             diag.ShowMaxButton = true;	//最大化按钮
             diag.ShowMinButton = true;		//最小化按钮
@@ -309,7 +310,7 @@
                             top.jzts();
                             $.ajax({
                                 type: "POST",
-                                url: '<%=basePath%>intoku/deleteAll.do',
+                                url: '<%=basePath%>kucun/deleteAll.do',
                                 data: {DATA_IDS:str},
                                 dataType:'json',
                                 //beforeSend: validateData,

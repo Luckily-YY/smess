@@ -63,7 +63,9 @@
         PRICE = #{PRICE},
         ZPRICE = #{ZPRICE},
         GOODS_NAME = #{GOODS_NAME},
-        SPTYPE_ID = #{SPTYPE_ID}
+        SPTYPE_ID = #{SPTYPE_ID},
+        SPUNIT_ID = #{SPUNIT_ID},
+        SPBRAND_ID = #{SPBRAND_ID}
         where
         KUCUN_ID = #{KUCUN_ID}
     </update>
@@ -86,6 +88,16 @@
         <include refid="tableName"></include>
         where
         KUCUN_ID = #{KUCUN_ID}
+    </select>
+
+    <!-- 通过goodsID获取数据 -->
+    <select id="findforgoodsId" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        where
+        GOODS_ID = #{GOODS_ID}
     </select>
 
     <!-- 通过ID获取数据(查看详细信息) -->
@@ -192,7 +204,7 @@
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
             #{item}
         </foreach>
-    </delete>
+</delete>
 
     <!-- 商品入库，增加库存 -->
     <update id="editZCOUNT" parameterType="pd">

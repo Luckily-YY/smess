@@ -18,7 +18,7 @@
 		SHORTDESC,	
 		USERNAME,	
 		GOODS_ID,
-		ZCOUNT
+		GCOUNT
 	</sql>
 	
 	<!-- 字段值 -->
@@ -32,7 +32,7 @@
 		#{SHORTDESC},	
 		#{USERNAME},	
 		#{GOODS_ID},
-		#{ZCOUNT}
+		#{GCOUNT}
 	</sql>
 	
 	<!-- 新增-->
@@ -76,7 +76,7 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			ZCOUNT = #{ZCOUNT}
+			GCOUNT = #{GCOUNT}
 		where 
 		GOODS_ID = #{GOODS_ID}
 	</update>
@@ -103,7 +103,7 @@
 			a.SHORTDESC,	
 			a.USERNAME,	
 			a.GOODS_ID,
-			a.ZCOUNT,
+			a.GCOUNT,
 			b.NAME BNAME,
 			C.NAME TNAME,
 			d.NAME UNAME
@@ -129,7 +129,7 @@
 			a.SPUNIT_ID,	
 			a.USERNAME,	
 			a.GOODS_ID,
-			a.ZCOUNT,
+			a.GCOUNT,
 			b.NAME BNAME,
 			c.NAME TNAME,
 			d.NAME UNAME
@@ -160,8 +160,8 @@
 			and a.SPTYPE_ID = #{pd.SPTYPE_ID}
 		</if>
 		<if test="pd.isKucun!= null and pd.isKucun != ''">
-			and a.ZCOUNT != 0
-			order by a.ZCOUNT
+			and a.GCOUNT != 0
+			order by a.GCOUNT
 		</if>
 	</select>
 	
@@ -175,14 +175,14 @@
 			a.SPUNIT_ID,	
 			a.USERNAME,	
 			a.GOODS_ID,
-			a.ZCOUNT,
+			a.GCOUNT,
 			b.NAME
 		from 
 		<include refid="tableName"></include> a
 		left join cp_spunit b
 		on a.SPUNIT_ID = b.SPUNIT_ID
 		where a.USERNAME = #{USERNAME}
-		order by a.ZCOUNT desc
+		order by a.GCOUNT desc
 	</select>
 	
 	<!-- 通过产品编码 -->
@@ -195,7 +195,7 @@
 			a.SPUNIT_ID,	
 			a.USERNAME,	
 			a.GOODS_ID,
-			a.ZCOUNT,
+			a.GCOUNT,
 			b.NAME
 		from 
 		<include refid="tableName"></include> a
@@ -203,7 +203,7 @@
 		on a.SPUNIT_ID = b.SPUNIT_ID
 		where a.USERNAME = #{USERNAME}
 		and a.BIANMA = #{BIANMA}
-		order by a.ZCOUNT desc
+		order by a.GCOUNT desc
 	</select>
 	
 	<!-- 批量删除 -->
@@ -218,11 +218,11 @@
 	</delete>
 	
 	<!-- 商品入库，增加库存 -->
-	<update id="editZCOUNT" parameterType="pd">
+	<update id="editGCOUNT" parameterType="pd">
 		update
 		<include refid="tableName"></include>
 		set 
-			ZCOUNT = ZCOUNT + #{INCOUNT}
+			GCOUNT = GCOUNT + #{INCOUNT}
 		where 
 			GOODS_ID = #{GOODS_ID}
 	</update>

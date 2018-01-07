@@ -62,6 +62,10 @@ public class KucunService implements KucunManager{
         return (List<PageData>)dao.findForList("KucunMapper.findforobject", pageData);
     }
 
+    public PageData findByGoodsId(PageData pageData) throws Exception {
+        return (PageData) dao.findForObject("KucunMapper.findforgoodsId",pageData);
+    }
+
     /**列表(全部)
      * @param pd
      * @throws Exception

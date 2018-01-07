@@ -99,7 +99,7 @@ public class KucunController extends BaseController {
 	 */
 	@RequestMapping(value = "/delete")
 	public void delete(PrintWriter out) throws Exception {
-		logBefore(logger, Jurisdiction.getUsername() + "删除IntoKu");
+		logBefore(logger, Jurisdiction.getUsername() + "删除库存商品");
 		if (!Jurisdiction.buttonJurisdiction(menuUrl, "del")) {
 			return;
 		} //校验权限
@@ -118,7 +118,7 @@ public class KucunController extends BaseController {
 	 */
 	@RequestMapping(value = "/edit")
 	public ModelAndView edit() throws Exception {
-		logBefore(logger, Jurisdiction.getUsername() + "修改IntoKu");
+		logBefore(logger, Jurisdiction.getUsername() + "修改库存商品");
 		if (!Jurisdiction.buttonJurisdiction(menuUrl, "edit")) {
 			return null;
 		} //校验权限
@@ -127,11 +127,12 @@ public class KucunController extends BaseController {
 		pd = this.getPageData();
 		PageData pd2 = kucunService.findById(pd);
 		pd2.put("GOODS_NAME", pd.getString("GOODS_NAME"));
-		pd2.put("INCOUNT", pd.getString("INCOUNT"));
+		pd2.put("ZCOUNT", pd.getString("ZCOUNT"));
 		pd2.put("PRICE", pd.getString("PRICE"));
 		pd2.put("ZPRICE", pd.getString("ZPRICE"));
-		pd2.put("BZ", pd.getString("BZ"));
+		pd2.put("SPBRAND_ID", pd.getString("SPBRAND_ID"));
 		pd2.put("SPTYPE_ID",pd.getString("SPTYPE_ID"));
+		pd2.put("SPUNIT_ID",pd.getString("SPUNIT_ID"));
 		kucunService.edit(pd2);
 		mv.addObject("msg", "success");
 		mv.setViewName("save_result");
@@ -151,10 +152,14 @@ public class KucunController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = kucunService.findById(pd);    //根据ID读取
-		List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
-		mv.setViewName("erp/intoku/intoku_edit");
+		List<PageData> spbrandList = spbrandService.listAll(); 	//品牌列表
+		List<PageData> sptypeList = sptypeService.listAll();
+		List<PageData> spunitList = spunitService.listAll();
+		mv.setViewName("erp/kucun/kucun_edit");
 		mv.addObject("msg", "edit");
+		mv.addObject("spbrandList", spbrandList);
 		mv.addObject("sptypeList", sptypeList);
+		mv.addObject("spunitList", spunitList);
 		mv.addObject("pd", pd);
 		return mv;
 	}
@@ -169,7 +174,7 @@ public class KucunController extends BaseController {
 	@RequestMapping(value = "/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception {
-		logBefore(logger, Jurisdiction.getUsername() + "批量删除IntoKu");
+		logBefore(logger, Jurisdiction.getUsername() + "批量删除库存");
 		if (!Jurisdiction.buttonJurisdiction(menuUrl, "del")) {
 			return null;
 		} //校验权限

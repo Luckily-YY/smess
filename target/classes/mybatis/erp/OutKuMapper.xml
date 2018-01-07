@@ -145,7 +145,6 @@
 		from 
 		<include refid="tableName"></include>
 	</select>
-
 	<!-- 商品销售报表-->
 	<select id="SalesReportlistPage" parameterType="page" resultType="pd">
 		select
@@ -170,8 +169,6 @@
 		<if test="pd.days!=null and pd.days!=''"><!-- 几天内的订单 -->
 			and DATE_SUB(CURDATE(), INTERVAL ${pd.days} DAY) &lt;= date(OUTTIME)
 		</if>
-		and
-			  USERNAME = #{pd.USERNAME}
 		GROUP BY GOODS_ID
 		<if test="pd.forderby!=null and pd.forderby!=''"><!-- 排序 -->
 			${pd.forderby}

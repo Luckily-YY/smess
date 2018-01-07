@@ -72,4 +72,11 @@ public interface KucunManager {
      *
      */
     public List<PageData> findByObject(PageData pageData) throws Exception;
+
+    /**
+     * 根据商品id查询商品
+     * @param pd
+     * @return
+     */
+    PageData findByGoodsId(PageData pd) throws Exception;
 }

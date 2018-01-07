@@ -154,7 +154,6 @@ public class OutKuController extends BaseController {
 		if(lastEnd != null && !"".equals(lastEnd)){
 			pd.put("lastEnd", lastEnd+" 00:00:00");
 		} 
-		pd.put("USERNAME", Jurisdiction.getUsername());
 		page.setPd(pd);
 		List<PageData>	varList = outkuService.salesReport(page);
 		mv.setViewName("erp/outku/salesReport");

@@ -66,6 +66,7 @@
 						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">	
 							<thead>
 								<tr>
+									<th class="center">序号</th>
 									<th class="center">商品</th>
 									<th class="center" onclick="orderby('xl');" style="cursor:pointer;">销量&uarr; &darr;</th>
 									<th class="center" onclick="orderby('zj');" style="cursor:pointer;">销售额&uarr; &darr;</th>
@@ -79,6 +80,7 @@
 									<c:if test="${QX.cha == 1 }">
 									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr>
+											<td class='center' style="width: 50px;">${vs.index+1}</td>
 											<td class='center'>${var.GOODS_NAME}</td>
 											<td class='center'><b><font style="color: red">${var.ZCOUNT}</font></b></td>
 											<td class='center'><b><font style="color: red">${var.ZPRICE}</font></b>&nbsp;元</td>

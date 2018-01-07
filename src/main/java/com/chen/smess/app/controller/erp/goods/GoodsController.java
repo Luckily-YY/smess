@@ -4,6 +4,7 @@ import com.chen.smess.app.controller.base.BaseController;
 import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
+import com.chen.smess.domain.service.erp.kucun.KucunManager;
 import com.chen.smess.domain.service.erp.spbrand.SpbrandManager;
 import com.chen.smess.domain.service.erp.sptype.SptypeManager;
 import com.chen.smess.domain.service.erp.spunit.SpunitManager;
@@ -43,7 +44,9 @@ public class GoodsController extends BaseController {
 	private SptypeManager sptypeService;
 	@Resource(name="spunitService")
 	private SpunitManager spunitService;
-	
+	@Resource(name="kucunService")
+	private KucunManager kucunService;
+
 	/**保存
 	 * @param
 	 * @throws Exception
@@ -56,7 +59,7 @@ public class GoodsController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd.put("GOODS_ID", this.get32UUID());	//主键 
-		pd.put("ZCOUNT", 0);					//库存
+		pd.put("GCOUNT", 0);					//库存
 		pd.put("USERNAME", Jurisdiction.getUsername());	//用户名
 		goodsService.save(pd);
 		mv.addObject("msg","success");
@@ -77,7 +80,7 @@ public class GoodsController extends BaseController {
 		pd = this.getPageData();
 		String errInfo = "success";
 		//当商品下面有图片 或者 此商品已经上架 或者 库存不为0时 不能删除
-		if(Integer.parseInt(picturesService.findCount(pd).get("zs").toString()) > 0 || Integer.parseInt( goodsService.findById(pd).get("ZCOUNT").toString()) > 0){
+		if(Integer.parseInt(picturesService.findCount(pd).get("zs").toString()) > 0 || Integer.parseInt( goodsService.findById(pd).get("GCOUNT").toString()) > 0){
 			errInfo = "false";
 		}else{
 			goodsService.delete(pd);
@@ -177,12 +180,13 @@ public class GoodsController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		List<PageData> list = kucunService.listAll(pd);
 		List<PageData> spbrandList = spbrandService.listAll(); 	//品牌列表
 		List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
 		List<PageData> spunitList = spunitService.listAll(); 		//计量单位列表
 		mv.setViewName("erp/goods/goods_edit");
 		mv.addObject("msg", "save");
-		mv.addObject("pd", pd);
+		mv.addObject("goodsList", list);
 		mv.addObject("spbrandList", spbrandList);
 		mv.addObject("sptypeList", sptypeList);
 		mv.addObject("spunitList", spunitList);
@@ -249,7 +253,34 @@ public class GoodsController extends BaseController {
 		map.put("result", errInfo);
 		return AppUtil.returnObject(new PageData(), map);
 	}
-	
+
+
+	/**通过产品编码
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/getById")
+	@ResponseBody
+	public Object getById() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"通过产品id获取信息");
+		Map<String,Object> map = new HashMap<String,Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String errInfo = "success";
+		//从库存读取数据
+		PageData pageData = kucunService.findByGoodsId(pd);
+		if(pageData!=null){
+			map.put("pd", pageData);
+		}else{
+			errInfo = "errer";
+		}
+		map.put("result", errInfo);
+		return AppUtil.returnObject(new PageData(), map);
+	}
+
+
+
+
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder){
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
