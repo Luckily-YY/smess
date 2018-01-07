@@ -35,6 +35,7 @@
 
                         <form action="goods/${msg }.do" name="Form" id="Form" method="post">
                             <input type="hidden" name="GOODS_ID" id="GOODS_ID" value="${pd.GOODS_ID}"/>
+                            <input type="hidden" name="KUCUN_ID" id="KUCUN_ID" value="${pd.KUCUN_ID}"/>
                             <textarea name="DESCRIPTION" id="DESCRIPTION"
                                       style="display:none">${pd.DESCRIPTION}</textarea>
                             <div id="zhongxin" style="padding-top: 13px;">
@@ -45,12 +46,11 @@
                                                                 maxlength="255" placeholder="这里输入商品名称" title="商品名称"
                                                                 style="width:98%;"/></td>--%>
                                         <td colspan="10">
-                                            <select class="chosen-select form-control" name="SPBRAND_ID" id="SPBRAND_ID"
-                                                    data-placeholder="请选择品牌" style="vertical-align:top;width:98%;">
+                                            <select class="chosen-select form-control" name="GOODS_ID" id="GOODS_ID"
+                                                    data-placeholder="请选择商品" style="vertical-align:top;width:98%;" onchange="getGoods(this.value);">
                                                 <option value="">--商品名称--</option>
                                                 <c:forEach items="${goodsList}" var="var">
                                                     <option value="${var.GOODS_ID }"
-                                                            onclick="getGoods(${var.GOODS_ID });"
                                                             <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
                                                 </c:forEach>
                                             </select>
@@ -104,23 +104,21 @@
                                                    maxlength="30" title="商品库存量" readonly
                                                    style="width:98%;"/></td>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品成本:</td>
-                                        <td><input type="text" name="GCOUNT" id="GCOUNT" value="${pd.PRIZE}"
-                                                   maxlength="30"  title="商品成本价"
-                                                   style="width:98%;"/></td>
+                                            <td><input type="text" name="PRICE" id="PRICE" value="${pd.PRICE}"
+                                                   maxlength="30"  title="商品成本价" readonly
+                                                   style="width:89%;"/>&nbsp;元</td>
                                     </tr>
                                     </c:if>
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">上架数量:</td>
                                         <td><input type="text" name="GCOUNT" id="GCOUNT" value="${pd.GCOUNT}"
-                                                   maxlength="30" title="商品上架数量" readonly
+                                                   maxlength="30" title="商品上架数量"
                                                    style="width:98%;"/></td>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品现价:</td>
-                                        <td><input type="text" name="GPRIZE" id="GPRIZE" value="${pd.GPRIZE}"
+                                        <td><input type="text" name="GPRICE" id="GPRICE" value="${pd.GPRICE}"
                                                    maxlength="30" title="商品价格"
-                                                   style="width:98%;"/></td>
+                                                   style="width:89%;"/>&nbsp;元</td>
                                     </tr>
-
-
                                     <tr>
                                         <td style="width:75px;height:190px; text-align: right;padding-top: 13px;">
                                             商品描述:
@@ -200,10 +198,9 @@
                     $("#SPBRAND_ID").val(data.pd.SPBRAND_ID);
                     $("#SPTYPE_ID").val(data.pd.SPTYPE_ID);
                     $("#SPUNIT_ID").val(data.pd.SPUNIT_ID);
-                    $("#SPBRAND_ID").val(data.pd.SPBRAND_ID);
                     $("#ZCOUNT").val(data.pd.ZCOUNT);
                     $("#PRICE").val(data.pd.PRICE);
-
+                    $("#KUCUN_ID").val(data.pd.KUCUN_ID);
                 } else {
                     $("#GOODS_ID").tips({
                         side: 1,
@@ -260,6 +257,20 @@
             $("#SHORTDESC").focus();
             return false;
         }
+
+        var zcount = $("#ZCOUNT").val();
+        var gcount = $("#GCOUNT").val();
+        var a = (zcount-gcount).toFixed(2);
+        if(a<0.00){
+            $("#GCOUNT").tips({
+                side: 3,
+                msg: '上架数量不能大于库存数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GCOUNT").focus();
+            return false;
+            }
         $("#Form").submit();
         $("#zhongxin").hide();
         $("#zhongxin2").show();

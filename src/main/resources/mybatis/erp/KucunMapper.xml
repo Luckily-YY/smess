@@ -75,7 +75,7 @@
         update
         <include refid="tableName"></include>
         set
-        ZCOUNT = #{ZCOUNT}
+        ZCOUNT =  #{ZCOUNT}
         where
         KUCUN_ID = #{KUCUN_ID}
     </update>

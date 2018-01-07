@@ -18,7 +18,8 @@
 		SHORTDESC,	
 		USERNAME,	
 		GOODS_ID,
-		GCOUNT
+		GCOUNT,
+		GPRICE
 	</sql>
 	
 	<!-- 字段值 -->
@@ -32,7 +33,8 @@
 		#{SHORTDESC},	
 		#{USERNAME},	
 		#{GOODS_ID},
-		#{GCOUNT}
+		#{GCOUNT},
+		#{GPRICE}
 	</sql>
 	
 	<!-- 新增-->
@@ -66,6 +68,7 @@
 			SPUNIT_ID = #{SPUNIT_ID},
 			DESCRIPTION = #{DESCRIPTION},
 			SHORTDESC = #{SHORTDESC},
+			GPRICE = #{GPRICE},
 		GOODS_ID = GOODS_ID
 		where 
 		GOODS_ID = #{GOODS_ID}
@@ -104,6 +107,7 @@
 			a.USERNAME,	
 			a.GOODS_ID,
 			a.GCOUNT,
+			a.GPRICE,
 			b.NAME BNAME,
 			C.NAME TNAME,
 			d.NAME UNAME
@@ -130,6 +134,7 @@
 			a.USERNAME,	
 			a.GOODS_ID,
 			a.GCOUNT,
+			a.GPRICE,
 			b.NAME BNAME,
 			c.NAME TNAME,
 			d.NAME UNAME
@@ -149,9 +154,6 @@
 					 or 
 					a.SHORTDESC LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
 				)
-		</if>
-		<if test="pd.USERNAME!= null and pd.USERNAME != ''">
-			and a.USERNAME = #{pd.USERNAME}
 		</if>
 		<if test="pd.SPBRAND_ID!= null and pd.SPBRAND_ID != ''">
 			and a.SPBRAND_ID = #{pd.SPBRAND_ID}
@@ -176,12 +178,12 @@
 			a.USERNAME,	
 			a.GOODS_ID,
 			a.GCOUNT,
+			a.PRICE,
 			b.NAME
 		from 
 		<include refid="tableName"></include> a
 		left join cp_spunit b
 		on a.SPUNIT_ID = b.SPUNIT_ID
-		where a.USERNAME = #{USERNAME}
 		order by a.GCOUNT desc
 	</select>
 	
@@ -196,13 +198,13 @@
 			a.USERNAME,	
 			a.GOODS_ID,
 			a.GCOUNT,
+			a.GPRICE,
 			b.NAME
 		from 
 		<include refid="tableName"></include> a
 		left join cp_spunit b
 		on a.SPUNIT_ID = b.SPUNIT_ID
-		where a.USERNAME = #{USERNAME}
-		and a.BIANMA = #{BIANMA}
+		where a.BIANMA = #{BIANMA}
 		order by a.GCOUNT desc
 	</select>
 	
@@ -227,5 +229,4 @@
 			GOODS_ID = #{GOODS_ID}
 	</update>
 	
-	<!-- fh313596790qq(青苔) -->
 </mapper>

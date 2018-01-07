@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,10 +60,18 @@ public class GoodsController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("GOODS_ID", this.get32UUID());	//主键 
-		pd.put("GCOUNT", 0);					//库存
 		pd.put("USERNAME", Jurisdiction.getUsername());	//用户名
+		PageData goods = kucunService.findByGoodsId(pd);
+		pd.put("TITLE",goods.get("GOODS_NAME"));
 		goodsService.save(pd);
+		BigDecimal zcount = new BigDecimal(pd.getString("ZCOUNT"));
+		BigDecimal gcount = new BigDecimal(pd.getString("GCOUNT"));
+		Double newzcount = zcount.subtract(gcount).doubleValue();
+		PageData pd2 = new PageData();
+		pd2.put("KUCUN_ID",pd.getString("KUCUN_ID"));
+		pd2.put("ZCOUNT",newzcount);
+		System.out.println(newzcount+"------------------");
+		kucunService.editKuCun(pd2);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;

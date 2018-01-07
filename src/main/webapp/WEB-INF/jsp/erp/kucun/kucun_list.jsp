@@ -95,9 +95,9 @@
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class='center'>${var.GOODS_NAME}</td>
 											<td class='center'>
-												<c:if test="${var.ZCOUNT < 6}"><font color="red"><b>${var.ZCOUNT}</b></font></c:if>
-												<c:if test="${var.ZCOUNT < 11 && var.ZCOUNT > 5}"><font color="#FF8000"><b>${var.ZCOUNT}</b></font></c:if>
-												<c:if test="${var.ZCOUNT > 10}"><font color="#008000"><b>${var.ZCOUNT}</b></font></c:if>
+												<c:if test="${var.ZCOUNT < 6.00}"><font color="red"><b>${var.ZCOUNT}</b></font></c:if>
+												<c:if test="${var.ZCOUNT < 11.00 && var.ZCOUNT > 5.00}"><font color="#FF8000"><b>${var.ZCOUNT}</b></font></c:if>
+												<c:if test="${var.ZCOUNT > 10.00}"><font color="#008000"><b>${var.ZCOUNT}</b></font></c:if>
 												<c:if test="${var.UNAME != null && var.UNAME != ''}">
 												&nbsp;&nbsp;(${var.UNAME})
 												</c:if>
