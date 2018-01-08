@@ -107,8 +107,12 @@ public class GoodsService implements GoodsManager {
 	 * @throws Exception
 	 */
 	public void editZCOUNT(PageData pd)throws Exception{
-		dao.update("GoodsMapper.editZCOUNT", pd);
+		dao.update("GoodsMapper.editGCOUNT", pd);
 	}
-	
+
+	public PageData findbm() throws Exception {
+		return (PageData) dao.findForObject("GoodsMapper.findBm",null);
+	}
+
 }
 

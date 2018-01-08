@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="static/ace/css/datepicker.css"/>
 </head>
 <body class="no-skin">
-
 <div class="main-container" id="main-container">
     <div class="main-content">
         <div class="main-content-inner">

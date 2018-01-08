@@ -41,6 +41,7 @@ public class IntoKuController extends BaseController {
     private SptypeService sptypeService;
     @Resource(name = "kucunService")
     private KucunService kucunService;
+
     /**
      * 保存
      *
@@ -62,22 +63,19 @@ public class IntoKuController extends BaseController {
         pd.put("USERNAME", Jurisdiction.getUsername());    //用户名
         /*pd.put("GOODS_NAME", goodsService.findById(pd).getString("TITLE"));*/    //商品名称
         PageData pd2 = new PageData();
-        pd2.put("GOODS_NAME",pd.getString("GOODS_NAME"));
-        pd2.put("PRICE",pd.getString("PRICE"));
+        pd2.put("GOODS_NAME", pd.getString("GOODS_NAME"));
+        pd2.put("PRICE", pd.getString("PRICE"));
         intokuService.save(pd);
         List<PageData> pageData = kucunService.findByObject(pd2);
-        if(pageData!=null && pageData.size()>0)
-        {
-            for (int i=0;i<pageData.size();i++) {
+        if (pageData != null && pageData.size() > 0) {
+            for (int i = 0; i < pageData.size(); i++) {
                 PageData vpd = new PageData();
-                vpd.put("KUCUN_ID",pageData.get(i).getString("KUCUN_ID"));
-                vpd.put("ZCOUNT",pageData.get(i).getString("ZCOUNT"));
-                vpd.put("INCOUNT",pd.getString("INCOUNT"));
+                vpd.put("KUCUN_ID", pageData.get(i).getString("KUCUN_ID"));
+                vpd.put("ZCOUNT", pageData.get(i).getString("ZCOUNT"));
+                vpd.put("INCOUNT", pd.getString("INCOUNT"));
                 kucunService.editZCOUNT(vpd);
             }
-        }
-        else if(pageData==null || pageData.size()==0)
-        {
+        } else if (pageData == null || pageData.size() == 0) {
             pd.put("KUCUN_ID", this.get32UUID());
             pd.put("ZCOUNT", pd.getString("INCOUNT"));
             kucunService.save(pd);
@@ -128,7 +126,7 @@ public class IntoKuController extends BaseController {
         pd2.put("PRICE", pd.getString("PRICE"));
         pd2.put("ZPRICE", pd.getString("ZPRICE"));
         pd2.put("BZ", pd.getString("BZ"));
-        pd2.put("SPTYPE_ID",pd.getString("SPTYPE_ID"));
+        pd2.put("SPTYPE_ID", pd.getString("SPTYPE_ID"));
         intokuService.edit(pd2);
         mv.addObject("msg", "success");
         mv.setViewName("save_result");
@@ -168,7 +166,15 @@ public class IntoKuController extends BaseController {
         }
         page.setPd(pd);
         List<PageData> varList = intokuService.list(page);    //列出IntoKu列表
-
+        for (int i = 0; i < varList.size(); i++) {
+            String count = varList.get(i).getString("INCOUNT");
+            String[] str = count.split("\\.");
+            if (str[1].toString().equals("00")) {
+                varList.get(i).put("INCOUNT", str[0]);
+            } else {
+                varList.get(i).put("INCOUNT", count);
+            }
+        }
         mv.setViewName("erp/intoku/intoku_list");
         mv.addObject("varList", varList);
         mv.addObject("pd", pd);
@@ -189,7 +195,7 @@ public class IntoKuController extends BaseController {
         PageData pd = new PageData();
         pd = this.getPageData();
         pd.put("USERNAME", Jurisdiction.getUsername());
-        List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
+        List<PageData> sptypeList = sptypeService.listAll();        //类别列表
         mv.setViewName("erp/intoku/intoku_edit");
         mv.addObject("msg", "save");
         mv.addObject("sptypeList", sptypeList);
@@ -210,7 +216,14 @@ public class IntoKuController extends BaseController {
         PageData pd = new PageData();
         pd = this.getPageData();
         pd = intokuService.findById(pd);    //根据ID读取
-        List<PageData> sptypeList = sptypeService.listAll(); 		//类别列表
+        String count = pd.getString("INCOUNT");
+        String[] str = count.split("\\.");
+        if (str[1].toString().equals("00")) {
+            pd.put("INCOUNT", str[0]);
+        } else {
+            pd.put("INCOUNT", count);
+        }
+        List<PageData> sptypeList = sptypeService.listAll();        //类别列表
         mv.setViewName("erp/intoku/intoku_edit");
         mv.addObject("msg", "edit");
         mv.addObject("sptypeList", sptypeList);
@@ -298,7 +311,13 @@ public class IntoKuController extends BaseController {
         for (int i = 0; i < varOList.size(); i++) {
             PageData vpd = new PageData();
             vpd.put("var1", varOList.get(i).getString("GOODS_NAME"));        //1
-            vpd.put("var2", varOList.get(i).get("INCOUNT").toString());        //2
+            String count = varOList.get(i).getString("INCOUNT");
+            String[] str = count.split("\\.");
+            if (str[1].toString().equals("00")) {
+                vpd.put("var2", str[0]);        //2
+            } else {
+                vpd.put("var2", count);        //2
+            }
             vpd.put("var3", varOList.get(i).get("PRICE").toString() + "元");    //3
             vpd.put("var4", varOList.get(i).get("ZPRICE").toString() + "元");    //4
             vpd.put("var5", varOList.get(i).getString("INTIME"));            //5

@@ -41,11 +41,11 @@
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 10px;">数量:</td>
-								<td style="padding-top: 10px;">${pd.INCOUNT}</td>
+								<td style="padding-top: 10px;">${pd.OUTCOUNT}</td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 10px;">单价:</td>
-								<td style="padding-top: 10px;">${pd.PRICE}&nbsp;元</td>
+								<td style="padding-top: 10px;">${pd.OUTPRICE}&nbsp;元</td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 10px;">总价:</td>
@@ -128,29 +128,29 @@
 		
 		//计算总价
 		function jisuanz(){
-			var INCOUNT = Number("" == $("#INCOUNT").val()?"0":$("#INCOUNT").val());
-			var PRICE = Number("" == $("#PRICE").val()?"0":$("#PRICE").val());
-			if(0-INCOUNT>0){
-				$("#INCOUNT").tips({
+			var OUTCOUNT = Number("" == $("#OUTCOUNT").val()?"0":$("#OUTCOUNT").val());
+			var PRICE = Number("" == $("#OUTPRICE").val()?"0":$("#OUTPRICE").val());
+			if(0-OUTCOUNT>0){
+				$("#OUTCOUNT").tips({
 					side:3,
 		            msg:'数量不能小于零',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#INCOUNT").focus();
+				$("#OUTCOUNT").focus();
 				return false;
 			}
-			if(0-PRICE>0){
-				$("#PRICE").tips({
+			if(0-OUTPRICE>0){
+				$("#OUTPRICE").tips({
 					side:3,
 		            msg:'单价不能小于零',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#PRICE").focus();
+				$("#OUTPRICE").focus();
 				return false;
 			}
-			$("#ZPRICE").val(INCOUNT*PRICE);
+			$("#ZPRICE").val(OUTCOUNT*OUTPRICE);
 		}
 		
 		//保存
@@ -165,24 +165,24 @@
 				$("#GOODS_ID").focus();
 			return false;
 			}
-			if($("#INCOUNT").val()==""){
-				$("#INCOUNT").tips({
+			if($("#OUTCOUNT").val()==""){
+				$("#OUTCOUNT").tips({
 					side:3,
 		            msg:'请输入数量',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#INCOUNT").focus();
+				$("#OUTCOUNT").focus();
 			return false;
 			}
-			if($("#PRICE").val()==""){
-				$("#PRICE").tips({
+			if($("#OUTPRICE").val()==""){
+				$("#OUTPRICE").tips({
 					side:3,
 		            msg:'请输入单价',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#PRICE").focus();
+				$("#OUTPRICE").focus();
 			return false;
 			}
 			if($("#ZPRICE").val()==""){

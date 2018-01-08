@@ -70,9 +70,12 @@
 								<tr>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">商品名称</th>
+									<th class="center">信息码</th>
 									<th class="center">商品编码</th>
 									<th class="center">商品类别</th>
 									<th class="center">品牌</th>
+									<th class="center">上架数量</th>
+									<th class="center">当前价格</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
@@ -85,14 +88,17 @@
 									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
+											<td class='center'>${var.TITLE}</td>
 											<td class='center'>
-												${var.TITLE}
 												<a onclick="erweima('${var.GOODS_ID}');"><img style="cursor:pointer;" width="15" src="static/images/erwei.png"  title="商品二维码"/></a>
+												&nbsp;&nbsp;
 												<a onclick="barcode('${var.GOODS_ID}','${var.BIANMA}');"><img style="cursor:pointer;" width="15" src="static/images/barcode.png"  title="商品条形码"/></a>
 											</td>
 											<td class='center'>${var.BIANMA}</td>
 											<td class='center'>${var.TNAME}</td>
 											<td class='center'>${var.BNAME}</td>
+											<td class='center'>${var.GCOUNT}</td>
+											<td class='center'>${var.GPRICE}</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>

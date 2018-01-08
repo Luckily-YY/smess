@@ -95,9 +95,9 @@
 										<td class='center' style="width: 30px;">
 											<label><input type='checkbox' name='ids' class="ace" value="${var.PICTURES_ID}" /><span class="lbl"></span></label>
 										</td>
-										<td class='center' style="width: 30px;">${var.ORDER_BY}</td>
+										<td class='center' style="width: 30px;">${vs.index+1}</td>
 										<td class="center">
-										<a href="<%=basePath%>uploadFiles/uploadImgs/${var.PATH}" title="${var.TITLE}" class="bwGal"><img src="<%=basePath%>uploadFiles/uploadImgs/${var.PATH}" alt="${var.TITLE}" width="100"></a>
+										<a href="<%=basePath%>uploadFiles/uploadImgs/${var.PATH}" title="${var.TITLE}" class="bwGal"><img src="<%=basePath%>uploadFiles/uploadImgs/${var.PATH}" alt="${var.TITLE}" style="width: 100px;height: 60px;"></a>
 										</td>
 										<td class="center">${var.TITLE}</td>
 										<td class="center">${var.BZ}</td>

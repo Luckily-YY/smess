@@ -76,5 +76,15 @@ public interface GoodsManager{
 	 * @throws Exception
 	 */
 	public void editZCOUNT(PageData pd)throws Exception;
+
+	/**
+	 * 查询上一个编码
+	 * @throws Exception
+	 */
+	public PageData findbm() throws Exception;
+	/**
+	 * 查询上一个编码
+	 * @throws Exception
+	 */
 }
 

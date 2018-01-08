@@ -42,24 +42,29 @@
                                 <table id="table_report" class="table table-striped table-bordered table-hover">
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
-                                        <%--<td colspan="10"><input type="text" name="TITLE" id="TITLE" value="${pd.TITLE}"
-                                                                maxlength="255" placeholder="这里输入商品名称" title="商品名称"
-                                                                style="width:98%;"/></td>--%>
                                         <td colspan="10">
-                                            <select class="chosen-select form-control" name="GOODS_ID" id="GOODS_ID"
-                                                    data-placeholder="请选择商品" style="vertical-align:top;width:98%;" onchange="getGoods(this.value);">
-                                                <option value="">--商品名称--</option>
-                                                <c:forEach items="${goodsList}" var="var">
-                                                    <option value="${var.GOODS_ID }"
-                                                            <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
-                                                </c:forEach>
-                                            </select>
+                                            <c:if test="${pd.TITLE == null || pd.TITLE ==''}">
+                                                <select class="chosen-select form-control" name="GOODS_ID" id="GOODS"
+                                                        data-placeholder="请选择商品" style="vertical-align:top;width:98%;"
+                                                        onchange="getGoods(this.value);">
+                                                    <option value="">--商品名称--</option>
+                                                    <c:forEach items="${goodsList}" var="var">
+                                                        <option value="${var.GOODS_ID }"
+                                                                <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </c:if>
+                                            <c:if test="${pd.TITLE != null && pd.TITLE !=''}">
+                                                <input type="text" name="TITLE" id="TITLE" value="${pd.TITLE}" readonly
+                                                       maxlength="30" title="商品名称"
+                                                       style="vertical-align:top;width:98%;"/>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品编码:</td>
                                         <td><input type="text" name="BIANMA" id="BIANMA" value="${pd.BIANMA}"
-                                                   maxlength="30" placeholder="上一个商品编码为${pd.BIANMA}" title="商品编码"
+                                                   maxlength="30" placeholder="上一个商品编码为${pd.LASTBIANMA}" title="商品编码"
                                                    style="width:98%;"/></td>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品品牌:</td>
                                         <td>
@@ -97,18 +102,17 @@
                                             </select>
                                         </td>
                                     </tr>
-                                    <c:if test="${msg !='edit'}">
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">仓库库存:</td>
                                         <td><input type="text" name="ZCOUNT" id="ZCOUNT" value="${pd.ZCOUNT}"
                                                    maxlength="30" title="商品库存量" readonly
                                                    style="width:98%;"/></td>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品成本:</td>
-                                            <td><input type="text" name="PRICE" id="PRICE" value="${pd.PRICE}"
-                                                   maxlength="30"  title="商品成本价" readonly
-                                                   style="width:89%;"/>&nbsp;元</td>
+                                        <td><input type="text" name="PRICE" id="PRICE" value="${pd.PRICE}"
+                                                   maxlength="30" title="商品成本价" readonly
+                                                   style="width:89%;"/>&nbsp;元
+                                        </td>
                                     </tr>
-                                    </c:if>
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">上架数量:</td>
                                         <td><input type="text" name="GCOUNT" id="GCOUNT" value="${pd.GCOUNT}"
@@ -117,7 +121,8 @@
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品现价:</td>
                                         <td><input type="text" name="GPRICE" id="GPRICE" value="${pd.GPRICE}"
                                                    maxlength="30" title="商品价格"
-                                                   style="width:89%;"/>&nbsp;元</td>
+                                                   style="width:89%;"/>&nbsp;元
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td style="width:75px;height:190px; text-align: right;padding-top: 13px;">
@@ -162,10 +167,19 @@
 </c:if>
 
 <footer>
-    <div style="width: 100%;padding-bottom: 2px;" class="center">
-        <a class="btn btn-mini btn-primary" onclick="save();">保存</a>
-        <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
-    </div>
+    <c:if test="${'save' == msg }">
+        <div style="width: 100%;padding-bottom: 2px;" class="center">
+            <a class="btn btn-mini btn-primary" onclick="save();">保存</a>
+            <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
+        </div>
+    </c:if>
+    <c:if test="${'edit' == msg }">
+        <div style="width: 100%;padding-bottom: 2px;" class="center">
+            <a class="btn btn-mini btn-primary" onclick="edit('${pd.GCOUNT}','${pd.BIANMA}');">保存</a>
+            <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
+        </div>
+    </c:if>
+
 </footer>
 
 <!-- 页面底部js¨ -->
@@ -202,8 +216,8 @@
                     $("#PRICE").val(data.pd.PRICE);
                     $("#KUCUN_ID").val(data.pd.KUCUN_ID);
                 } else {
-                    $("#GOODS_ID").tips({
-                        side: 1,
+                    $("#GOODS").tips({
+                        side: 3,
                         msg: "此商品不存在",
                         bg: '#FF5080',
                         time: 15
@@ -224,6 +238,16 @@
                 time: 2
             });
             $("#TITLE").focus();
+            return false;
+        }
+        if ($("#GOODS").val() == "") {
+            $("#GOODS").tips({
+                side: 3,
+                msg: '请输入商品名称',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS").focus();
             return false;
         }
         if ($("#BIANMA").val() == "") {
@@ -257,11 +281,10 @@
             $("#SHORTDESC").focus();
             return false;
         }
-
         var zcount = $("#ZCOUNT").val();
         var gcount = $("#GCOUNT").val();
-        var a = (zcount-gcount).toFixed(2);
-        if(a<0.00){
+        var a = (zcount - gcount).toFixed(2);
+        if (a < 0.00) {
             $("#GCOUNT").tips({
                 side: 3,
                 msg: '上架数量不能大于库存数量',
@@ -270,12 +293,142 @@
             });
             $("#GCOUNT").focus();
             return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: 'goods/findsameBm.do',
+            data: {BIANMA: $("#BIANMA").val(), GOODS_ID: $("#GOODS_ID").val()},
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                if ("success" == data.result) {
+                    $("#Form").submit();
+                    $("#zhongxin").hide();
+                    $("#zhongxin2").show();
+                }
+                if ("IDerror" == data.result) {
+                    $("#GOODS").tips({
+                        side: 3,
+                        msg: '该商品已经上架，请直接修改',
+                        bg: '#FF5080',
+                        time: 15
+                    });
+                    $("#GOODS").focus();
+                    return false;
+                } else {
+                    $("#BIANMA").tips({
+                        side: 3,
+                        msg: "此商品编号已被使用,请关闭窗口后重试",
+                        bg: '#FF5080',
+                        time: 15
+                    });
+                    $("#BIANMA").focus();
+                    return false;
+                }
             }
-        $("#Form").submit();
-        $("#zhongxin").hide();
-        $("#zhongxin2").show();
+        });
     }
 
+        //修改
+        function edit(old,BIANMA) {
+            if ($("#TITLE").val() == "") {
+                $("#TITLE").tips({
+                    side: 3,
+                    msg: '请输入商品名称',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#TITLE").focus();
+                return false;
+            }
+            if ($("#GOODS").val() == "") {
+                $("#GOODS").tips({
+                    side: 3,
+                    msg: '请输入商品名称',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GOODS").focus();
+                return false;
+            }
+            if ($("#BIANMA").val() == "") {
+                $("#BIANMA").tips({
+                    side: 3,
+                    msg: '请输入商品编码',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#BIANMA").focus();
+                return false;
+            }
+            $("#DESCRIPTION").val(getContent());
+            if ($("#DESCRIPTION").val() == "") {
+                $("#DESCRIPTION").tips({
+                    side: 3,
+                    msg: '请输入商品描述',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#DESCRIPTION").focus();
+                return false;
+            }
+            if ($("#SHORTDESC").val() == "") {
+                $("#SHORTDESC").tips({
+                    side: 3,
+                    msg: '请输入简述',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#SHORTDESC").focus();
+                return false;
+            }
+            var zcount = $("#ZCOUNT").val();
+            var gcount = $("#GCOUNT").val();
+            var count = (gcount - old).toFixed(2);
+            var newcount = (zcount - count).toFixed(2);
+            if (newcount < 0.00) {
+                $("#GCOUNT").tips({
+                    side: 3,
+                    msg: '添加的商品数量不能大于库存数量',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GCOUNT").focus();
+                return false;
+            }
+
+                if (BIANMA != $("#BIANMA").val()) {
+                    $.ajax({
+                        type: "POST",
+                        url: 'goods/changeBm.do',
+                        data: {BIANMA: $("#BIANMA").val()},
+                        dataType: 'json',
+                        cache: false,
+                        success: function (data) {
+                            if ("success" == data.result) {
+                                $("#Form").submit();
+                                $("#zhongxin").hide();
+                                $("#zhongxin2").show();
+                            } else {
+                                $("#BIANMA").tips({
+                                    side: 3,
+                                    msg: "此商品编号已被使用,请关闭窗口后重试",
+                                    bg: '#FF5080',
+                                    time: 15
+                                });
+                                $("#BIANMA").focus();
+                                return false;
+                            }
+                        }
+                    });
+                }
+                else {
+                    $("#Form").submit();
+                    $("#zhongxin").hide();
+                    $("#zhongxin2").show();
+                }
+    }
     $(function () {
         //日期框
         $('.date-picker').datepicker({autoclose: true, todayHighlight: true});

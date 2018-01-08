@@ -123,6 +123,15 @@ public class OutKuController extends BaseController {
 		}
 		page.setPd(pd);
 		List<PageData>	varList = outkuService.list(page);	//列出OutKu列表
+		for (int i = 0; i < varList.size(); i++) {
+			String count = varList.get(i).getString("GCOUNT");
+			String[] str = count.split("\\.");
+			if (str[1].toString().equals("00")) {
+				varList.get(i).put("GCOUNT", str[0]);
+			} else {
+				varList.get(i).put("GCOUNT", count);
+			}
+		}
 		mv.setViewName("erp/outku/outku_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
@@ -156,6 +165,15 @@ public class OutKuController extends BaseController {
 		} 
 		page.setPd(pd);
 		List<PageData>	varList = outkuService.salesReport(page);
+		for (int i = 0; i < varList.size(); i++) {
+			String count = varList.get(i).getString("ZCOUNT");
+			String[] str = count.split("\\.");
+			if (str[1].toString().equals("00")) {
+				varList.get(i).put("ZCOUNT", str[0]);
+			} else {
+				varList.get(i).put("ZCOUNT", count);
+			}
+		}
 		mv.setViewName("erp/outku/salesReport");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);

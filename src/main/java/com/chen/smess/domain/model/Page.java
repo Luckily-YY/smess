@@ -5,11 +5,7 @@ import com.chen.smess.domain.common.utils.Const;
 import com.chen.smess.domain.common.utils.PageData;
 import com.chen.smess.domain.common.utils.Tools;
 
-/**
- * 分页类
- * @author FH QQ 313596790[青苔]
- * 创建时间：2014年6月28日
- */
+
 public class Page {
 	
 	private int showCount; 		//每页显示记录数

@@ -52,11 +52,11 @@
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">数量:</td>
-								<td><input onblur="jisuanz();" type="number" name="INCOUNT" id="INCOUNT" value="${pd.INCOUNT}" maxlength="32" placeholder="这里输入销售数量" title="数量" style="width:99%;"/></td>
+								<td><input onblur="jisuanz();" type="number" name="OUTCOUNT" id="OUTCOUNT" value="${pd.OUTCOUNT}" maxlength="32" placeholder="这里输入销售数量" title="数量" style="width:99%;"/></td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">单价:</td>
-								<td><input onblur="jisuanz();" type="number" name="PRICE" id="PRICE" value="${pd.PRICE}" maxlength="32" placeholder="这里输入单价（销售价）" title="单价" style="width:89%;"/>&nbsp;元</td>
+								<td><input onblur="jisuanz();" type="number" name="OUTPRICE" id="OUTPRICE" value="${pd.OUTPRICE}" maxlength="32" placeholder="这里输入单价（销售价）" title="单价" style="width:89%;"/>&nbsp;元</td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">总价:</td>
@@ -145,29 +145,29 @@
 		
 		//计算总价
 		function jisuanz(){
-			var INCOUNT = Number("" == $("#INCOUNT").val()?"0":$("#INCOUNT").val());
-			var PRICE = Number("" == $("#PRICE").val()?"0":$("#PRICE").val());
-			if(0-INCOUNT>0){
-				$("#INCOUNT").tips({
+			var OUTCOUNT = Number("" == $("#OUTCOUNT").val()?"0":$("#OUTCOUNT").val());
+			var OUTPRICE = Number("" == $("#OUTPRICE").val()?"0":$("#OUTPRICE").val());
+			if(0-OUTCOUNT>0){
+				$("#OUTCOUNT").tips({
 					side:3,
 		            msg:'数量不能小于零',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#INCOUNT").focus();
+				$("#OUTCOUNT").focus();
 				return false;
 			}
-			if(0-PRICE>0){
-				$("#PRICE").tips({
+			if(0-OUTPRICE>0){
+				$("#OUTPRICE").tips({
 					side:3,
 		            msg:'单价不能小于零',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#PRICE").focus();
+				$("#OUTPRICE").focus();
 				return false;
 			}
-			$("#ZPRICE").val(INCOUNT*PRICE);
+			$("#ZPRICE").val(OUTCOUNT*OUTPRICE);
 		}
 		
 		//保存
@@ -182,24 +182,24 @@
 				$("#GOODS_ID").focus();
 			return false;
 			}
-			if($("#INCOUNT").val()==""){
-				$("#INCOUNT").tips({
+			if($("#OUTCOUNT").val()==""){
+				$("#OUTCOUNT").tips({
 					side:3,
 		            msg:'请输入数量',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#INCOUNT").focus();
+				$("#OUTCOUNT").focus();
 			return false;
 			}
-			if($("#PRICE").val()==""){
-				$("#PRICE").tips({
+			if($("#OUTPRICE").val()==""){
+				$("#OUTPRICE").tips({
 					side:3,
 		            msg:'请输入单价',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#PRICE").focus();
+				$("#OUTPRICE").focus();
 			return false;
 			}
 			if($("#ZPRICE").val()==""){

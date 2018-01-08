@@ -10,8 +10,8 @@
 	<!-- 字段 -->
 	<sql id="Field">
 		GOODS_ID,	
-		INCOUNT,	
-		PRICE,	
+		OUTCOUNT,	
+		OUTPRICE,
 		ZPRICE,	
 		OUTTIME,	
 		GOODS_NAME,	
@@ -26,8 +26,8 @@
 	<!-- 字段值 -->
 	<sql id="FieldValue">
 		#{GOODS_ID},	
-		#{INCOUNT},	
-		#{PRICE},	
+		#{OUTCOUNT},	
+		#{OUTPRICE},
 		#{ZPRICE},	
 		#{OUTTIME},	
 		#{GOODS_NAME},	
@@ -149,7 +149,7 @@
 	<select id="SalesReportlistPage" parameterType="page" resultType="pd">
 		select
 			 GOODS_NAME,
-			 sum(INCOUNT) ZCOUNT,
+			 sum(OUTCOUNT) ZCOUNT,
 			 sum(ZPRICE) ZPRICE 
 		from 
 		<include refid="tableName"></include>
