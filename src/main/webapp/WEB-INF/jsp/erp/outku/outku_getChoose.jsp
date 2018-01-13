@@ -27,6 +27,18 @@
 						<table id="simple-table" class="table table-striped table-bordered table-hover" style="margin-top:5px;">
 							<thead>
 							<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
+								<td id="xzsp" colspan="4">
+									<select onchange="setGoogsName(this.value);" class="chosen-select form-control" name="SGOODS_ID" id="SGOODS_ID" data-placeholder="请选择商品添加出库记录！" style="vertical-align:top;width:100px;" >
+										<option value=""></option>
+										<c:forEach items="${kucunList}" var="var">
+											<option value="${var.GOODS_ID }" <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
+										</c:forEach>
+									</select>
+								</td>
+							</tr>
+
+							<tr>
 								<th class="center" style="width:35px;" id="fhadminth"></th>
 								<th class="center" style="width:50px;">序号</th>
 								<th class="center">商品名称</th>
@@ -49,11 +61,11 @@
 													<label class="pos-rel"><input type='radio' name="fhadmin" value="${var.CUSTOMER_ID }" onclick="setCustomer(this.value,'${var.NAME }')" class="ace" /><span class="lbl"></span></label>
 												</td>
 												<td class='center' style="width: 30px;">${vs.index+1}</td>
-												<td class='center'>${var.NAME}</td>
-												<td class='center'>${var.PHONE}</td>
-												<td class='center'>${var.CTIME}</td>
-												<td class='center'>${var.MONEY}&nbsp;元</td>
-												<td class='center'>${var.TITLE}</td>
+												<td class='center'>${var.GOODS_NAME}</td>
+												<td class='center'>${var.PRICE}</td>
+												<td class='center'>${var.OUTPRICE}</td>
+												<td class='center'>${var.OUTCOUNT}</td>
+												<td class='center'>${var.ZPRICE}</td>
 												<td class="center">
 													<c:if test="${QX.edit != 1 && QX.del != 1 }">
 														<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
@@ -154,15 +166,41 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 		<script type="text/javascript">
 		$(top.hangge());
-		
-		//设置商品ID和名称
+
+        //设置商品ID和名称
+        function setGoogsName(id){
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="填写出库商品详情";
+            diag.URL = '<%=basePath%>/outku/goChooseAdd.do?GOODS_ID='+id;
+            diag.Width = 645;
+            diag.Height = 400;
+            diag.Modal = false;			//有无遮罩窗口
+            diag. ShowMaxButton = true;	//最大化按钮
+            diag.ShowMinButton = true;		//最小化按钮
+            diag.CancelEvent = function(){ //关闭事件
+                if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+                    if('${page.currentPage}' == '0'){
+                        top.jzts();
+                        setTimeout("self.location=self.location",100);
+                    }else{
+                        nextPage(${page.currentPage});
+                    }
+                }
+                diag.close();
+            };
+            diag.show();
+        }
+
+		/*//设置商品ID和名称
 		function setGoogsName(){
 			var selectVale = $("#SGOODS_ID").val();
 			var selectText = $("#SGOODS_ID").find("option:selected").text();
 			$("#GOODS_ID").val(selectVale);
 			$("#GOODS_NAME").val(selectText);
 		}
-		
+		*/
 		//计算总价
 		function jisuanz(){
 			var OUTCOUNT = Number("" == $("#OUTCOUNT").val()?"0":$("#OUTCOUNT").val());

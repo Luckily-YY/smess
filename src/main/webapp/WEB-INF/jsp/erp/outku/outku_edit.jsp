@@ -31,20 +31,7 @@
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
-								<td id="xzsp">
-									<select onchange="setGoogsName(this.value);" class="chosen-select form-control" name="SGOODS_ID" id="SGOODS_ID" data-placeholder="请选择商品添加出库记录！" style="vertical-align:top;width:100px;" >
-										<option value=""></option>
-										<c:forEach items="${kucunList}" var="var">
-											<option value="${var.GOODS_ID }" <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
-										</c:forEach>
-									</select>
-								</td>
-							</tr>
-							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;" colspan="2">
-
-
 									<div>
 										<iframe name="treeFrame" id="treeFrame" frameborder="0"
 												src="<%=basePath%>/outku/getChoose.do"
@@ -96,33 +83,6 @@
 	<script type="text/javascript" src="static/js/jquery.tips.js"></script>
 		<script type="text/javascript">
 		$(top.hangge());
-		
-
-		//设置商品ID和名称
-		function setGoogsName(id){
-            top.jzts();
-            var diag = new top.Dialog();
-            diag.Drag=true;
-            diag.Title ="填写出库商品详情";
-            diag.URL = '<%=basePath%>/outku/goChooseAdd.do?GOODS_ID='+id;
-            diag.Width = 645;
-            diag.Height = 400;
-            diag.Modal = false;			//有无遮罩窗口
-            diag. ShowMaxButton = true;	//最大化按钮
-            diag.ShowMinButton = true;		//最小化按钮
-            diag.CancelEvent = function(){ //关闭事件
-                if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-                    if('${page.currentPage}' == '0'){
-                        top.jzts();
-                        setTimeout("self.location=self.location",100);
-                    }else{
-                        nextPage(${page.currentPage});
-                    }
-                }
-                diag.close();
-            };
-            diag.show();
-		}
 		
 		//保存
 		function save(){

@@ -107,7 +107,7 @@
 			and CUSTOMER_ID = #{pd.CUSTOMER_ID}
 		</if>
 		and
-			USERNAME = #{pd.USERNAME}
+			CUSTOMER_ID is NOT null
 		order by OUTTIME desc
 	</select>
 
@@ -194,8 +194,7 @@
 		where 1=1
 		and
 		USERNAME = #{pd.USERNAME}
-		and CUSTOMER_ID = NULL
-		order by OUTTIME desc
+		and CUSTOMER_ID is NULL
 	</select>
 
 </mapper>

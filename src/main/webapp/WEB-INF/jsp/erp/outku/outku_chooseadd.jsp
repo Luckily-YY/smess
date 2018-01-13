@@ -36,13 +36,14 @@
                         <form action="outku/${msg }.do" name="Form" id="Form" method="post">
                             <input type="hidden" name="OUTKU_ID" id="OUTKU_ID" value="${pd.OUTKU_ID}"/>
                             <input type="hidden" name="KUCUN_ID" id="KUCUN_ID" value="${pd.KUCUN_ID}"/>
+                            <input type="hidden" name="GOODS_ID" id="GOODS_ID" value="${pd.GOODS_ID}"/>
 
                             <div id="zhongxin" style="padding-top: 13px;">
                                 <table id="table_report" class="table table-striped table-bordered table-hover">
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
                                         <td>
-                                                <input type="text" name="TITLE" id="TITLE" value="${pd.GOODS_NAME}" readonly
+                                                <input type="text" name="GOODS_NAME" id="GOODS_NAME" value="${pd.GOODS_NAME}" readonly
                                                        maxlength="30" title="商品名称"
                                                        style="vertical-align:top;width:98%;"/>
                                         </td>
@@ -89,6 +90,7 @@
                             <div id="zhongxin2" class="center" style="display:none"><br/><br/><br/><br/><br/><img
                                     src="static/images/jiazai.gif"/><br/><h4 class="lighter block green">提交中...</h4>
                             </div>
+
                         </form>
                     </div>
                     <!-- /.col -->
@@ -141,24 +143,10 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());
-
-
-
-
     //保存
     function save() {
-        if ($("#TITLE").val() == "") {
-            $("#TITLE").tips({
-                side: 3,
-                msg: '请输入商品名称',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#TITLE").focus();
-            return false;
-        }
-        if ($("#GOODS").val() == "") {
-            $("#GOODS").tips({
+        if ($("#GOODS_ID").val() == "") {
+            $("#GOODS_ID").tips({
                 side: 3,
                 msg: '请输入商品名称',
                 bg: '#AE81FF',
@@ -167,49 +155,18 @@
             $("#GOODS").focus();
             return false;
         }
-        if ($("#BIANMA").val() == "") {
-            $("#BIANMA").tips({
-                side: 3,
-                msg: '请输入商品编码',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#BIANMA").focus();
-            return false;
-        }
-        $("#DESCRIPTION").val(getContent());
-        if ($("#DESCRIPTION").val() == "") {
-            $("#DESCRIPTION").tips({
-                side: 3,
-                msg: '请输入商品描述',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#DESCRIPTION").focus();
-            return false;
-        }
-        if ($("#SHORTDESC").val() == "") {
-            $("#SHORTDESC").tips({
-                side: 3,
-                msg: '请输入简述',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#SHORTDESC").focus();
-            return false;
-        }
 
         $.ajax({
             type: "POST",
             url: 'goods/getById.do',
-            data: {GOODS_ID: $("#GOODS").val()},
+            data: {GOODS_ID: $("#GOODS_ID").val()},
             dataType: 'json',
             cache: false,
             success: function (data) {
                 if ("success" == data.result) {
                     $("#ZCOUNT").val(data.pd.ZCOUNT);
                 } else {
-                    $("#GOODS").tips({
+                    $("#GOODS_NAME").tips({
                         side: 3,
                         msg: "此商品不存在",
                         bg: '#FF5080',
@@ -220,52 +177,25 @@
         });
 
         var zcount = $("#ZCOUNT").val();
-        var gcount = $("#GCOUNT").val();
-        var a = (zcount - gcount).toFixed(2);
+        var outcount = $("#OUTCOUNT").val();
+        var a = (zcount - outcount).toFixed(2);
         if (a < 0.00) {
-            $("#GCOUNT").tips({
+            $("#OUTCOUNT").tips({
                 side: 3,
                 msg: '上架数量不能大于库存数量',
                 bg: '#AE81FF',
                 time: 2
             });
-            $("#GCOUNT").focus();
+            $("#OUTCOUNT").focus();
             return false;
         }
+        else {
+            $("#Form").submit();
+            $("#zhongxin").hide();
+            $("#zhongxin2").show();
+            diag.close();
+        }
 
-        $.ajax({
-            type: "POST",
-            url: 'goods/findsameBm.do',
-            data: {BIANMA: $("#BIANMA").val(), GOODS_ID: $("#GOODS_ID").val()},
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                if ("success" == data.result) {
-                    $("#Form").submit();
-                    $("#zhongxin").hide();
-                    $("#zhongxin2").show();
-                }
-                if ("IDerror" == data.result) {
-                    $("#GOODS").tips({
-                        side: 3,
-                        msg: '该商品已经上架，请直接修改',
-                        bg: '#FF5080',
-                        time: 15
-                    });
-                    $("#GOODS").focus();
-                    return false;
-                } else {
-                    $("#BIANMA").tips({
-                        side: 3,
-                        msg: "此商品编号已被使用,请关闭窗口后重试",
-                        bg: '#FF5080',
-                        time: 15
-                    });
-                    $("#BIANMA").focus();
-                    return false;
-                }
-            }
-        });
     }
 
         //修改
@@ -387,6 +317,9 @@
                     $("#zhongxin2").show();
                 }
     }
+
+
+
     $(top.hangge());
 
     //计算总价

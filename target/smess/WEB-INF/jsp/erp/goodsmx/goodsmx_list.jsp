@@ -185,15 +185,15 @@
 			 diag.Width = 800;
 			 diag.Height = 490;
 			 diag.CancelEvent = function(){ //关闭事件
-				 if('${page.currentPage}' == '0'){
-					 top.jzts();
-					 setTimeout("self.location=self.location",100);
-				 }else{
-					 nextPage(${page.currentPage});
-				 }
-				diag.close();
-			 };
-			 diag.show();
+                if('${page.currentPage}' == '0'){
+                    top.jzts();
+                    setTimeout("self.location=self.location",100);
+                }else{
+                    nextPage(${page.currentPage});
+                }
+                diag.close();
+            };
+            diag.show();
 		}
 		
 		//删除

@@ -62,7 +62,28 @@ public class OutKuController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
-	
+	/**保存
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/chooseSave")
+	public ModelAndView chooseSave() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"新增OutKu");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		PageData goodpd = new PageData();
+		goodpd = kucunService.findByGoodsId(pd);
+		pd.put("OUTKU_ID", this.get32UUID());				//主键
+		pd.put("USERNAME", Jurisdiction.getUsername());		//用户名
+		outkuService.save(pd);
+		/*mv.setViewName("erp/outku/outku_getChoose");*/
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+
 	/**删除
 	 * @param out
 	 * @throws Exception
@@ -155,7 +176,17 @@ public class OutKuController extends BaseController {
 		pd = this.getPageData();
 		pd.put("USERNAME", "admin".equals(Jurisdiction.getUsername()) ? "" : Jurisdiction.getUsername());
 		page.setPd(pd);
-		List<PageData>	varList = outkuService.getChoose(page);	//列出OutKu列表
+
+		List<PageData>	pageList = outkuService.getChoose(page);	//列出OutKu列表
+		List<PageData>	varList = new ArrayList<PageData>();
+
+		for(PageData pageData : pageList){
+			PageData ps2 = kucunService.findByGoodsId(pageData);
+			pageData.put("PRICE",ps2.getString("PRICE"));
+			varList.add(pageData);
+		}
+
+
 		for (int i = 0; i < varList.size(); i++) {
 			String count = varList.get(i).getString("OUTCOUNT");
 			String[] str = count.split("\\.");
@@ -165,7 +196,9 @@ public class OutKuController extends BaseController {
 				varList.get(i).put("OUTCOUNT", count);
 			}
 		}
+		List<PageData> kucunList = kucunService.listAll(pd);
 		mv.setViewName("erp/outku/outku_getChoose");
+		mv.addObject("kucunList", kucunList);
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -233,11 +266,9 @@ public class OutKuController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		List<PageData> kucunList = kucunService.listAll(pd);
 		mv.setViewName("erp/outku/outku_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
-		mv.addObject("kucunList", kucunList);
 		return mv;
 	}
 
@@ -274,9 +305,10 @@ public class OutKuController extends BaseController {
 			}
 		}
 		pd.put("ZPRICE","");
-		mv.setViewName("erp/outku/outku_chooseadd");
 		mv.addObject("msg", "chooseSave");
+		mv.setViewName("erp/outku/outku_chooseadd");
 		mv.addObject("pd", pd);
+
 		return mv;
 	}
 
