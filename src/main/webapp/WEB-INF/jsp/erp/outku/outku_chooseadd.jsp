@@ -33,73 +33,18 @@
                 <div class="row">
                     <div class="col-xs-12">
 
-                        <form action="goods/${msg }.do" name="Form" id="Form" method="post">
-                            <input type="hidden" name="GOODS_ID" id="GOODS_ID" value="${pd.GOODS_ID}"/>
+                        <form action="outku/${msg }.do" name="Form" id="Form" method="post">
+                            <input type="hidden" name="OUTKU_ID" id="OUTKU_ID" value="${pd.OUTKU_ID}"/>
                             <input type="hidden" name="KUCUN_ID" id="KUCUN_ID" value="${pd.KUCUN_ID}"/>
-                            <textarea name="DESCRIPTION" id="DESCRIPTION"
-                                      style="display:none">${pd.DESCRIPTION}</textarea>
+
                             <div id="zhongxin" style="padding-top: 13px;">
                                 <table id="table_report" class="table table-striped table-bordered table-hover">
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
-                                        <td colspan="10">
-                                            <c:if test="${pd.TITLE == null || pd.TITLE ==''}">
-                                                <select class="chosen-select form-control" name="GOODS_ID" id="GOODS"
-                                                        data-placeholder="请选择商品" style="vertical-align:top;width:98%;"
-                                                        onchange="getGoods(this.value);">
-                                                    <option value="">--商品名称--</option>
-                                                    <c:forEach items="${goodsList}" var="var">
-                                                        <option value="${var.GOODS_ID }"
-                                                                <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </c:if>
-                                            <c:if test="${pd.TITLE != null && pd.TITLE !=''}">
-                                                <input type="text" name="TITLE" id="TITLE" value="${pd.TITLE}" readonly
+                                        <td>
+                                                <input type="text" name="TITLE" id="TITLE" value="${pd.GOODS_NAME}" readonly
                                                        maxlength="30" title="商品名称"
                                                        style="vertical-align:top;width:98%;"/>
-                                            </c:if>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品编码:</td>
-                                        <td><input type="text" name="BIANMA" id="BIANMA" value="${pd.BIANMA}"
-                                                   maxlength="30" placeholder="上一个商品编码为${pd.LASTBIANMA}" title="商品编码"
-                                                   style="width:98%;"/></td>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品品牌:</td>
-                                        <td>
-                                            <select class="chosen-select form-control" name="SPBRAND_ID" id="SPBRAND_ID"
-                                                    data-placeholder="请选择品牌" style="vertical-align:top;width:210px;">
-                                                <option value="">无品牌</option>
-                                                <c:forEach items="${spbrandList}" var="var">
-                                                    <option value="${var.SPBRAND_ID }"
-                                                            <c:if test="${var.SPBRAND_ID == pd.SPBRAND_ID }">selected</c:if>>${var.NAME }</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品类别:</td>
-                                        <td>
-                                            <select class="chosen-select form-control" name="SPTYPE_ID" id="SPTYPE_ID"
-                                                    data-placeholder="请选择商品类别" style="vertical-align:top;width:210px;">
-                                                <option value="">无分类</option>
-                                                <c:forEach items="${sptypeList}" var="var">
-                                                    <option value="${var.SPTYPE_ID }"
-                                                            <c:if test="${var.SPTYPE_ID == pd.SPTYPE_ID }">selected</c:if>>${var.NAME }</option>
-                                                </c:forEach>
-                                            </select>
-                                        </td>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">计量单位:</td>
-                                        <td>
-                                            <select class="chosen-select form-control" name="SPUNIT_ID" id="SPUNIT_ID"
-                                                    data-placeholder="请选择计量单位" style="vertical-align:top;width:210px;">
-                                                <option value="">无</option>
-                                                <c:forEach items="${spunitList}" var="var">
-                                                    <option value="${var.SPUNIT_ID }"
-                                                            <c:if test="${var.SPUNIT_ID == pd.SPUNIT_ID }">selected</c:if>>${var.NAME }</option>
-                                                </c:forEach>
-                                            </select>
                                         </td>
                                     </tr>
                                     <tr>
@@ -107,39 +52,38 @@
                                         <td><input type="text" name="ZCOUNT" id="ZCOUNT" value="${pd.ZCOUNT}"
                                                    maxlength="30" title="商品库存量" readonly
                                                    style="width:98%;"/></td>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品成本:</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">原价:</td>
                                         <td><input type="text" name="PRICE" id="PRICE" value="${pd.PRICE}"
-                                                   maxlength="30" title="商品成本价" readonly
-                                                   style="width:89%;"/>&nbsp;元
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">上架数量:</td>
-                                        <td><input type="text" name="GCOUNT" id="GCOUNT" value="${pd.GCOUNT}"
-                                                   maxlength="30" title="商品上架数量"
+                                                   maxlength="30" title="商品原价" readonly
                                                    style="width:98%;"/></td>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品现价:</td>
-                                        <td><input type="text" name="GPRICE" id="GPRICE" value="${pd.GPRICE}"
-                                                   maxlength="30" title="商品价格"
-                                                   style="width:89%;"/>&nbsp;元
+                                    </tr>
+                                    <tr>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">现价:</td>
+                                        <td>
+                                            <input onblur="jisuanz();" type="text" name="OUTPRICE" id="OUTPRICE" value="${pd.OUTPRICE}"
+                                                   maxlength="30" title="出售价格"
+                                                   style="vertical-align:top;width:98%;"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width:75px;height:190px; text-align: right;padding-top: 13px;">
-                                            商品描述:
-                                        </td>
-                                        <td colspan="10">
-                                            <script id="editor" type="text/plain"
-                                                    class="plainstyle">${pd.DESCRIPTION}</script>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">数量:</td>
+                                        <td>
+                                            <input onblur="jisuanz();" type="text" name="OUTCOUNT" id="OUTCOUNT" value="${pd.OUTCOUNT}"
+                                                   maxlength="30" title="销售数量"
+                                                   style="vertical-align:top;width:98%;"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width:75px;text-align: right;padding-top: 13px;">商品简述:</td>
-                                        <td colspan="10">
-                                            <textarea rows="" cols="" name="SHORTDESC" id="SHORTDESC"
-                                                      style="width:98%;">${pd.SHORTDESC}</textarea>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">总价:</td>
+                                        <td>
+                                            <input type="text" name="ZPRICE" id="ZPRICE" value="${pd.ZPRICE}"
+                                                   maxlength="30" title="销售总额" readonly
+                                                   style="width:98%;"/>
                                         </td>
                                     </tr>
+
                                 </table>
                             </div>
                             <div id="zhongxin2" class="center" style="display:none"><br/><br/><br/><br/><br/><img
@@ -167,15 +111,15 @@
 </c:if>
 
 <footer>
-    <c:if test="${'save' == msg }">
+    <c:if test="${'chooseSave' == msg }">
         <div style="width: 100%;padding-bottom: 2px;" class="center">
             <a class="btn btn-mini btn-primary" onclick="save();">保存</a>
             <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
         </div>
     </c:if>
-    <c:if test="${'edit' == msg }">
+    <c:if test="${'chooseEdit' == msg }">
         <div style="width: 100%;padding-bottom: 2px;" class="center">
-            <a class="btn btn-mini btn-primary" onclick="edit('${pd.GCOUNT}','${pd.BIANMA}');">保存</a>
+            <a class="btn btn-mini btn-primary" onclick="edit('${pd.GCOUNT}');">保存</a>
             <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
         </div>
     </c:if>
@@ -198,34 +142,7 @@
 <script type="text/javascript">
     $(top.hangge());
 
-    //通过商品id读取数据
-    function getGoods(id) {
-        $.ajax({
-            type: "POST",
-            url: 'goods/getById.do',
-            data: {GOODS_ID: id},
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                if ("success" == data.result) {
-                    $("#GOODS_ID").val(data.pd.GOODS_ID);
-                    $("#SPBRAND_ID").val(data.pd.SPBRAND_ID);
-                    $("#SPTYPE_ID").val(data.pd.SPTYPE_ID);
-                    $("#SPUNIT_ID").val(data.pd.SPUNIT_ID);
-                    $("#ZCOUNT").val(data.pd.ZCOUNT);
-                    $("#PRICE").val(data.pd.PRICE);
-                    $("#KUCUN_ID").val(data.pd.KUCUN_ID);
-                } else {
-                    $("#GOODS").tips({
-                        side: 3,
-                        msg: "此商品不存在",
-                        bg: '#FF5080',
-                        time: 15
-                    });
-                }
-            }
-        });
-    }
+
 
 
     //保存
@@ -470,15 +387,33 @@
                     $("#zhongxin2").show();
                 }
     }
-    $(function () {
-        //日期框
-        $('.date-picker').datepicker({autoclose: true, todayHighlight: true});
-    });
+    $(top.hangge());
 
-    //百度富文本
-    setTimeout("ueditor()", 500);
-    function ueditor() {
-        UE.getEditor('editor');
+    //计算总价
+    function jisuanz() {
+        var OUTCOUNT = Number("" == $("#OUTCOUNT").val() ? "0" : $("#OUTCOUNT").val());
+        var OUTPRICE = Number("" == $("#OUTPRICE").val() ? "0" : $("#OUTPRICE").val());
+        if (0 - OUTCOUNT > 0) {
+            $("#OUTCOUNT").tips({
+                side: 3,
+                msg: '数量不能小于零',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTCOUNT").focus();
+            return false;
+        }
+        if (0 - OUTPRICE > 0) {
+            $("#OUTPRICE").tips({
+                side: 3,
+                msg: '单价不能小于零',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTPRICE").focus();
+            return false;
+        }
+        $("#ZPRICE").val(OUTCOUNT * OUTPRICE);
     }
 
     //ueditor有标签文本

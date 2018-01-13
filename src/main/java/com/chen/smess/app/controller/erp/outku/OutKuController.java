@@ -4,6 +4,7 @@ import com.chen.smess.app.controller.base.BaseController;
 import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
+import com.chen.smess.domain.service.erp.kucun.KucunManager;
 import com.chen.smess.domain.service.erp.outku.OutKuManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,8 @@ public class OutKuController extends BaseController {
 	private OutKuManager outkuService;
 	@Resource(name="goodsService")
 	private GoodsManager goodsService;
+	@Resource(name="kucunService")
+	private KucunManager kucunService;
 	
 	/**保存
 	 * @param
@@ -124,12 +127,12 @@ public class OutKuController extends BaseController {
 		page.setPd(pd);
 		List<PageData>	varList = outkuService.list(page);	//列出OutKu列表
 		for (int i = 0; i < varList.size(); i++) {
-			String count = varList.get(i).getString("GCOUNT");
+			String count = varList.get(i).getString("OUTCOUNT");
 			String[] str = count.split("\\.");
 			if (str[1].toString().equals("00")) {
-				varList.get(i).put("GCOUNT", str[0]);
+				varList.get(i).put("OUTCOUNT", str[0]);
 			} else {
-				varList.get(i).put("GCOUNT", count);
+				varList.get(i).put("OUTCOUNT", count);
 			}
 		}
 		mv.setViewName("erp/outku/outku_list");
@@ -139,7 +142,36 @@ public class OutKuController extends BaseController {
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
-	
+	/**未选择客户的出货列表
+	 * @param page
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/getChoose")
+	public ModelAndView getChoose(Page page) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"列表OutKu");
+		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd.put("USERNAME", "admin".equals(Jurisdiction.getUsername()) ? "" : Jurisdiction.getUsername());
+		page.setPd(pd);
+		List<PageData>	varList = outkuService.getChoose(page);	//列出OutKu列表
+		for (int i = 0; i < varList.size(); i++) {
+			String count = varList.get(i).getString("OUTCOUNT");
+			String[] str = count.split("\\.");
+			if (str[1].toString().equals("00")) {
+				varList.get(i).put("OUTCOUNT", str[0]);
+			} else {
+				varList.get(i).put("OUTCOUNT", count);
+			}
+		}
+		mv.setViewName("erp/outku/outku_getChoose");
+		mv.addObject("varList", varList);
+		mv.addObject("pd", pd);
+		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
+		return mv;
+	}
+
 	/**商品销售报表
 	 * @param page
 	 * @throws Exception
@@ -169,9 +201,20 @@ public class OutKuController extends BaseController {
 			String count = varList.get(i).getString("ZCOUNT");
 			String[] str = count.split("\\.");
 			if (str[1].toString().equals("00")) {
-				varList.get(i).put("ZCOUNT", str[0]);
+				if(!str[0].isEmpty()) {
+					varList.get(i).put("ZCOUNT", str[0]);
+				}
+				else {
+					varList.get(i).put("ZCOUNT", "0");
+				}
 			} else {
-				varList.get(i).put("ZCOUNT", count);
+				if(!str[0].isEmpty()){
+					varList.get(i).put("ZCOUNT", count);
+				}
+				else
+				{
+					varList.get(i).put("ZCOUNT", "0"+count);
+				}
 			}
 		}
 		mv.setViewName("erp/outku/salesReport");
@@ -190,16 +233,55 @@ public class OutKuController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("USERNAME", Jurisdiction.getUsername());
-		List<PageData> goodsList = goodsService.listAll(pd);
+		List<PageData> kucunList = kucunService.listAll(pd);
 		mv.setViewName("erp/outku/outku_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
-		mv.addObject("goodsList", goodsList);
+		mv.addObject("kucunList", kucunList);
 		return mv;
-	}	
-	
-	 /**去打印出库(订)单页面
+	}
+
+
+	/**
+	 * 通过产品id
+	 *
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/goChooseAdd")
+	public ModelAndView goChooseAdd() throws Exception {
+		ModelAndView mv = this.getModelAndView();
+		logBefore(logger, Jurisdiction.getUsername() + "通过产品id获取信息");
+		Map<String, Object> map = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd = kucunService.findByGoodsId(pd);
+		String count = pd.getString("ZCOUNT");
+		String[] str = count.split("\\.");
+		if (str[1].toString().equals("00")) {
+			if (!str[0].isEmpty()) {
+				pd.put("ZCOUNT", str[0]);
+			}
+			else {
+				pd.put("ZCOUNT","0");
+			}
+
+		} else {
+			if(!str[0].isEmpty()){
+				pd.put("ZCOUNT", count);
+			}
+			else {
+				pd.put("ZCOUNT", "0"+count);
+			}
+		}
+		pd.put("ZPRICE","");
+		mv.setViewName("erp/outku/outku_chooseadd");
+		mv.addObject("msg", "chooseSave");
+		mv.addObject("pd", pd);
+		return mv;
+	}
+
+
+	/**去打印出库(订)单页面
 	 * @param
 	 * @throws Exception
 	 */

@@ -65,5 +65,12 @@ public interface OutKuManager{
 	 * @throws Exception
 	 */
 	public PageData priceSum(PageData pd) throws Exception;
+
+	/**
+	 * 获取未添加客户的出货列表
+	 * @param page
+	 * @return
+	 */
+    List<PageData> getChoose(Page page) throws Exception;
 }
 

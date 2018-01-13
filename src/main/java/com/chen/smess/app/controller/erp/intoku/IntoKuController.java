@@ -170,9 +170,20 @@ public class IntoKuController extends BaseController {
             String count = varList.get(i).getString("INCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                varList.get(i).put("INCOUNT", str[0]);
+                if(!str[0].isEmpty()){
+                    varList.get(i).put("INCOUNT", str[0]);
+                }
+                else {
+                    varList.get(i).put("INCOUNT", "0");
+                }
             } else {
-                varList.get(i).put("INCOUNT", count);
+                if (!str[0].isEmpty()) {
+                    varList.get(i).put("INCOUNT", count);
+                }
+                else
+                {
+                    varList.get(i).put("INCOUNT", "0"+count);
+                }
             }
         }
         mv.setViewName("erp/intoku/intoku_list");
@@ -219,9 +230,20 @@ public class IntoKuController extends BaseController {
         String count = pd.getString("INCOUNT");
         String[] str = count.split("\\.");
         if (str[1].toString().equals("00")) {
-            pd.put("INCOUNT", str[0]);
+            if (!str[0].isEmpty()) {
+                pd.put("INCOUNT", str[0]);
+            }
+            else {
+                pd.put("INCOUNT","0");
+            }
+
         } else {
-            pd.put("INCOUNT", count);
+            if(!str[0].isEmpty()){
+                pd.put("INCOUNT", count);
+            }
+            else {
+                pd.put("INCOUNT", "0"+count);
+            }
         }
         List<PageData> sptypeList = sptypeService.listAll();        //类别列表
         mv.setViewName("erp/intoku/intoku_edit");

@@ -26,48 +26,34 @@
 					<div class="col-xs-12">
 					
 					<form action="outku/${msg }.do" name="Form" id="Form" method="post">
-						<input type="hidden" name="INTOKU_ID" id="INTOKU_ID" value="${pd.INTOKU_ID}"/>
 						<input type="hidden" name="GOODS_ID" id="GOODS_ID" value="${pd.GOODS_ID}"/>
 						<input type="hidden" name="CUSTOMER_ID" id="CUSTOMER_ID" value="${pd.CUSTOMER_ID}"/>
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">商品编码:</td>
-								<td><input onblur="getByBm(this.value);" type="text" name="BIANMA" id="BIANMA" value="" maxlength="32" placeholder="这里输入商品编码以便读取商品信息" title="商品商品编码" style="width:99%;" /></td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">手动选择:</td>
-								<td id="xzsp">
-								<select onchange="setGoogsName();" class="chosen-select form-control" name="SGOODS_ID" id="SGOODS_ID" data-placeholder="请选择商品(录入商品编码就不用选择了)" style="vertical-align:top;width:100px;" >
-										<option value=""></option>
-										<c:forEach items="${goodsList}" var="var">
-											<option value="${var.GOODS_ID }" <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.TITLE }&nbsp;(${var.ZCOUNT }${var.NAME })</option>
-										</c:forEach>
-								</select>
-								</td>
-							</tr>
-							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">商品名称:</td>
-								<td><input type="text" name="GOODS_NAME" id="GOODS_NAME" value="${pd.GOODS_NAME}" maxlength="32" placeholder="这里不需要手动输入" title="商品名称" style="width:99%;" disabled="disabled"/></td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">数量:</td>
-								<td><input onblur="jisuanz();" type="number" name="OUTCOUNT" id="OUTCOUNT" value="${pd.OUTCOUNT}" maxlength="32" placeholder="这里输入销售数量" title="数量" style="width:99%;"/></td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">单价:</td>
-								<td><input onblur="jisuanz();" type="number" name="OUTPRICE" id="OUTPRICE" value="${pd.OUTPRICE}" maxlength="32" placeholder="这里输入单价（销售价）" title="单价" style="width:89%;"/>&nbsp;元</td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">总价:</td>
-								<td><input type="number" name="ZPRICE" id="ZPRICE" value="${pd.ZPRICE}" maxlength="32" placeholder="总价" title="总价" style="width:89%;"/>&nbsp;元</td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">备注:</td>
-								<td>
-								<textarea rows="" cols="" name="BZ" id="BZ" style="width:99%;">${pd.BZ}</textarea>
+								<td id="xzsp">
+									<select onchange="setGoogsName(this.value);" class="chosen-select form-control" name="SGOODS_ID" id="SGOODS_ID" data-placeholder="请选择商品添加出库记录！" style="vertical-align:top;width:100px;" >
+										<option value=""></option>
+										<c:forEach items="${kucunList}" var="var">
+											<option value="${var.GOODS_ID }" <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
+										</c:forEach>
+									</select>
 								</td>
 							</tr>
+							<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;" colspan="2">
+
+
+									<div>
+										<iframe name="treeFrame" id="treeFrame" frameborder="0"
+												src="<%=basePath%>/outku/getChoose.do"
+												style="margin:0 auto;width:805px;height:368px;;"></iframe>
+									</div>
+
+								</td>
+							</tr>
+
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">客户:</td>
 								<td>
@@ -111,63 +97,31 @@
 		<script type="text/javascript">
 		$(top.hangge());
 		
-		//通过商品编码读取数据
-		function getByBm(BIANMA){
-			$.ajax({
-				type: "POST",
-				url: 'goods/getByBm.do',
-		    	data: {BIANMA:BIANMA,tm:new Date().getTime()},
-				dataType:'json',
-				cache: false,
-				success: function(data){
-					if("success" == data.result){
-						$("#GOODS_ID").val(data.pd.GOODS_ID);
-						$("#GOODS_NAME").val(data.pd.TITLE);
-					}else{
-						$("#BIANMA").tips({
-							side : 1,
-							msg : "此编码不存在",
-							bg : '#FF5080',
-							time : 15
-						});
-					}
-				}
-			});
-		}
-		
+
 		//设置商品ID和名称
-		function setGoogsName(){
-			var selectVale = $("#SGOODS_ID").val();
-			var selectText = $("#SGOODS_ID").find("option:selected").text();
-			$("#GOODS_ID").val(selectVale);
-			$("#GOODS_NAME").val(selectText);
-		}
-		
-		//计算总价
-		function jisuanz(){
-			var OUTCOUNT = Number("" == $("#OUTCOUNT").val()?"0":$("#OUTCOUNT").val());
-			var OUTPRICE = Number("" == $("#OUTPRICE").val()?"0":$("#OUTPRICE").val());
-			if(0-OUTCOUNT>0){
-				$("#OUTCOUNT").tips({
-					side:3,
-		            msg:'数量不能小于零',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#OUTCOUNT").focus();
-				return false;
-			}
-			if(0-OUTPRICE>0){
-				$("#OUTPRICE").tips({
-					side:3,
-		            msg:'单价不能小于零',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#OUTPRICE").focus();
-				return false;
-			}
-			$("#ZPRICE").val(OUTCOUNT*OUTPRICE);
+		function setGoogsName(id){
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="填写出库商品详情";
+            diag.URL = '<%=basePath%>/outku/goChooseAdd.do?GOODS_ID='+id;
+            diag.Width = 645;
+            diag.Height = 400;
+            diag.Modal = false;			//有无遮罩窗口
+            diag. ShowMaxButton = true;	//最大化按钮
+            diag.ShowMinButton = true;		//最小化按钮
+            diag.CancelEvent = function(){ //关闭事件
+                if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+                    if('${page.currentPage}' == '0'){
+                        top.jzts();
+                        setTimeout("self.location=self.location",100);
+                    }else{
+                        nextPage(${page.currentPage});
+                    }
+                }
+                diag.close();
+            };
+            diag.show();
 		}
 		
 		//保存

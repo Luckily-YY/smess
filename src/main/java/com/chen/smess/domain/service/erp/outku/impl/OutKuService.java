@@ -94,5 +94,9 @@ public class OutKuService implements OutKuManager {
 	public PageData priceSum(PageData pd) throws Exception {
 		return (PageData)dao.findForObject("OutKuMapper.priceSum", pd);
 	}
+
+	public List<PageData> getChoose(Page page) throws Exception{
+		return (List<PageData>)dao.findForList("OutKuMapper.chooseList", page);
+	}
 }
 

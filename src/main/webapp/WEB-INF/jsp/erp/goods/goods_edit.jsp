@@ -281,6 +281,27 @@
             $("#SHORTDESC").focus();
             return false;
         }
+
+        $.ajax({
+            type: "POST",
+            url: 'goods/getById.do',
+            data: {GOODS_ID: $("#GOODS").val()},
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                if ("success" == data.result) {
+                    $("#ZCOUNT").val(data.pd.ZCOUNT);
+                } else {
+                    $("#GOODS").tips({
+                        side: 3,
+                        msg: "此商品不存在",
+                        bg: '#FF5080',
+                        time: 15
+                    });
+                }
+            }
+        });
+
         var zcount = $("#ZCOUNT").val();
         var gcount = $("#GCOUNT").val();
         var a = (zcount - gcount).toFixed(2);
@@ -383,6 +404,26 @@
                 $("#SHORTDESC").focus();
                 return false;
             }
+            $.ajax({
+                type: "POST",
+                url: 'goods/getById.do',
+                data: {GOODS_ID: $("#GOODS").val()},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if ("success" == data.result) {
+                        $("#ZCOUNT").val(data.pd.ZCOUNT);
+                    } else {
+                        $("#GOODS").tips({
+                            side: 3,
+                            msg: "此商品不存在",
+                            bg: '#FF5080',
+                            time: 15
+                        });
+                    }
+                }
+            });
+
             var zcount = $("#ZCOUNT").val();
             var gcount = $("#GCOUNT").val();
             var count = (gcount - old).toFixed(2);

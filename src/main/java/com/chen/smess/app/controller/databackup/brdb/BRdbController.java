@@ -20,18 +20,18 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 
-/** 
+/**
  * 说明：数据库管理(备份和还原)
  */
 @Controller
 @RequestMapping(value="/brdb")
 public class BRdbController extends BaseController {
-	
+
 	String menuUrl = "brdb/list.do"; 			//菜单地址(权限用)数据还原菜单
 	String menuUrlb = "brdb/listAllTable.do"; 	//菜单地址(权限用)数据备份菜单
 	@Resource(name="brdbService")
 	private BRdbManager brdbService;
-	
+
 	/**列出所有表
 	 * @throws Exception
 	 */
@@ -43,14 +43,14 @@ public class BRdbController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		Object[] arrOb = DbFH.getTables();
 		List<String> tblist = (List<String>)arrOb[1];
-		mv.setViewName("fhdb/brdb/table_list");
+		mv.setViewName("dbbackup/brdb/table_list");
 		mv.addObject("varList", tblist);			//所有表
 		mv.addObject("dbtype", arrOb[2]);			//数据库类型
 		mv.addObject("databaseName", arrOb[0]);		//数据库名
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
-	
+
 	 /**备份全库
 	 * @param
 	 * @throws Exception
@@ -97,7 +97,7 @@ public class BRdbController extends BaseController {
 		map.put("list", pdList);
 		return AppUtil.returnObject(pd, map);
 	}
-	
+
 	 /**备份单表
 	 * @param
 	 * @throws Exception
@@ -108,7 +108,7 @@ public class BRdbController extends BaseController {
 		String username = Jurisdiction.getUsername();
 		logBefore(logger, username+"备份单表");
 		if(!Jurisdiction.buttonJurisdiction(menuUrlb, "add")){return null;} //校验权限
-		PageData pd = new PageData();		
+		PageData pd = new PageData();
 		Map<String,Object> map = new HashMap<String,Object>();
 		pd = this.getPageData();
 		String TABLENAME = pd.getString("fhtable");					//页面ajax传过来的表名
@@ -145,7 +145,7 @@ public class BRdbController extends BaseController {
 		map.put("list", pdList);
 		return AppUtil.returnObject(pd, map);
 	}
-	
+
 	 /**数据还原操作
 	 * @param
 	 * @throws Exception
@@ -156,7 +156,7 @@ public class BRdbController extends BaseController {
 		String username = Jurisdiction.getUsername();
 		logBefore(logger, username+"数据还原操作");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
-		PageData pd = new PageData();		
+		PageData pd = new PageData();
 		Map<String,Object> map = new HashMap<String,Object>();
 		pd = this.getPageData();
 		List<PageData> pdList = new ArrayList<PageData>();
@@ -180,7 +180,7 @@ public class BRdbController extends BaseController {
 		map.put("list", pdList);
 		return AppUtil.returnObject(pd, map);
 	}
-	
+
 	/**删除
 	 * @param out
 	 * @throws Exception
@@ -195,7 +195,7 @@ public class BRdbController extends BaseController {
 		out.write("success");
 		out.close();
 	}
-	
+
 	/**修改
 	 * @param
 	 * @throws Exception
@@ -212,7 +212,7 @@ public class BRdbController extends BaseController {
 		mv.setViewName("save_result");
 		return mv;
 	}
-	
+
 	/**列表
 	 * @param page
 	 * @throws Exception
@@ -235,11 +235,11 @@ public class BRdbController extends BaseController {
 		}
 		if(Tools.notEmpty(lastEnd)){
 			pd.put("lastLoginEnd", lastEnd+" 00:00:00");
-		} 
+		}
 		page.setPd(pd);
 		List<PageData>	varList = brdbService.list(page);			//列出Fhdb列表
 		Map<String,String> DBmap = DbFH.getDBParameter();
-		mv.setViewName("fhdb/brdb/brdb_list");
+		mv.setViewName("dbbackup/brdb/brdb_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("dbtype", DBmap.get("dbtype").toString());		//数据库类型
@@ -247,7 +247,7 @@ public class BRdbController extends BaseController {
 		mv.addObject("QX",Jurisdiction.getHC());					//按钮权限
 		return mv;
 	}
-	
+
 	 /**去修改页面
 	 * @param
 	 * @throws Exception
@@ -258,7 +258,7 @@ public class BRdbController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = brdbService.findById(pd);	//根据ID读取
-		mv.setViewName("fhdb/brdb/brdb_edit");
+		mv.setViewName("dbbackup/brdb/brdb_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;

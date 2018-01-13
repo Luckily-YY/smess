@@ -7,6 +7,7 @@ import com.chen.smess.domain.service.erp.kucun.KucunManager;
 import com.chen.smess.domain.service.erp.spbrand.SpbrandManager;
 import com.chen.smess.domain.service.erp.sptype.SptypeManager;
 import com.chen.smess.domain.service.erp.spunit.SpunitManager;
+import com.sun.org.apache.bcel.internal.generic.IFNE;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,9 +62,17 @@ public class KucunController extends BaseController {
             String count = varList.get(i).getString("ZCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                varList.get(i).put("ZCOUNT", str[0]);
+                if (str[0].isEmpty()) {
+                    varList.get(i).put("ZCOUNT", "0");
+                } else {
+                    varList.get(i).put("ZCOUNT", str[0]);
+                }
             } else {
-                varList.get(i).put("ZCOUNT", count);
+                if (str[0].isEmpty()) {
+                    varList.get(i).put("ZCOUNT", "0." + str[1]);
+                } else {
+                    varList.get(i).put("ZCOUNT", count);
+                }
             }
         }
         mv.setViewName("erp/kucun/kucun_list");
@@ -168,9 +177,17 @@ public class KucunController extends BaseController {
         String count = pd.getString("ZCOUNT");
         String[] str = count.split("\\.");
         if (str[1].toString().equals("00")) {
-            pd.put("ZCOUNT", str[0]);
+            if (!str[0].isEmpty()) {
+                pd.put("ZCOUNT", str[0]);
+            } else {
+                pd.put("ZCOUNT", "0");
+            }
         } else {
-            pd.put("ZCOUNT", count);
+            if (!str[0].isEmpty()) {
+                pd.put("ZCOUNT", count);
+            } else {
+                pd.put("ZCOUNT", "0" + count);
+            }
         }
         List<PageData> spbrandList = spbrandService.listAll();    //品牌列表
         List<PageData> sptypeList = sptypeService.listAll();
@@ -182,6 +199,52 @@ public class KucunController extends BaseController {
         mv.addObject("spunitList", spunitList);
         mv.addObject("pd", pd);
         return mv;
+    }
+
+    @RequestMapping("/getById")
+    @ResponseBody
+    public Object getById() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "查找库存id是否存在");
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        String info = "success";
+        PageData pageData = kucunService.findById(pd);
+        if (pageData != null) {
+            map.put("result", info);
+            return AppUtil.returnObject(new PageData(), map);
+        } else {
+            info = "error";
+            map.put("result", info);
+            return AppUtil.returnObject(new PageData(), map);
+        }
+    }
+
+    @RequestMapping("/getAllByIds")
+    @ResponseBody
+    public Object getAllByIds() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "查找库存id是否存在");
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        String info = "success";
+        PageData pageData = kucunService.findById(pd);
+        if (pageData != null) {
+            String zcount = pageData.getString("ZCOUNT");
+            String[] str = zcount.split("\\.");
+            if (!str[0].isEmpty() || !str[1].equals("00")) {
+                info = "kucunerror";
+                map.put("result", info);
+                return AppUtil.returnObject(new PageData(), map);
+            } else {
+                map.put("result", info);
+                return AppUtil.returnObject(new PageData(), map);
+            }
+        } else {
+            info = "error";
+            map.put("result", info);
+            return AppUtil.returnObject(new PageData(), map);
+        }
     }
 
 
@@ -254,9 +317,17 @@ public class KucunController extends BaseController {
             String count = varOList.get(i).getString("ZCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                vpd.put("var2", str[0] + "(" + varOList.get(i).getString("UNAME") + ")");    //2
+                if (!str[0].isEmpty()) {
+                    vpd.put("var2", str[0] + "(" + varOList.get(i).getString("UNAME") + ")");    //2
+                } else {
+                    vpd.put("var2", "0" + "(" + varOList.get(i).getString("UNAME") + ")");    //2
+                }
             } else {
-                vpd.put("var2", count + "(" + varOList.get(i).getString("UNAME") + ")");    //2
+                if (!str[0].isEmpty()) {
+                    vpd.put("var2", count + "(" + varOList.get(i).getString("UNAME") + ")");    //2
+                } else {
+                    vpd.put("var2", "0" + count + "(" + varOList.get(i).getString("UNAME") + ")");    //2
+                }
             }
             vpd.put("var3", varOList.get(i).getString("PRICE"));        //3
             vpd.put("var4", varOList.get(i).getString("TNAME"));        //4

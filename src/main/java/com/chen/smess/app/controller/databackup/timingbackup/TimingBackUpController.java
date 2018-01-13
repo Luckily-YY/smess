@@ -124,7 +124,7 @@ public class TimingBackUpController extends BaseController {
 		} 
 		page.setPd(pd);
 		List<PageData>	varList = timingbackupService.list(page);	//列出TimingBackUp列表
-		mv.setViewName("fhdb/timingbackup/timingbackup_list");
+		mv.setViewName("dbbackup/timingbackup/timingbackup_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -145,7 +145,7 @@ public class TimingBackUpController extends BaseController {
 		List<String> tblist = (List<String>)arrOb[1];
 		mv.addObject("varList", tblist);			//所有表
 		mv.addObject("dbtype", arrOb[2]);			//数据库类型
-		mv.setViewName("fhdb/timingbackup/timingbackup_edit");
+		mv.setViewName("dbbackup/timingbackup/timingbackup_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -166,7 +166,7 @@ public class TimingBackUpController extends BaseController {
 		mv.addObject("varList", tblist);			//所有表
 		mv.addObject("dbtype", arrOb[2]);			//数据库类型
 		pd = timingbackupService.findById(pd);		//根据ID读取
-		mv.setViewName("fhdb/timingbackup/timingbackup_edit");
+		mv.setViewName("dbbackup/timingbackup/timingbackup_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;

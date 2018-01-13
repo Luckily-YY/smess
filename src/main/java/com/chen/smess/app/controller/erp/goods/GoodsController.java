@@ -212,9 +212,19 @@ public class GoodsController extends BaseController {
             String count = varList.get(i).getString("GCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                varList.get(i).put("GCOUNT", str[0]);
+                if(!str[0].isEmpty()) {
+                    varList.get(i).put("GCOUNT", str[0]);
+                }
+                else {
+                    varList.get(i).put("GCOUNT", "0");
+                }
             } else {
-                varList.get(i).put("GCOUNT", count);
+                if(!str[0].isEmpty()) {
+                    varList.get(i).put("GCOUNT", count);
+                }
+                else {
+                    varList.get(i).put("GCOUNT", "0"+count);
+                }
             }
            // System.out.println("-------------------"+varList.get(i).getString("BIANMA")+"--------------------");
         }
@@ -273,9 +283,19 @@ public class GoodsController extends BaseController {
         String count = pd.getString("GCOUNT");
         String[] str = count.split("\\.");
         if (str[1].toString().equals("00")) {
-            pd.put("GCOUNT", str[0]);
+            if(!str[0].isEmpty()) {
+                pd.put("GCOUNT", str[0]);
+            }
+            else {
+                pd.put("GCOUNT","0");
+            }
         } else {
-            pd.put("GCOUNT", count);
+            if(!str[0].isEmpty()) {
+                pd.put("GCOUNT", count);
+            }
+            else {
+                pd.put("GCOUNT", "0"+count);
+            }
         }
         PageData list = kucunService.findByGoodsId(pd);
         List<PageData> spbrandList = spbrandService.listAll();    //品牌列表
@@ -284,9 +304,19 @@ public class GoodsController extends BaseController {
         String kucuncount = list.getString("ZCOUNT");
         String[] strs = kucuncount.split("\\.");
         if (strs[1].toString().equals("00")) {
-            pd.put("ZCOUNT", strs[0]);
+            if(!str[0].isEmpty()) {
+                pd.put("ZCOUNT", strs[0]);
+            }
+            else {
+                pd.put("ZCOUNT", "0");
+            }
         } else {
-            pd.put("ZCOUNT", kucuncount);
+            if(!str[0].isEmpty()) {
+                pd.put("ZCOUNT", kucuncount);
+            }
+            else {
+                pd.put("ZCOUNT", "0"+kucuncount);
+            }
         }
         pd.put("PRICE", list.getString("PRICE"));
         mv.setViewName("erp/goods/goods_edit");

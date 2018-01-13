@@ -35,7 +35,7 @@ public class SQLeditController extends BaseController {
 		logBefore(logger, Jurisdiction.getUsername()+"进入SQL编辑页面");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
-		mv.setViewName("fhdb/sqledit/sql_edit");
+		mv.setViewName("dbbackup/sqledit/sql_edit");
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}

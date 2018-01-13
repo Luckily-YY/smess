@@ -175,8 +175,8 @@
 			 diag.Drag=true;
 			 diag.Title ="商品出库";
 			 diag.URL = '<%=basePath%>outku/goAdd.do';
-			 diag.Width = 450;
-			 diag.Height = 486;
+            diag.Width = 845;
+            diag.Height = 600;
 			 diag.Modal = false;			//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮
