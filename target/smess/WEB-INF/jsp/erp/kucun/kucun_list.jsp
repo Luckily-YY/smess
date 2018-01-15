@@ -417,10 +417,6 @@
                     });
                     return false;
                 }
-                else if(successcount==forcount)
-                {
-
-                }
             });
     };
 

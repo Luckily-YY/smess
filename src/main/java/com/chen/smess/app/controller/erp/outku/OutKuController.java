@@ -3,6 +3,7 @@ package com.chen.smess.app.controller.erp.outku;
 import com.chen.smess.app.controller.base.BaseController;
 import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
+import com.chen.smess.domain.service.erp.customer.CustomerManager;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
 import com.chen.smess.domain.service.erp.kucun.KucunManager;
 import com.chen.smess.domain.service.erp.outku.OutKuManager;
@@ -11,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,7 +37,8 @@ public class OutKuController extends BaseController {
 	private GoodsManager goodsService;
 	@Resource(name="kucunService")
 	private KucunManager kucunService;
-	
+	@Resource(name="customerService")
+	private CustomerManager customerService;
 	/**保存
 	 * @param
 	 * @throws Exception
@@ -174,19 +178,16 @@ public class OutKuController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("USERNAME", "admin".equals(Jurisdiction.getUsername()) ? "" : Jurisdiction.getUsername());
+		List<PageData> kucunList = kucunService.listAll(pd);
+		pd.put("USERNAME", Jurisdiction.getUsername());
 		page.setPd(pd);
-
 		List<PageData>	pageList = outkuService.getChoose(page);	//列出OutKu列表
 		List<PageData>	varList = new ArrayList<PageData>();
-
 		for(PageData pageData : pageList){
 			PageData ps2 = kucunService.findByGoodsId(pageData);
 			pageData.put("PRICE",ps2.getString("PRICE"));
 			varList.add(pageData);
 		}
-
-
 		for (int i = 0; i < varList.size(); i++) {
 			String count = varList.get(i).getString("OUTCOUNT");
 			String[] str = count.split("\\.");
@@ -196,7 +197,6 @@ public class OutKuController extends BaseController {
 				varList.get(i).put("OUTCOUNT", count);
 			}
 		}
-		List<PageData> kucunList = kucunService.listAll(pd);
 		mv.setViewName("erp/outku/outku_getChoose");
 		mv.addObject("kucunList", kucunList);
 		mv.addObject("varList", varList);
@@ -312,6 +312,90 @@ public class OutKuController extends BaseController {
 		return mv;
 	}
 
+	/**
+	 * 根据id查询出库单
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/getAllByIds")
+	@ResponseBody
+	public Object getAllByIds() throws Exception {
+		logBefore(logger, Jurisdiction.getUsername() + "查找库存id是否存在");
+		Map<String, Object> map = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		String info = "success";
+		PageData pageData = outkuService.findById(pd);
+		String outCount = pageData.getString("OUTCOUNT");
+		PageData goodsDate = kucunService.findByGoodsId(pageData);
+		String zCount = goodsDate.getString("ZCOUNT");
+		BigDecimal outDecimal = new BigDecimal(outCount);
+		BigDecimal countDecimal = new BigDecimal(zCount);
+		if (countDecimal.subtract(outDecimal).doubleValue()>=0.00) {
+				map.put("result", info);
+				return AppUtil.returnObject(new PageData(), map);
+		} else {
+			info = "error";
+			map.put("result", info);
+			return AppUtil.returnObject(new PageData(), map);
+		}
+	}
+
+	/**
+	 * 添加客户到订货单
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/updateAll")
+	@ResponseBody
+	public Object updateAll() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername() + "批量添加客户到订单");
+		if (!Jurisdiction.buttonJurisdiction(menuUrl, "del")) {
+			return null;
+		} //校验权限
+		PageData pd = new PageData();
+		Map<String, Object> map = new HashMap<String, Object>();
+		pd = this.getPageData();
+		PageData customerDate = customerService.findById(pd);
+		List<PageData> pdList = new ArrayList<PageData>();
+		String DATA_IDS = pd.getString("DATA_IDS");
+		if (null != DATA_IDS && !"".equals(DATA_IDS)) {
+			String ArrayDATA_IDS[] = DATA_IDS.split(",");
+			for(int i=0;i<ArrayDATA_IDS.length;i++)
+			{
+				pd.put("OUTKU_ID",ArrayDATA_IDS[i]);
+				pd = outkuService.findById(pd);
+				pd.put("CUSTOMER_NAME",customerDate.getString("NAME"));
+				pd.put("CUSTOMER_ID",customerDate.getString("CUSTOMER_ID"));
+				pd.put("OUTTIME", Tools.date2Str(new Date()));		//出库时间
+				pd.put("ORDER_NUMBER", "D"+ DateUtil.getSdfTimes()+Tools.getRandomNum());//订单编号
+				outkuService.edit(pd);
+				PageData kucunPd = kucunService.findByGoodsId(pd);
+				String kucunCount = kucunPd.getString("ZCOUNT");
+				String[] k = kucunCount.split("\\.");
+				if(k[0].isEmpty())
+				{
+					kucunCount = "0."+k[1];
+				}
+				String outCount = pd.getString("OUTCOUNT");
+				String[] o = outCount.split("\\.");
+				if(o[0].isEmpty())
+				{
+					outCount = "0."+o[1];
+				}
+				BigDecimal outDecimal = new BigDecimal(outCount);
+				BigDecimal kucuncountDecimal = new BigDecimal(kucunCount);
+				String newCount = kucuncountDecimal.subtract(outDecimal).toString();
+				kucunPd.put("ZCOUNT",newCount);
+				kucunService.editKuCun(kucunPd);
+			}
+			map.put("msg", "ok");
+		} else {
+			map.put("msg", "no");
+		}
+
+		return AppUtil.returnObject(new PageData(), map);
+	}
 
 	/**去打印出库(订)单页面
 	 * @param

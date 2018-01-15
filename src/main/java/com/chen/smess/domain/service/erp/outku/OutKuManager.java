@@ -72,5 +72,6 @@ public interface OutKuManager{
 	 * @return
 	 */
     List<PageData> getChoose(Page page) throws Exception;
+
 }
 

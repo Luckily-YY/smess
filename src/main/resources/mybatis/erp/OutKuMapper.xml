@@ -63,7 +63,17 @@
 		update
 		<include refid="tableName"></include>
 		set
-		OUTKU_ID = OUTKU_ID
+		GOODS_ID = #{GOODS_ID},
+		OUTCOUNT = #{OUTCOUNT},
+		OUTPRICE = #{OUTPRICE},
+		ZPRICE = #{ZPRICE},
+		OUTTIME = #{OUTTIME},
+		GOODS_NAME = #{GOODS_NAME},
+		USERNAME = #{USERNAME },
+		BZ = #{BZ},
+		CUSTOMER_NAME = #{CUSTOMER_NAME },
+		CUSTOMER_ID = #{CUSTOMER_ID},
+		ORDER_NUMBER = #{ORDER_NUMBER}
 		where
 		OUTKU_ID = #{OUTKU_ID}
 	</update>
@@ -186,15 +196,14 @@
 	</delete>
 
 	<!-- 未添加客户列表 -->
-	<select id="chooseList" parameterType="page" resultType="pd">
+	<select id="listPage" parameterType="page" resultType="pd">
 		select
 		<include refid="Field"></include>
 		from
 		<include refid="tableName"></include>
 		where 1=1
 		and
-		USERNAME = #{pd.USERNAME}
-		and CUSTOMER_ID is NULL
+		CUSTOMER_ID is null
 	</select>
 
 </mapper>

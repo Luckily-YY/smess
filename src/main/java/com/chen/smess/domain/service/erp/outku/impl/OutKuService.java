@@ -95,8 +95,15 @@ public class OutKuService implements OutKuManager {
 		return (PageData)dao.findForObject("OutKuMapper.priceSum", pd);
 	}
 
+	/**
+	 * 查找未确定出库的订单
+	 * @param page
+	 * @return
+	 * @throws Exception
+	 */
 	public List<PageData> getChoose(Page page) throws Exception{
-		return (List<PageData>)dao.findForList("OutKuMapper.chooseList", page);
+		return (List<PageData>)dao.findForList("OutKuMapper.listPage", page);
 	}
+
 }
 

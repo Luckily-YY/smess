@@ -84,6 +84,14 @@
                                                    style="width:98%;"/>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td style="width:75px;text-align: right;padding-top: 13px;">备注:</td>
+                                        <td>
+                                            <input type="text" name="BZ" id="BZ" value="${pd.BZ}"
+                                                   maxlength="30" title="订单备注"
+                                                   style="width:98%;"/>
+                                        </td>
+                                    </tr>
 
                                 </table>
                             </div>
