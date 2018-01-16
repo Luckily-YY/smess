@@ -12,6 +12,9 @@
     <base href="<%=basePath%>">
     <!-- 下拉框 -->
     <link rel="stylesheet" href="static/ace/css/chosen.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/sweet/css/example.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/sweet/css/sweet-alert.css">
+    <script src="${pageContext.request.contextPath}/sweet/js/sweet-alert.min.js"></script>
     <!-- jsp文件头和头部 -->
     <%@ include file="../../system/index/top.jsp" %>
 </head>
@@ -65,80 +68,80 @@
                                     <c:if test="${QX.cha == 1 }">
                                         <c:forEach items="${varList}" var="var" varStatus="vs">
                                             <tr>
-                                            <td class='center'>
-                                                <label class="pos-rel"><input type='checkbox' name='ids'
-                                                                              value="${var.OUTKU_ID}"
-                                                                              class="ace"/><span
-                                                        class="lbl"></span></label>
-                                            </td>
-                                            <td class='center' style="width: 30px;">${vs.index+1}</td>
-                                            <td class='center'>${var.GOODS_NAME}</td>
-                                            <td class='center'>${var.PRICE}</td>
-                                            <td class='center'>${var.OUTPRICE}</td>
-                                            <td class='center'>${var.OUTCOUNT}</td>
-                                            <td class='center'>${var.ZPRICE}</td>
-                                            <td class="center">
-                                                <c:if test="${QX.edit != 1 && QX.del != 1 }">
+                                                <td class='center'>
+                                                    <label class="pos-rel"><input type='checkbox' name='ids'
+                                                                                  value="${var.OUTKU_ID}"
+                                                                                  class="ace"/><span
+                                                            class="lbl"></span></label>
+                                                </td>
+                                                <td class='center' style="width: 30px;">${vs.index+1}</td>
+                                                <td class='center'>${var.GOODS_NAME}</td>
+                                                <td class='center'>${var.PRICE}</td>
+                                                <td class='center'>${var.OUTPRICE}</td>
+                                                <td class='center'>${var.OUTCOUNT}</td>
+                                                <td class='center'>${var.ZPRICE}</td>
+                                                <td class="center">
+                                                    <c:if test="${QX.edit != 1 && QX.del != 1 }">
                                                         <span class="label label-large label-grey arrowed-in-right arrowed-in"><i
                                                                 class="ace-icon fa fa-lock" title="无权限"></i></span>
-                                                </c:if>
-                                                <div class="hidden-sm hidden-xs btn-group">
-                                                    <a class="btn btn-xs btn-info" title="查看订单信息"
-                                                       onclick="view('${var.OUTKU_ID}');">
-                                                        <i class="ace-icon fa fa-eye bigger-120" title="查看订单信息"></i>
-                                                    </a>
-                                                    <c:if test="${QX.edit == 1 }">
-                                                        <a class="btn btn-xs btn-success" title="编辑"
-                                                           onclick="edit('${var.OUTKU_ID}');">
-                                                            <i class="ace-icon fa fa-pencil-square-o bigger-120"
-                                                               title="编辑"></i>
-                                                        </a>
                                                     </c:if>
-                                                    <c:if test="${QX.del == 1 }">
-                                                        <a class="btn btn-xs btn-danger"
-                                                           onclick="del('${var.OUTKU_ID}');">
-                                                            <i class="ace-icon fa fa-trash-o bigger-120"
-                                                               title="删除"></i>
+                                                    <div class="hidden-sm hidden-xs btn-group">
+                                                        <a class="btn btn-xs btn-info" title="查看订单信息"
+                                                           onclick="view('${var.OUTKU_ID}');">
+                                                            <i class="ace-icon fa fa-eye bigger-120" title="查看订单信息"></i>
                                                         </a>
-                                                    </c:if>
-                                                </div>
-                                                <div class="hidden-md hidden-lg">
-                                                    <div class="inline pos-rel">
-                                                        <button class="btn btn-minier btn-primary dropdown-toggle"
-                                                                data-toggle="dropdown" data-position="auto">
-                                                            <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                                                        </button>
+                                                        <c:if test="${QX.edit == 1 }">
+                                                            <a class="btn btn-xs btn-success" title="编辑"
+                                                               onclick="edit('${var.OUTKU_ID}');">
+                                                                <i class="ace-icon fa fa-pencil-square-o bigger-120"
+                                                                   title="编辑"></i>
+                                                            </a>
+                                                        </c:if>
+                                                        <c:if test="${QX.del == 1 }">
+                                                            <a class="btn btn-xs btn-danger"
+                                                               onclick="del('${var.OUTKU_ID}');">
+                                                                <i class="ace-icon fa fa-trash-o bigger-120"
+                                                                   title="删除"></i>
+                                                            </a>
+                                                        </c:if>
+                                                    </div>
+                                                    <div class="hidden-md hidden-lg">
+                                                        <div class="inline pos-rel">
+                                                            <button class="btn btn-minier btn-primary dropdown-toggle"
+                                                                    data-toggle="dropdown" data-position="auto">
+                                                                <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                                                            </button>
 
-                                                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                                            <c:if test="${QX.edit == 1 }">
-                                                                <li>
-                                                                    <a style="cursor:pointer;"
-                                                                       onclick="edit('${var.OUTKU_ID}');"
-                                                                       class="tooltip-success" data-rel="tooltip"
-                                                                       title="修改">
+                                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                                <c:if test="${QX.edit == 1 }">
+                                                                    <li>
+                                                                        <a style="cursor:pointer;"
+                                                                           onclick="edit('${var.OUTKU_ID}','${var.GOODS_ID}');"
+                                                                           class="tooltip-success" data-rel="tooltip"
+                                                                           title="修改">
 																	<span class="green">
 																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																	</span>
-                                                                    </a>
-                                                                </li>
-                                                            </c:if>
-                                                            <c:if test="${QX.del == 1 }">
-                                                                <li>
-                                                                    <a style="cursor:pointer;"
-                                                                       onclick="del('${var.OUTKU_ID}');"
-                                                                       class="tooltip-error" data-rel="tooltip"
-                                                                       title="删除">
+                                                                        </a>
+                                                                    </li>
+                                                                </c:if>
+                                                                <c:if test="${QX.del == 1 }">
+                                                                    <li>
+                                                                        <a style="cursor:pointer;"
+                                                                           onclick="del('${var.OUTKU_ID}');"
+                                                                           class="tooltip-error" data-rel="tooltip"
+                                                                           title="删除">
 																	<span class="red">
 																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																	</span>
-                                                                    </a>
-                                                                </li>
-                                                            </c:if>
-                                                        </ul>
+                                                                        </a>
+                                                                    </li>
+                                                                </c:if>
+                                                            </ul>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
                                         </c:forEach>
                                     </c:if>
 
@@ -176,7 +179,7 @@
 <!-- /.main-container -->
 
 
-<%@ include file="../../system/index/foot.jsp"%>
+<%@ include file="../../system/index/foot.jsp" %>
 <!-- 删除时确认窗口 -->
 <script src="static/ace/js/bootbox.js"></script>
 <!-- ace scripts -->
@@ -192,31 +195,62 @@
 
     //设置商品ID和名称
     function setGoogsName(id) {
-        if(id ==''){
+        if (id == '') {
             return false;
-        }else{
-        top.jzts();
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "填写出库商品详情";
-        diag.URL = '<%=basePath%>/outku/goChooseAdd.do?GOODS_ID=' + id;
-        diag.Width = 645;
-        diag.Height = 420;
-        diag.Modal = false;			//有无遮罩窗口
-        diag.ShowMaxButton = true;	//最大化按钮
-        diag.ShowMinButton = true;		//最小化按钮
-        diag.CancelEvent = function () { //关闭事件
-            if (diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none') {
-                if ('${page.currentPage}' == '0') {
-                    top.jzts();
-                    setTimeout("self.location=self.location", 100);
-                } else {
-                    nextPage(${page.currentPage});
+        } else {
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag = true;
+            diag.Title = "填写出库商品详情";
+            diag.URL = '<%=basePath%>outku/goChooseAdd.do?GOODS_ID=' + id;
+            diag.Width = 645;
+            diag.Height = 420;
+            diag.Modal = false;			//有无遮罩窗口
+            diag.ShowMaxButton = true;	//最大化按钮
+            diag.ShowMinButton = true;		//最小化按钮
+            diag.CancelEvent = function () { //关闭事件
+                if (diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none') {
+                    if ('${page.currentPage}' == '0') {
+                        top.jzts();
+                        setTimeout("self.location=self.location", 100);
+                    } else {
+                        nextPage(${page.currentPage});
+                    }
                 }
-            }
-            diag.close();
-        };
-        diag.show();
+                diag.close();
+            };
+            diag.show();
+        }
+    }
+
+
+    //设置商品ID和名称
+    function edit(id, goodsId) {
+        if (id == '') {
+            return false;
+        } else {
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag = true;
+            diag.Title = "修改出库商品详情";
+            diag.URL = '<%=basePath%>outku/goChooseEdit.do?OUTKU_ID=' + id + '&GOODS_ID=' + goodsId;
+            diag.Width = 645;
+            diag.Height = 420;
+            diag.Modal = false;			//有无遮罩窗口
+            diag.ShowMaxButton = true;	//最大化按钮
+            diag.ShowMinButton = true;		//最小化按钮
+            diag.CancelEvent = function () { //关闭事件
+                if (diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none') {
+                    if ('${page.currentPage}' == '0') {
+                        top.jzts();
+                        setTimeout("self.location=self.location", 100);
+                    } else {
+                        nextPage(${page.currentPage});
+                    }
+                }
+                diag.close();
+            };
+            diag.show();
         }
     }
 
@@ -259,62 +293,6 @@
         $("#ZPRICE").val(OUTCOUNT * OUTPRICE);
     }
 
-    //保存
-    function save() {
-        if ($("#GOODS_ID").val() == "") {
-            $("#xzsp").tips({
-                side: 3,
-                msg: '请选择商品',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#GOODS_ID").focus();
-            return false;
-        }
-        if ($("#OUTCOUNT").val() == "") {
-            $("#OUTCOUNT").tips({
-                side: 3,
-                msg: '请输入数量',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#OUTCOUNT").focus();
-            return false;
-        }
-        if ($("#OUTPRICE").val() == "") {
-            $("#OUTPRICE").tips({
-                side: 3,
-                msg: '请输入单价',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#OUTPRICE").focus();
-            return false;
-        }
-        if ($("#ZPRICE").val() == "") {
-            $("#ZPRICE").tips({
-                side: 3,
-                msg: '请输入总价',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#ZPRICE").focus();
-            return false;
-        }
-        if ($("#BZ").val() == "") {
-            $("#BZ").tips({
-                side: 3,
-                msg: '请输入备注',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#BZ").focus();
-            return false;
-        }
-        $("#Form").submit();
-        $("#zhongxin").hide();
-        $("#zhongxin2").show();
-    }
 
     $(function () {
         $("#ZPRICE").attr("readonly", "readonly");
@@ -345,30 +323,46 @@
             });
         }
     });
+    //删除
+    function del(Id) {
+        swal({
+            title: "确定操作吗？",
+            text: "您确定要删除该选项吗？",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: '#00FF00',
+            confirmButtonText: 'sure'
+        }, function (result) {
+                var url = "<%=basePath%>outku/delete.do?OUTKU_ID=" + Id;
+                $.get(url, function (data) {
+                    if (data.result == "success") {
+                        $("#SGOODS_ID").tips({
+                            side: 3,
+                            msg: "删除成功！稍后将自动刷新!",
+                            bg: '#AE81FF',
+                            time: 3
+                        });
+                        $("#SGOODS_ID").focus();
+                        setTimeout(function () {
+                            window.location.href = "<%=basePath%>/outku/goAdd.do";
+                        }, 3000);
+                    }
+                    else {
+                        $("#SGOODS_ID").tips({
+                            side: 3,
+                            msg: "操作失败,数据异常，请检查",
+                            bg: '#FF5080',
+                            time: 3
+                        });
+                        $("#SGOODS_ID").focus();
+                        return false;
+                    }
 
-    //打开选择客户窗口
-    function choiceCus() {
-        top.jzts();
-        var diag = new top.Dialog();
-        diag.Drag = true;
-        diag.Title = "选择客户";
-        diag.URL = '<%=basePath%>customer/windowsList.do';
-        diag.Width = 700;
-        diag.Height = 545;
-        diag.Modal = false;			//有无遮罩窗口
-        diag.ShowMaxButton = true;	//最大化按钮
-        diag.ShowMinButton = true;		//最小化按钮
-        diag.CancelEvent = function () { //关闭事件
-            var CUSTOMER_ID = diag.innerFrame.contentWindow.document.getElementById('CUSTOMER_ID').value;
-            if ("" != CUSTOMER_ID) {
-                var NAME = diag.innerFrame.contentWindow.document.getElementById('NAME').value;
-                $("#CUSTOMER_ID").val(CUSTOMER_ID); //客户ID
-                $("#CUSTOMER_NAME").val(NAME);		//客户姓名
-            }
-            diag.close();
-        };
-        diag.show();
+                });
+        })
     }
+
+
 </script>
 </body>
 </html>

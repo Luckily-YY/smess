@@ -113,7 +113,7 @@
 									<c:if test="${QX.add == 1 }">
 									<a class="btn btn-mini btn-success" onclick="add();">商品出库</a>
 									</c:if>
-									&nbsp;&nbsp;销售总金额：<font color="red"><b>${ZPRICE }</b></font>&nbsp;元
+									&nbsp;&nbsp;销售总金额：<font color="red"><b>${zprice}</b></font>&nbsp;元
 								</td>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>

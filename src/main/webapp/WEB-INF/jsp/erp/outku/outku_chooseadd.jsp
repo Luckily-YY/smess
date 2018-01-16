@@ -129,7 +129,7 @@
     </c:if>
     <c:if test="${'chooseEdit' == msg }">
         <div style="width: 100%;padding-bottom: 2px;" class="center">
-            <a class="btn btn-mini btn-primary" onclick="edit('${pd.GCOUNT}');">保存</a>
+            <a class="btn btn-mini btn-primary" onclick="edit();">保存</a>
             <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
         </div>
     </c:if>
@@ -160,7 +160,27 @@
                 bg: '#AE81FF',
                 time: 2
             });
-            $("#GOODS").focus();
+            $("#GOODS_ID").focus();
+            return false;
+        }
+        if ($("#OUTPRICE").val() == "") {
+            $("#OUTPRICE").tips({
+                side: 3,
+                msg: '请输入商品出售价格',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTPRICE").focus();
+            return false;
+        }
+        if ($("#OUTCOUNT").val() == "") {
+            $("#OUTCOUNT").tips({
+                side: 3,
+                msg: '请输入商品出售数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTCOUNT").focus();
             return false;
         }
 
@@ -190,7 +210,7 @@
         if (a < 0.00) {
             $("#OUTCOUNT").tips({
                 side: 3,
-                msg: '上架数量不能大于库存数量',
+                msg: '出售数量不能大于库存数量',
                 bg: '#AE81FF',
                 time: 2
             });
@@ -207,69 +227,48 @@
     }
 
         //修改
-        function edit(old,BIANMA) {
-            if ($("#TITLE").val() == "") {
-                $("#TITLE").tips({
+        function edit() {
+            if ($("#GOODS_ID").val() == "") {
+                $("#GOODS_ID").tips({
                     side: 3,
                     msg: '请输入商品名称',
                     bg: '#AE81FF',
                     time: 2
                 });
-                $("#TITLE").focus();
+                $("#GOODS_ID").focus();
                 return false;
             }
-            if ($("#GOODS").val() == "") {
-                $("#GOODS").tips({
+            if ($("#OUTPRICE").val() == "") {
+                $("#OUTPRICE").tips({
                     side: 3,
-                    msg: '请输入商品名称',
+                    msg: '请输入商品出售价格',
                     bg: '#AE81FF',
                     time: 2
                 });
-                $("#GOODS").focus();
+                $("#OUTPRICE").focus();
                 return false;
             }
-            if ($("#BIANMA").val() == "") {
-                $("#BIANMA").tips({
+            if ($("#OUTCOUNT").val() == "") {
+                $("#OUTCOUNT").tips({
                     side: 3,
-                    msg: '请输入商品编码',
+                    msg: '请输入商品出售数量',
                     bg: '#AE81FF',
                     time: 2
                 });
-                $("#BIANMA").focus();
-                return false;
-            }
-            $("#DESCRIPTION").val(getContent());
-            if ($("#DESCRIPTION").val() == "") {
-                $("#DESCRIPTION").tips({
-                    side: 3,
-                    msg: '请输入商品描述',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#DESCRIPTION").focus();
-                return false;
-            }
-            if ($("#SHORTDESC").val() == "") {
-                $("#SHORTDESC").tips({
-                    side: 3,
-                    msg: '请输入简述',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#SHORTDESC").focus();
+                $("#OUTCOUNT").focus();
                 return false;
             }
             $.ajax({
                 type: "POST",
                 url: 'goods/getById.do',
-                data: {GOODS_ID: $("#GOODS").val()},
+                data: {GOODS_ID: $("#GOODS_ID").val()},
                 dataType: 'json',
                 cache: false,
                 success: function (data) {
                     if ("success" == data.result) {
                         $("#ZCOUNT").val(data.pd.ZCOUNT);
                     } else {
-                        $("#GOODS").tips({
+                        $("#GOODS_NAME").tips({
                             side: 3,
                             msg: "此商品不存在",
                             bg: '#FF5080',
@@ -280,50 +279,24 @@
             });
 
             var zcount = $("#ZCOUNT").val();
-            var gcount = $("#GCOUNT").val();
-            var count = (gcount - old).toFixed(2);
-            var newcount = (zcount - count).toFixed(2);
-            if (newcount < 0.00) {
-                $("#GCOUNT").tips({
+            var outcount = $("#OUTCOUNT").val();
+            var a = (zcount - outcount).toFixed(2);
+            if (a < 0.00) {
+                $("#OUTCOUNT").tips({
                     side: 3,
-                    msg: '添加的商品数量不能大于库存数量',
+                    msg: '出售数量不能大于库存数量',
                     bg: '#AE81FF',
                     time: 2
                 });
-                $("#GCOUNT").focus();
+                $("#OUTCOUNT").focus();
                 return false;
             }
-
-                if (BIANMA != $("#BIANMA").val()) {
-                    $.ajax({
-                        type: "POST",
-                        url: 'goods/changeBm.do',
-                        data: {BIANMA: $("#BIANMA").val()},
-                        dataType: 'json',
-                        cache: false,
-                        success: function (data) {
-                            if ("success" == data.result) {
-                                $("#Form").submit();
-                                $("#zhongxin").hide();
-                                $("#zhongxin2").show();
-                            } else {
-                                $("#BIANMA").tips({
-                                    side: 3,
-                                    msg: "此商品编号已被使用,请关闭窗口后重试",
-                                    bg: '#FF5080',
-                                    time: 15
-                                });
-                                $("#BIANMA").focus();
-                                return false;
-                            }
-                        }
-                    });
-                }
-                else {
-                    $("#Form").submit();
-                    $("#zhongxin").hide();
-                    $("#zhongxin2").show();
-                }
+            else {
+                $("#Form").submit();
+                $("#zhongxin").hide();
+                $("#zhongxin2").show();
+                diag.close();
+            }
     }
 
 
@@ -357,12 +330,6 @@
         $("#ZPRICE").val(OUTCOUNT * OUTPRICE);
     }
 
-    //ueditor有标签文本
-    function getContent() {
-        var arr = [];
-        arr.push(UE.getEditor('editor').getContent());
-        return arr.join("");
-    }
 
 </script>
 </body>

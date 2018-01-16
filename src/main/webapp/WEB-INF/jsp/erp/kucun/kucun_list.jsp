@@ -421,21 +421,21 @@
     };
 
     function delthisAll(msg,str) {
-        if (msg == '确定要删除选中的数据吗?') {
-            $.ajax({
-                type: "POST",
-                url: '<%=basePath%>kucun/deleteAll.do',
-                data: {DATA_IDS: str},
-                dataType: 'json',
-                //beforeSend: validateData,
-                cache: false,
-                success: function (data) {
-                    $.each(data.list, function (i, list) {
-                        nextPage(${page.currentPage});
-                    });
-                }
-            });
-        }
+            if (msg == '确定要删除选中的数据吗?') {
+                $.ajax({
+                    type: "POST",
+                    url: '<%=basePath%>kucun/deleteAll.do',
+                    data: {DATA_IDS: str},
+                    dataType: 'json',
+                    //beforeSend: validateData,
+                    cache: false,
+                    success: function (data) {
+                        $.each(data.list, function (i, list) {
+                            nextPage(${page.currentPage});
+                        });
+                    }
+                });
+            }
     }
 
     //导出excel

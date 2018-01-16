@@ -88,19 +88,39 @@ public class OutKuController extends BaseController {
 		return mv;
 	}
 
+	/**修改
+	 * @param
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/chooseEdit")
+	public ModelAndView chooseEdit() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"修改OutKu");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
+		ModelAndView mv = this.getModelAndView();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		pd.put("USERNAME", Jurisdiction.getUsername());		//用户名
+		outkuService.edit(pd);
+		mv.addObject("msg","success");
+		mv.setViewName("save_result");
+		return mv;
+	}
+
 	/**删除
-	 * @param out
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete")
-	public void delete(PrintWriter out) throws Exception{
+	@ResponseBody
+	public Object delete() throws Exception {
 		logBefore(logger, Jurisdiction.getUsername()+"删除OutKu");
-		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		outkuService.delete(pd);
-		out.write("success");
-		out.close();
+		Map<String, String> map = new HashMap<String, String>();
+		String errInfo = "success";
+		map.put("result", errInfo);
+		return AppUtil.returnObject(new PageData(), map);
 	}
 	
 	/**修改
@@ -145,7 +165,7 @@ public class OutKuController extends BaseController {
 		} 
 		pd.put("USERNAME", Jurisdiction.getUsername());
 		PageData jinepd = outkuService.priceSum(pd);	//总金额
-		String zprice = "0";
+		String zprice = "0.00";
 		if(null != jinepd){
 			zprice = jinepd.get("ZPRICE").toString();
 		}
@@ -306,6 +326,47 @@ public class OutKuController extends BaseController {
 		}
 		pd.put("ZPRICE","");
 		mv.addObject("msg", "chooseSave");
+		mv.setViewName("erp/outku/outku_chooseadd");
+		mv.addObject("pd", pd);
+
+		return mv;
+	}
+	/**
+	 * 通过产品id
+	 *
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/goChooseEdit")
+	public ModelAndView goChooseEdit() throws Exception {
+		ModelAndView mv = this.getModelAndView();
+		logBefore(logger, Jurisdiction.getUsername() + "通过产品id获取信息");
+		Map<String, Object> map = new HashMap<String, Object>();
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		PageData pageData = new PageData();
+		pageData = this.getPageData();
+		pageData = kucunService.findByGoodsId(pd);
+		pd = outkuService.findById(pd);
+		String count = pageData.getString("ZCOUNT");
+		String[] str = count.split("\\.");
+		if (str[1].toString().equals("00")) {
+			if (!str[0].isEmpty()) {
+				pd.put("ZCOUNT", str[0]);
+			}
+			else {
+				pd.put("ZCOUNT","0");
+			}
+
+		} else {
+			if(!str[0].isEmpty()){
+				pd.put("ZCOUNT", count);
+			}
+			else {
+				pd.put("ZCOUNT", "0"+count);
+			}
+		}
+		pd.put("PRICE",pageData.getString("PRICE"));
+		mv.addObject("msg", "chooseEdit");
 		mv.setViewName("erp/outku/outku_chooseadd");
 		mv.addObject("pd", pd);
 
