@@ -79,7 +79,16 @@
 		where 
 			INTOKU_ID = #{INTOKU_ID}
 	</select>
-	
+	<!-- 通过商品ID获取数据 -->
+	<select id="findByGoodsId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+			GOODS_ID = #{GOODS_ID }
+	</select>
+
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select

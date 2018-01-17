@@ -31,11 +31,13 @@ setTimeout("top.hangge()",500);
 				<div class="page-content">
 					<div class="row">
 						<div class="col-xs-12">
-							<div  style="width: 800px;padding-top: 15px;">
+							<div  style="width: 1000px;padding-top: 15px;">
 								<table class="table table-striped table-bordered table-hover">
 									<tr>
 										<td style="width: 100px;">总进货金额</td>
 										<td><font style="color: red"><b>${pd.injine }</b></font>&nbsp;元</td>
+										<td style="width: 100px;">库存金额</td>
+										<td><font style="color: red"><b>${pd.kucunjine }</b></font>&nbsp;元</td>
 										<td style="width: 100px;">总销售金额</td>
 										<td><font style="color: red"><b>${pd.outjine }</b></font>&nbsp;元</td>
 										<td style="width: 100px;">总销售利润</td>

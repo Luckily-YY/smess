@@ -7,6 +7,7 @@ import com.chen.smess.domain.model.system.Role;
 import com.chen.smess.domain.model.system.User;
 import com.chen.smess.domain.service.erp.customer.CustomerManager;
 import com.chen.smess.domain.service.erp.intoku.IntoKuManager;
+import com.chen.smess.domain.service.erp.kucun.KucunManager;
 import com.chen.smess.domain.service.erp.outku.OutKuManager;
 import com.chen.smess.domain.service.system.buttonrights.ButtonrightsManager;
 import com.chen.smess.domain.service.system.fhbutton.FhbuttonManager;
@@ -58,7 +59,9 @@ public class LoginController extends BaseController {
 	private IntoKuManager intokuService;
 	@Resource(name="outkuService")
 	private OutKuManager outkuService;
-	
+	@Resource(name="kucunService")
+	private KucunManager kucunService;
+
 	/**访问登录页
 	 * @return
 	 * @throws Exception
@@ -321,7 +324,14 @@ public class LoginController extends BaseController {
 		if(null != outjinepd){
 			outjine = outjinepd.get("ZPRICE").toString();
 		}
-		pd.put("outjine",outjine);						//总销售金额
+		pd.put("outjine",outjine);					//总销售金额
+
+		PageData kucunjinepd = kucunService.priceSum(pd);
+		String kucunjine = "0";
+		if(null != kucunjinepd){
+			kucunjine = kucunjinepd.get("ZPRICE").toString();
+		}
+		pd.put("kucunjine",kucunjine);				//总库存金额
 		pd.put("days", 30);
 		pd.put("newUuserCount", customerService.listAll(pd).size());	//30天内新增客户数
 		PageData outjinepd30 = outkuService.priceSum(pd);
@@ -330,8 +340,10 @@ public class LoginController extends BaseController {
 			outjine30 = outjinepd30.get("ZPRICE").toString();
 		}
 		pd.put("outjine30",outjine30);						//30天总销售金额
-		DecimalFormat df = new DecimalFormat("#0.00");  
-		pd.put("lirun", df.format(Double.parseDouble(outjine)-Double.parseDouble(injine))); //总销售利润
+		DecimalFormat df = new DecimalFormat("#0.00");
+		String b1 = df.format(Double.parseDouble(kucunjine)+Double.parseDouble(outjine));
+		String b2 = df.format(Double.parseDouble(b1)-Double.parseDouble(injine));
+		pd.put("lirun", b2); //总销售利润
 		mv.addObject("pd",pd);
 		PageData ympd = new PageData();
 		ympd.put("USERNAME", USERNAME);

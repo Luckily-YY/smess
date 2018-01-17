@@ -44,7 +44,7 @@
 				            swfobject.addDomLoadEvent(function () {
 								var swf = new fullAvatarEditor("plugins/photoEditor/fullAvatarEditor.swf","plugins/photoEditor/expressInstall.swf", "swfContainer", {
 									    id : 'swf',
-										upload_url : '<%=basePath%>plugins/photoEditor/upload.jsp?userid=999',	//上传接口
+										upload_url : '<%=basePath%>plugins/photoEditor/upload.jsp?userid='+${pd.USER_ID},	//上传接口
 										method : 'post',	//传递到上传接口中的查询参数的提交方式。更改该值时，请注意更改上传接口中的查询参数的接收方式
 										src_upload : 2,		//是否上传原图片的选项，有以下值：0-不上传；1-上传；2-显示复选框由用户选择
 										avatar_box_border_width : 0,
@@ -77,12 +77,12 @@
 													if(msg.content.sourceUrl)
 													{
 														//alert("原图已成功保存至服务器，url为：\n" + msg.content.sourceUrl+"\n\n" + "头像已成功保存至服务器，url为：\n" + msg.content.avatarUrls.join("\n\n")+"\n\n");
-														savePhoto(msg.content.sourceUrl+",fh,"+msg.content.avatarUrls.join(",fh,"),"1");
+														savePhoto(msg.content.sourceUrl+",smess,"+msg.content.avatarUrls.join(",smess,"),"1");
 													}
 													else
 													{
 														//alert("头像已成功保存至服务器，url为：\n" + msg.content.avatarUrls.join("\n\n")+"\n\n");
-														savePhoto(msg.content.avatarUrls.join(",fh,"),"2");
+														savePhoto(msg.content.avatarUrls.join(",smess,"),"2");
 													}
 												}
 											break;

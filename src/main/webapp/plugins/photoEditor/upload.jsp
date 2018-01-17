@@ -7,9 +7,9 @@
 <%@ page import="org.apache.commons.fileupload.servlet.*"%>
 <%@ page import="org.apache.commons.fileupload.util.*"%>
 <%@ page import="com.alibaba.fastjson.*"%>
+<%@ page import="com.sun.java.util.jar.pack.Package" %>
 <%
 String contentType = request.getContentType();
-
 if ( contentType.indexOf("multipart/form-data") >= 0 )
 {
 	Result result = new Result();
@@ -59,6 +59,7 @@ if ( contentType.indexOf("multipart/form-data") >= 0 )
 		//如果是原始图片 file 域的名称或者以默认的头像域名称的部分“__avatar”打头(默认的头像域名称：__avatar1,2,3...，可在插件配置参数中自定义，参数名：avatar_field_names)
 		else if ( isSourcePic || fieldName.startsWith("__avatar") )
 		{
+
 			String virtualPath = "uploadFiles/uploadUserPhoto/jsp_avatar" + avatarNumber + "_" + fileName + ".jpg";
 			//原始图片（默认的 file 域的名称是__source，可在插件配置参数中自定义。参数名：src_field_name）。
 			if( isSourcePic )
@@ -111,10 +112,6 @@ if ( contentType.indexOf("multipart/form-data") >= 0 )
 	}
 	result.success = true;
 	result.msg = "Success!";
-	/*
-		To Do...可在此处处理储存事项
-	*/
-	//返回图片的保存结果（返回内容为json字符串，可自行构造，该处使用fastjson构造）
 	out.println(JSON.toJSONString(result));
 }
 %>

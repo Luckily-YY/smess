@@ -79,4 +79,10 @@ public interface KucunManager {
      * @return
      */
     PageData findByGoodsId(PageData pd) throws Exception;
+
+    /**总金额
+     * @param pd
+     * @throws Exception
+     */
+    public PageData priceSum(PageData pd) throws Exception;
 }

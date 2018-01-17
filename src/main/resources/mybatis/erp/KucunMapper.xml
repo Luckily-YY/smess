@@ -216,4 +216,28 @@
         KUCUN_ID = #{KUCUN_ID}
     </update>
 
+    <!-- 总金额 -->
+    <select id="priceSum" parameterType="pd" resultType="pd">
+        select
+        sum(ZPRICE) ZPRICE
+        from
+        <include refid="tableName"></include> a
+        left join cp_goods b
+        on a.GOODS_ID = b.GOODS_ID
+        where 1=1
+        <if test="keywords!= null and keywords != ''"><!-- 关键词检索 -->
+            and
+            (
+            b.TITLE LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+            )
+        </if>
+        <if test="lastStart!=null and lastStart!=''"><!-- 开始时间检索 -->
+            and a.INTIME &gt;= #{lastStart}
+        </if>
+        <if test="lastEnd!=null and lastEnd!=''"><!-- 结束时间检索 -->
+            and a.INTIME &lt;= #{lastEnd}
+        </if>
+
+    </select>
+
 </mapper>

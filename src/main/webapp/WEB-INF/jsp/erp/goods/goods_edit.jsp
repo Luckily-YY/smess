@@ -315,7 +315,6 @@
             $("#GCOUNT").focus();
             return false;
         }
-
         $.ajax({
             type: "POST",
             url: 'goods/findsameBm.do',
@@ -328,7 +327,7 @@
                     $("#zhongxin").hide();
                     $("#zhongxin2").show();
                 }
-                if ("IDerror" == data.result) {
+                else if ("IDerror" == data.result) {
                     $("#GOODS").tips({
                         side: 3,
                         msg: '该商品已经上架，请直接修改',

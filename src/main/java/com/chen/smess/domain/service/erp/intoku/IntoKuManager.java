@@ -47,6 +47,12 @@ public interface IntoKuManager{
 	 */
 	public PageData findById(PageData pd)throws Exception;
 	
+	/**通过商品id获取数据
+	 * @param pd
+	 * @throws Exception
+	 */
+	public PageData findByGoodsId(PageData pd)throws Exception;
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

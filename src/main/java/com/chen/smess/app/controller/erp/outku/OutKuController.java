@@ -39,10 +39,12 @@ public class OutKuController extends BaseController {
 	private KucunManager kucunService;
 	@Resource(name="customerService")
 	private CustomerManager customerService;
+
+
 	/**保存
 	 * @param
 	 * @throws Exception
-	 */
+	 *//*
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
 		logBefore(logger, Jurisdiction.getUsername()+"新增OutKu");
@@ -59,13 +61,15 @@ public class OutKuController extends BaseController {
 		pd.put("USERNAME", Jurisdiction.getUsername());		//用户名
 		outkuService.save(pd);
 		//消减库存
-		int zs = Integer.parseInt(goodpd.get("ZCOUNT").toString())-Integer.parseInt(pd.get("INCOUNT").toString());
+		BigDecimal zcount = new BigDecimal(goodpd.get("ZCOUNT").toString());
+		BigDecimal incount = new BigDecimal(pd.get("INCOUNT").toString());
+		String zs = zcount.subtract(incount).toString();
 		goodpd.put("ZCOUNT", zs);
-		goodsService.editKuCun(goodpd);
+		goodsService.editCountNum(goodpd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
-	}
+	}*/
 	/**保存
 	 * @param
 	 * @throws Exception
@@ -254,20 +258,9 @@ public class OutKuController extends BaseController {
 			String count = varList.get(i).getString("ZCOUNT");
 			String[] str = count.split("\\.");
 			if (str[1].toString().equals("00")) {
-				if(!str[0].isEmpty()) {
 					varList.get(i).put("ZCOUNT", str[0]);
-				}
-				else {
-					varList.get(i).put("ZCOUNT", "0");
-				}
 			} else {
-				if(!str[0].isEmpty()){
 					varList.get(i).put("ZCOUNT", count);
-				}
-				else
-				{
-					varList.get(i).put("ZCOUNT", "0"+count);
-				}
 			}
 		}
 		mv.setViewName("erp/outku/salesReport");
@@ -309,20 +302,10 @@ public class OutKuController extends BaseController {
 		String count = pd.getString("ZCOUNT");
 		String[] str = count.split("\\.");
 		if (str[1].toString().equals("00")) {
-			if (!str[0].isEmpty()) {
 				pd.put("ZCOUNT", str[0]);
-			}
-			else {
-				pd.put("ZCOUNT","0");
-			}
 
 		} else {
-			if(!str[0].isEmpty()){
 				pd.put("ZCOUNT", count);
-			}
-			else {
-				pd.put("ZCOUNT", "0"+count);
-			}
 		}
 		pd.put("ZPRICE","");
 		mv.addObject("msg", "chooseSave");
@@ -350,20 +333,9 @@ public class OutKuController extends BaseController {
 		String count = pageData.getString("ZCOUNT");
 		String[] str = count.split("\\.");
 		if (str[1].toString().equals("00")) {
-			if (!str[0].isEmpty()) {
 				pd.put("ZCOUNT", str[0]);
-			}
-			else {
-				pd.put("ZCOUNT","0");
-			}
-
 		} else {
-			if(!str[0].isEmpty()){
 				pd.put("ZCOUNT", count);
-			}
-			else {
-				pd.put("ZCOUNT", "0"+count);
-			}
 		}
 		pd.put("PRICE",pageData.getString("PRICE"));
 		mv.addObject("msg", "chooseEdit");
@@ -433,22 +405,19 @@ public class OutKuController extends BaseController {
 				outkuService.edit(pd);
 				PageData kucunPd = kucunService.findByGoodsId(pd);
 				String kucunCount = kucunPd.getString("ZCOUNT");
-				String[] k = kucunCount.split("\\.");
-				if(k[0].isEmpty())
-				{
-					kucunCount = "0."+k[1];
-				}
+
 				String outCount = pd.getString("OUTCOUNT");
-				String[] o = outCount.split("\\.");
-				if(o[0].isEmpty())
-				{
-					outCount = "0."+o[1];
-				}
+
 				BigDecimal outDecimal = new BigDecimal(outCount);
 				BigDecimal kucuncountDecimal = new BigDecimal(kucunCount);
 				String newCount = kucuncountDecimal.subtract(outDecimal).toString();
+				String price = kucunPd.getString("PRICE");
+				BigDecimal b1 = new BigDecimal(price);
+				BigDecimal b2 = new BigDecimal(newCount);
+				String zprice = b1.multiply(b2).toString();
+				kucunPd.put("ZPRICE",zprice);
 				kucunPd.put("ZCOUNT",newCount);
-				kucunService.editKuCun(kucunPd);
+				kucunService.edit(kucunPd);
 			}
 			map.put("msg", "ok");
 		} else {

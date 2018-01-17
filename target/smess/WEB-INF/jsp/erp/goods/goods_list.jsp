@@ -112,6 +112,13 @@
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 													</a>
 													</c:if>
+
+													<c:if test="${QX.edit == 1 }">
+														<a class="btn btn-xs btn-warning" title="下架" onclick="down('${var.GOODS_ID}');">
+															<i class="ace-icon fa fa-hand-o-down bigger-120" title="下架"></i>
+														</a>
+													</c:if>
+
 													<c:if test="${QX.del == 1 }">
 													<a class="btn btn-xs btn-danger" onclick="del('${var.GOODS_ID}');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
@@ -141,6 +148,16 @@
 																</a>
 															</li>
 															</c:if>
+															<c:if test="${QX.edit == 1 }">
+																<li>
+																	<a style="cursor:pointer;" onclick="down('${var.GOODS_ID}');" class="tooltip-success" data-rel="tooltip" title="下架">
+																	<span class="orange">
+																		<i class="ace-icon fa fa-shopping-cart bigger-120"></i>
+																	</span>
+																	</a>
+																</li>
+															</c:if>
+
 															<c:if test="${QX.del == 1 }">
 															<li>
 																<a style="cursor:pointer;" onclick="del('${var.GOODS_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
@@ -296,8 +313,36 @@
 			 };
 			 diag.show();
 		}
-		
-		//商品二维码
+
+        //下架
+        function down(id){
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="商品下架";
+            diag.URL = '<%=basePath%>goods/goDown.do?GOODS_ID='+id;
+            diag.Width = 540;
+            diag.Height = 360;
+            diag.Modal = true;				//有无遮罩窗口
+            diag. ShowMaxButton = true;	//最大化按钮
+            diag.ShowMinButton = true;		//最小化按钮
+            diag.CancelEvent = function(){ //关闭事件
+                if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
+                    if('${page.currentPage}' == '0'){
+                        top.jzts();
+                        setTimeout("self.location=self.location",100);
+                    }else{
+                        nextPage(${page.currentPage});
+                    }
+                }
+                diag.close();
+            };
+            diag.show();
+        }
+
+
+
+        //商品二维码
 		function erweima(GOODS_ID){
 			 top.jzts();
 			 var url = '<%=basePath%>appGoods/goods.do?GOODS_ID='+GOODS_ID;

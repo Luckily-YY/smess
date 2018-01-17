@@ -134,12 +134,12 @@ function readFhsms(){
 }
 
 //修改头像
-function editPhoto(){
+function editPhoto(id){
 	 jzts();
 	 var diag = new top.Dialog();
 	 diag.Drag=true;
 	 diag.Title ="修改头像";
-	 diag.URL = locat+'/head/editPhoto.do';
+	 diag.URL = locat+'/head/editPhoto.do?USER_ID = '+id;
 	 diag.Width = 650;
 	 diag.Height = 530;
 	 diag. ShowMaxButton = true;	//最大化按钮

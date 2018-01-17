@@ -76,7 +76,7 @@
 	</update>
 
 	<!-- 修改库存 -->
-	<update id="editKuCun" parameterType="pd">
+	<update id="editCountNum" parameterType="pd">
 		update
 		<include refid="tableName"></include>
 		set

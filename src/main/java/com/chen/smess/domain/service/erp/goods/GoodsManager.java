@@ -33,7 +33,7 @@ public interface GoodsManager{
 	 * @param pd
 	 * @throws Exception
 	 */
-	public void editKuCun(PageData pd)throws Exception;
+	public void editCountNum(PageData pd)throws Exception;
 	
 	/**列表
 	 * @param page

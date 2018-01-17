@@ -47,8 +47,8 @@ public class GoodsService implements GoodsManager {
 	 * @param pd
 	 * @throws Exception
 	 */
-	public void editKuCun(PageData pd)throws Exception{
-		dao.update("GoodsMapper.editKuCun", pd);
+	public void editCountNum(PageData pd)throws Exception{
+		dao.update("GoodsMapper.editCountNum", pd);
 	}
 	
 	/**列表

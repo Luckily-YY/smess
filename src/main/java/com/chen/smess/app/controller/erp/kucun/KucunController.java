@@ -62,17 +62,9 @@ public class KucunController extends BaseController {
             String count = varList.get(i).getString("ZCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                if (str[0].isEmpty()) {
-                    varList.get(i).put("ZCOUNT", "0");
-                } else {
                     varList.get(i).put("ZCOUNT", str[0]);
-                }
             } else {
-                if (str[0].isEmpty()) {
-                    varList.get(i).put("ZCOUNT", "0." + str[1]);
-                } else {
                     varList.get(i).put("ZCOUNT", count);
-                }
             }
         }
         mv.setViewName("erp/kucun/kucun_list");
@@ -177,17 +169,9 @@ public class KucunController extends BaseController {
         String count = pd.getString("ZCOUNT");
         String[] str = count.split("\\.");
         if (str[1].toString().equals("00")) {
-            if (!str[0].isEmpty()) {
                 pd.put("ZCOUNT", str[0]);
-            } else {
-                pd.put("ZCOUNT", "0");
-            }
         } else {
-            if (!str[0].isEmpty()) {
                 pd.put("ZCOUNT", count);
-            } else {
-                pd.put("ZCOUNT", "0" + count);
-            }
         }
         List<PageData> spbrandList = spbrandService.listAll();    //品牌列表
         List<PageData> sptypeList = sptypeService.listAll();
@@ -317,17 +301,9 @@ public class KucunController extends BaseController {
             String count = varOList.get(i).getString("ZCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                if (!str[0].isEmpty()) {
                     vpd.put("var2", str[0] + "(" + varOList.get(i).getString("UNAME") + ")");    //2
-                } else {
-                    vpd.put("var2", "0" + "(" + varOList.get(i).getString("UNAME") + ")");    //2
-                }
             } else {
-                if (!str[0].isEmpty()) {
                     vpd.put("var2", count + "(" + varOList.get(i).getString("UNAME") + ")");    //2
-                } else {
-                    vpd.put("var2", "0" + count + "(" + varOList.get(i).getString("UNAME") + ")");    //2
-                }
             }
             vpd.put("var3", varOList.get(i).getString("PRICE"));        //3
             vpd.put("var4", varOList.get(i).getString("TNAME"));        //4

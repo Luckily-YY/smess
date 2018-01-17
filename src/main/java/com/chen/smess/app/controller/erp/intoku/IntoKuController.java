@@ -7,8 +7,6 @@ import com.chen.smess.domain.service.erp.goods.GoodsManager;
 import com.chen.smess.domain.service.erp.intoku.IntoKuManager;
 import com.chen.smess.domain.service.erp.kucun.impl.KucunService;
 import com.chen.smess.domain.service.erp.sptype.impl.SptypeService;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-import org.apache.poi.util.SystemOutLogger;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -18,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
-import javax.print.attribute.standard.PDLOverrideSupported;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -74,6 +72,14 @@ public class IntoKuController extends BaseController {
                 vpd.put("ZCOUNT", pageData.get(i).getString("ZCOUNT"));
                 vpd.put("INCOUNT", pd.getString("INCOUNT"));
                 kucunService.editZCOUNT(vpd);
+                PageData kucun = kucunService.findById(vpd);
+                String kucunCount = kucun.getString("ZCOUNT");
+
+                BigDecimal b1 = new BigDecimal(kucunCount);
+                BigDecimal b2 = new BigDecimal( pageData.get(i).getString("ZCOUNT"));
+                String zprice = b1.multiply(b2).toString();
+                kucun.put("ZPRICE",zprice);
+                kucunService.edit(kucun);
             }
         } else if (pageData == null || pageData.size() == 0) {
             pd.put("KUCUN_ID", this.get32UUID());
@@ -170,20 +176,9 @@ public class IntoKuController extends BaseController {
             String count = varList.get(i).getString("INCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                if(!str[0].isEmpty()){
                     varList.get(i).put("INCOUNT", str[0]);
-                }
-                else {
-                    varList.get(i).put("INCOUNT", "0");
-                }
             } else {
-                if (!str[0].isEmpty()) {
                     varList.get(i).put("INCOUNT", count);
-                }
-                else
-                {
-                    varList.get(i).put("INCOUNT", "0"+count);
-                }
             }
         }
         mv.setViewName("erp/intoku/intoku_list");
@@ -230,20 +225,10 @@ public class IntoKuController extends BaseController {
         String count = pd.getString("INCOUNT");
         String[] str = count.split("\\.");
         if (str[1].toString().equals("00")) {
-            if (!str[0].isEmpty()) {
                 pd.put("INCOUNT", str[0]);
-            }
-            else {
-                pd.put("INCOUNT","0");
-            }
 
         } else {
-            if(!str[0].isEmpty()){
                 pd.put("INCOUNT", count);
-            }
-            else {
-                pd.put("INCOUNT", "0"+count);
-            }
         }
         List<PageData> sptypeList = sptypeService.listAll();        //类别列表
         mv.setViewName("erp/intoku/intoku_edit");

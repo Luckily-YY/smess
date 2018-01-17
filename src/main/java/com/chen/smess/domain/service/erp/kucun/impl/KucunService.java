@@ -107,4 +107,12 @@ public class KucunService implements KucunManager{
     public void editZCOUNT(PageData pd)throws Exception{
         dao.update("KucunMapper.editZCOUNT", pd);
     }
+
+    /**总金额
+     * @param pd
+     * @throws Exception
+     */
+    public PageData priceSum(PageData pd) throws Exception {
+        return (PageData)dao.findForObject("KucunMapper.priceSum", pd);
+    }
 }

@@ -69,7 +69,11 @@ public class IntoKuService implements IntoKuManager {
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("IntoKuMapper.findById", pd);
 	}
-	
+
+	public PageData findByGoodsId(PageData pd) throws Exception {
+		return (PageData)dao.findForObject("IntoKuMapper.findByGoodsId", pd);
+	}
+
 	/**批量删除
 	 * @param ArrayDATA_IDS
 	 * @throws Exception

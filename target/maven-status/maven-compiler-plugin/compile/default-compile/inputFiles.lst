@@ -26,7 +26,6 @@ D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domai
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\app\controller\erp\kucun\KucunController.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\pictures\impl\PicturesService.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\plugin\websocketOnline\OnlineChatServerPool.java
-D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\filter\startFilter.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\erp\spbrand\impl\SpbrandService.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\erp\level\LevelManager.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\fhdb\timingbackup\TimingBackUpManager.java
@@ -92,6 +91,7 @@ D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domai
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\system\role\impl\RoleService.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\app\controller\system\secCode\SecCodeController.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\system\fhbutton\FhbuttonManager.java
+D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\erp\kucun\KucunManager.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\system\fhlog\impl\FHlogService.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\erp\remarks\impl\RemarksService.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\common\utils\Uploader.java
@@ -104,6 +104,7 @@ D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domai
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\app\controller\system\dictionaries\DictionariesController.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\common\utils\UuidUtil.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\common\filter\startFilter.java
+D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\erp\kucun\impl\KucunService.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\app\controller\erp\goodsmx\GoodsMxController.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\erp\outku\OutKuManager.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\common\utils\mail\SimpleMailSender.java
@@ -113,7 +114,6 @@ D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domai
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\service\erp\customer\CustomerManager.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\mapper\DAO.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\app\controller\system\login\LoginController.java
-D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\filter\LoginFilter.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\common\utils\FileUtil.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\app\controller\erp\remarks\RemarksController.java
 D:\ProgramFiles\Workspaces\IdeaProjects\smess\src\main\java\com\chen\smess\domain\model\system\Menu.java

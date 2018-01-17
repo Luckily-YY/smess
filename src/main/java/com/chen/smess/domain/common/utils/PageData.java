@@ -55,7 +55,7 @@ public class PageData extends HashMap implements Map{
 		}
 		if(obj instanceof Double)
 		{
-			DecimalFormat format = new DecimalFormat("#.00");
+			DecimalFormat format = new DecimalFormat("#0.00");
 			return format.format(obj);
 		}
 		else if(obj instanceof Integer)

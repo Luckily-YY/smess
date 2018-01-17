@@ -117,7 +117,7 @@
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.settings-skin.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.widget-on-reload.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.searchbox-autocomplete.js"></script>
-		<link rel="stylesheet" href="static/ace/css/ace.onpage-help.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/static/ace/css/ace.onpage-help.css" />
 		<script type="text/javascript"> ace.vars['base'] = '..'; </script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/elements.onpage-help.js"></script>
 		<script src="${pageContext.request.contextPath}/static/ace/js/ace/ace.onpage-help.js"></script>

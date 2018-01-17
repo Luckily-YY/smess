@@ -1,9 +1,11 @@
 package com.chen.smess.app.controller.erp.goods;
 
+import com.alibaba.druid.sql.dialect.postgresql.ast.stmt.PGSelectQueryBlock;
 import com.chen.smess.app.controller.base.BaseController;
 import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
+import com.chen.smess.domain.service.erp.intoku.IntoKuManager;
 import com.chen.smess.domain.service.erp.kucun.KucunManager;
 import com.chen.smess.domain.service.erp.spbrand.SpbrandManager;
 import com.chen.smess.domain.service.erp.sptype.SptypeManager;
@@ -11,6 +13,7 @@ import com.chen.smess.domain.service.erp.spunit.SpunitManager;
 import com.chen.smess.domain.service.pictures.PicturesManager;
 import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.ZoneIdEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -49,6 +52,8 @@ public class GoodsController extends BaseController {
     private SpunitManager spunitService;
     @Resource(name = "kucunService")
     private KucunManager kucunService;
+    @Resource(name = "intokuService")
+    private IntoKuManager intokuService;
 
     /**
      * 保存
@@ -74,12 +79,84 @@ public class GoodsController extends BaseController {
         Double newzcount = zcount.subtract(gcount).doubleValue();
         PageData pd2 = new PageData();
         pd2.put("KUCUN_ID", pd.getString("KUCUN_ID"));
+        pd2 = kucunService.findById(pd2);
         pd2.put("ZCOUNT", newzcount);
-        kucunService.editKuCun(pd2);
+        String price = goods.getString("PRICE");
+        BigDecimal b1 = new BigDecimal(price);
+        BigDecimal b2 = new BigDecimal(newzcount.toString());
+        String zprice = b1.multiply(b2).toString();
+        pd2.put("ZPRICE",zprice);
+        kucunService.edit(pd2);
         mv.addObject("msg", "success");
         mv.setViewName("save_result");
         return mv;
     }
+    /**
+     * 保存下架数量
+     *
+     * @param
+     * @throws Exception
+     */
+    @RequestMapping(value = "/down")
+    public ModelAndView down() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "修改Goods");
+        if (!Jurisdiction.buttonJurisdiction(menuUrl, "edit")) {
+            return null;
+        } //校验权限
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        PageData goodsPage = goodsService.findById(pd);
+            String goodsold = goodsPage.getString("GCOUNT");
+            PageData kucunPage = kucunService.findByGoodsId(pd);
+        if(kucunPage!=null) {
+            String kucunold = kucunPage.getString("ZCOUNT");
+
+            String goodsNum = pd.getString("GCOUNT");
+            BigDecimal gold = new BigDecimal(goodsold);//架上原数量
+            BigDecimal gnew = new BigDecimal(goodsNum);//下架数量
+            BigDecimal kucunadd = new BigDecimal(kucunold);//库存原数量
+            String goodsnew = gold.subtract(gnew).toString();//架上新数量
+            String kucun = kucunadd.add(gnew).toString();//库存新数量
+            BigDecimal b1 = new BigDecimal(kucun);
+            BigDecimal b2 = new BigDecimal(kucunPage.getString("PRICE"));
+            String price = b1.multiply(b2).toString();
+            kucunPage.put("ZCOUNT", kucun);
+            kucunPage.put("ZPRICE",price);
+            goodsPage.put("GCOUNT", goodsnew);
+            goodsService.editCountNum(goodsPage);
+            kucunService.edit(kucunPage);
+            mv.addObject("msg", "success");
+            mv.setViewName("save_result");
+            return mv;
+        }
+        else {
+            String goodsNum = pd.getString("GCOUNT");
+            BigDecimal gold = new BigDecimal(goodsold);//架上原数量
+            BigDecimal gnew = new BigDecimal(goodsNum);//下架数量
+            String goodsnew = gold.subtract(gnew).toString();//架上新数量
+            goodsPage.put("GCOUNT", goodsnew);
+            goodsService.editCountNum(goodsPage);
+
+            pd.put("KUCUN_ID", this.get32UUID());
+            PageData intoku = intokuService.findByGoodsId(pd);
+            pd.put("GOODS_NAME", intoku.getString("GOODS_NAME"));
+            pd.put("PRICE",intoku.getString("PRICE"));
+            BigDecimal b1 = new BigDecimal(intoku.getString("PRICE"));
+            BigDecimal b2 = new BigDecimal(pd.getString("GCOUNT"));
+            String zprice = b1.multiply(b2).toString();
+            pd.put("ZPRICE",zprice);
+            pd.put("ZCOUNT",goodsNum);
+            pd.put("SPTYPE_ID",goodsPage.getString("SPTYPE_ID"));
+            pd.put("SPBRAND_ID",goodsPage.getString("SPBRAND_ID"));
+            pd.put("SPUNIT_ID",goodsPage.getString("SPUNIT_ID"));
+            kucunService.save(pd);
+            mv.addObject("msg", "success");
+            mv.setViewName("save_result");
+            return mv;
+        }
+    }
+
 
     /**
      * 修改
@@ -101,7 +178,6 @@ public class GoodsController extends BaseController {
         PageData oldpd = new PageData();
         oldpd = goodsService.findById(pd);
         pd.put("TITLE", kucunpd.get("GOODS_NAME"));
-        System.out.println(pd.getString("GCOUNT")+"-------------------");
         goodsService.edit(pd);
 
         BigDecimal zcount = new BigDecimal( kucunpd.getString("ZCOUNT"));
@@ -112,15 +188,19 @@ public class GoodsController extends BaseController {
         String a = format.format(newZ);
         BigDecimal newa = new BigDecimal(a);
         Double newZcount = zcount.subtract(newa).doubleValue();
-        PageData pd2 = new PageData();
-        pd2.put("KUCUN_ID", kucunpd.getString("KUCUN_ID"));
-        pd2.put("ZCOUNT", newZcount);
-        kucunService.editKuCun(pd2);
+        String price = kucunpd.getString("PRICE");
+        BigDecimal b1 = new BigDecimal(newZcount.toString());
+        BigDecimal b2 = new BigDecimal(price);
+        String zprice = b1.multiply(b2).toString();
+        kucunpd.put("ZPRICE", zprice);
+        kucunpd.put("ZCOUNT",newcount);
+        kucunService.editKuCun(kucunpd);
 
         mv.addObject("msg", "success");
         mv.setViewName("save_result");
         return mv;
     }
+
 
 
     /**
@@ -212,19 +292,9 @@ public class GoodsController extends BaseController {
             String count = varList.get(i).getString("GCOUNT");
             String[] str = count.split("\\.");
             if (str[1].toString().equals("00")) {
-                if(!str[0].isEmpty()) {
-                    varList.get(i).put("GCOUNT", str[0]);
-                }
-                else {
-                    varList.get(i).put("GCOUNT", "0");
-                }
+                varList.get(i).put("GCOUNT", str[0]);
             } else {
-                if(!str[0].isEmpty()) {
                     varList.get(i).put("GCOUNT", count);
-                }
-                else {
-                    varList.get(i).put("GCOUNT", "0"+count);
-                }
             }
            // System.out.println("-------------------"+varList.get(i).getString("BIANMA")+"--------------------");
         }
@@ -267,6 +337,29 @@ public class GoodsController extends BaseController {
         mv.addObject("spunitList", spunitList);
         return mv;
     }
+    /**
+     * 去下架页面
+     *
+     * @param
+     * @throws Exception
+     */
+    @RequestMapping(value = "/goDown")
+    public ModelAndView goDown() throws Exception {
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        PageData pageData = goodsService.findById(pd);
+        String count = pageData.getString("GCOUNT");
+        String[] str = count.split("\\.");
+        if (str[1].toString().equals("00")) {
+                pageData.put("GCOUNT", str[0]);
+        } else {
+                pageData.put("GCOUNT", count);
+        }
+        mv.setViewName("erp/goods/goods_down");
+        mv.addObject("pd", pageData);
+        return mv;
+    }
 
     /**
      * 去修改页面
@@ -283,19 +376,9 @@ public class GoodsController extends BaseController {
         String count = pd.getString("GCOUNT");
         String[] str = count.split("\\.");
         if (str[1].toString().equals("00")) {
-            if(!str[0].isEmpty()) {
                 pd.put("GCOUNT", str[0]);
-            }
-            else {
-                pd.put("GCOUNT","0");
-            }
         } else {
-            if(!str[0].isEmpty()) {
                 pd.put("GCOUNT", count);
-            }
-            else {
-                pd.put("GCOUNT", "0"+count);
-            }
         }
         PageData list = kucunService.findByGoodsId(pd);
         List<PageData> spbrandList = spbrandService.listAll();    //品牌列表
@@ -304,20 +387,11 @@ public class GoodsController extends BaseController {
         String kucuncount = list.getString("ZCOUNT");
         String[] strs = kucuncount.split("\\.");
         if (strs[1].toString().equals("00")) {
-            if(!str[0].isEmpty()) {
                 pd.put("ZCOUNT", strs[0]);
-            }
-            else {
-                pd.put("ZCOUNT", "0");
-            }
         } else {
-            if(!str[0].isEmpty()) {
                 pd.put("ZCOUNT", kucuncount);
-            }
-            else {
-                pd.put("ZCOUNT", "0"+kucuncount);
-            }
         }
+
         pd.put("PRICE", list.getString("PRICE"));
         mv.setViewName("erp/goods/goods_edit");
         mv.addObject("msg", "edit");
@@ -417,6 +491,29 @@ public class GoodsController extends BaseController {
         String errInfo = "success";
         //从库存读取数据
         PageData pageData = kucunService.findByGoodsId(pd);
+        if (pageData != null) {
+            map.put("pd", pageData);
+        } else {
+            errInfo = "errer";
+        }
+        map.put("result", errInfo);
+        return AppUtil.returnObject(new PageData(), map);
+    }
+    /**
+     * 通过产品id查询架上数量
+     *
+     * @throws Exception
+     */
+    @RequestMapping(value = "/checkById")
+    @ResponseBody
+    public Object checkById() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "通过产品id获取信息");
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        String errInfo = "success";
+        //从库存读取数据
+        PageData pageData = goodsService.findById(pd);
         if (pageData != null) {
             map.put("pd", pageData);
         } else {
