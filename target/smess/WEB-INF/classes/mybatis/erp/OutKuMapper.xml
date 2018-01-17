@@ -146,6 +146,8 @@
 		<if test="days!=null and days!=''"><!-- 几天内 -->
 			and DATE_SUB(CURDATE(), INTERVAL ${days} DAY) &lt;= date(OUTTIME)
 		</if>
+		AND
+		CUSTOMER_ID is not null
 	</select>
 
 	<!-- 列表(全部) -->
@@ -183,6 +185,8 @@
 		<if test="pd.forderby!=null and pd.forderby!=''"><!-- 排序 -->
 			${pd.forderby}
 		</if>
+		WHERE
+		CUSTOMER_ID is not null
 	</select>
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">

@@ -398,6 +398,13 @@ public class OutKuController extends BaseController {
 			{
 				pd.put("OUTKU_ID",ArrayDATA_IDS[i]);
 				pd = outkuService.findById(pd);
+				String outprice = pd.getString("ZPRICE");
+				String money = customerDate.getString("MONEY");
+				BigDecimal outmoney = new BigDecimal(outprice);
+				BigDecimal custmoney = new BigDecimal(money);
+				String newmony = custmoney.add(outmoney).toString();
+				customerDate.put("MONEY",newmony);
+				customerService.edit(customerDate);
 				pd.put("CUSTOMER_NAME",customerDate.getString("NAME"));
 				pd.put("CUSTOMER_ID",customerDate.getString("CUSTOMER_ID"));
 				pd.put("OUTTIME", Tools.date2Str(new Date()));		//出库时间
@@ -418,6 +425,7 @@ public class OutKuController extends BaseController {
 				kucunPd.put("ZPRICE",zprice);
 				kucunPd.put("ZCOUNT",newCount);
 				kucunService.edit(kucunPd);
+
 			}
 			map.put("msg", "ok");
 		} else {
