@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SaleMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		ERP_SALE
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		SALE_ID,
+		GOODS_ID,
+		SALECOUNT,
+		PRICE,
+		ZPRICE,
+		SALETIME,
+		GOODS_NAME,
+		USERNAME
+	</sql>
+
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{SALE_ID},
+		#{GOODS_ID},
+		#{SALECOUNT},
+		#{PRICE},
+		#{ZPRICE},
+		#{SALETIME},
+		#{GOODS_NAME},
+		#{USERNAME}
+	</sql>
+
+
+
+</mapper>

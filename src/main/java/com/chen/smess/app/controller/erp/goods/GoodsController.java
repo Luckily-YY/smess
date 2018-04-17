@@ -220,7 +220,7 @@ public class GoodsController extends BaseController {
         pd = this.getPageData();
         String errInfo = "success";
         //当商品下面有图片 或者 此商品已经上架 或者 库存不为0时 不能删除
-        if (Integer.parseInt(picturesService.findCount(pd).get("zs").toString()) > 0 || Integer.parseInt(goodsService.findById(pd).get("GCOUNT").toString()) > 0) {
+        if (Double.parseDouble(picturesService.findCount(pd).get("zs").toString()) > 0.00 || Double.parseDouble(goodsService.findById(pd).get("GCOUNT").toString()) > 0) {
             errInfo = "false";
         } else {
             goodsService.delete(pd);

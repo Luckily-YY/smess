@@ -74,7 +74,10 @@
         <audio src="static/login/music/fh1.mp3" autoplay=""></audio>
     </div>
 </c:if>
-<canvas class="cavs"></canvas>
+
+<%--屏幕出现特殊星纹游动效果--%>
+<%--<canvas class="cavs"></canvas>--%>
+
 <div style="width:100%;text-align: center;margin: 0 auto;position: absolute;">
     <!-- 登录 -->
     <div id="windows1">

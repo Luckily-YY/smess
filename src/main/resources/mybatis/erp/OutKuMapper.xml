@@ -166,6 +166,8 @@
 		from 
 		<include refid="tableName"></include>
 		where 1=1
+		AND
+		CUSTOMER_ID is not null
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
 				(
@@ -185,8 +187,6 @@
 		<if test="pd.forderby!=null and pd.forderby!=''"><!-- 排序 -->
 			${pd.forderby}
 		</if>
-		WHERE
-		CUSTOMER_ID is not null
 	</select>
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
