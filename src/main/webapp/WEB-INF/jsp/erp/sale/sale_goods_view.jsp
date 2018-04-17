@@ -153,18 +153,12 @@
                                 <h4 class="lighter">购物车清单</h4>
                             </div>
                             <select class="form-control" id="form-field-select-2" multiple="multiple"
-                                    style="height: 210px">
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
-                                <option value="AR">Arkansas</option>
-
-
-                                <%-- <c:forEach items="${goodsList}" var="var">
-                                     <option value="${var.GOODS_ID }"
-                                             <c:if test="${var.GOODS_ID == pd.GOODS_ID }">selected</c:if>>${var.GOODS_NAME }</option>
+                                    style="height: 210px" onchange="del(this.value);">
+                                 <c:forEach items="${varList}" var="var">
+                                     <option value="${var.SALE_ID }">
+                                         ${var.GOODS_NAME }-----------------------${var.ZPRICE}
+                                     </option>
                                  </c:forEach>
- --%>
                             </select>
                         </div>
                         <div align="right">
@@ -197,6 +191,11 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
+
+    function del(id) {
+        alert("你选择了我"+"_"+id);
+    }
+
     //打印订单
     function ddpirnt(OUTKU_ID) {
         top.jzts();

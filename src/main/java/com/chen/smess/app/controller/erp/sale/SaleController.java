@@ -6,6 +6,7 @@ import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
 import com.chen.smess.domain.service.erp.intoku.IntoKuManager;
 import com.chen.smess.domain.service.erp.kucun.KucunManager;
+import com.chen.smess.domain.service.erp.sale.impl.SaleService;
 import com.chen.smess.domain.service.erp.spbrand.SpbrandManager;
 import com.chen.smess.domain.service.erp.sptype.SptypeManager;
 import com.chen.smess.domain.service.erp.spunit.SpunitManager;
@@ -36,9 +37,19 @@ import java.util.Map;
 @RequestMapping(value = "/sale")
 public class SaleController extends BaseController {
 
+    @Resource(name = "saleService")
+    private SaleService saleService;
+
     @RequestMapping(value = "/salegood")
     public ModelAndView salegood() throws Exception {
+        /*String username = Jurisdiction.getUsername().toString();
+        System.out.println(username+"-------------------");*/
         ModelAndView mv = new ModelAndView();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        pd.put("USERNAME", Jurisdiction.getUsername().toString());
+        List<PageData> salelist = saleService.listAll(pd);
+        mv.addObject("varList",salelist);
         mv.setViewName("erp/sale/sale_goods_view");
         return mv;
     }

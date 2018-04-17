@@ -31,6 +31,13 @@
 		#{USERNAME}
 	</sql>
 
-
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		WHERE USERNAME = #{USERNAME}
+	</select>
 
 </mapper>
