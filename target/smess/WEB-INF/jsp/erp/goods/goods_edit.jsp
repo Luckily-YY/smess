@@ -115,9 +115,13 @@
                                     </tr>
                                     <tr>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">上架数量:</td>
-                                        <td><input type="text" name="GCOUNT" id="GCOUNT" value="${pd.GCOUNT}"
+                                        <td><input type="text" name="GCOUNT" id="GCOUNT"
                                                    maxlength="30" title="商品上架数量"
-                                                   style="width:98%;"/></td>
+                                                   style="width:70%;"/>
+                                            <c:if test="${'edit' == msg }">
+                                                <b>原数量：${pd.GCOUNT}</b>
+                                            </c:if>
+                                        </td>
                                         <td style="width:75px;text-align: right;padding-top: 13px;">商品现价:</td>
                                         <td><input type="text" name="GPRICE" id="GPRICE" value="${pd.GPRICE}"
                                                    maxlength="30" title="商品价格"
@@ -425,8 +429,9 @@
 
             var zcount = $("#ZCOUNT").val();
             var gcount = $("#GCOUNT").val();
-            var count = (gcount - old).toFixed(2);
-            var newcount = (zcount - count).toFixed(2);
+           // var count = (gcount - old).toFixed(2);
+            var newcount = (zcount - gcount).toFixed(2);
+            alert("库存："+zcount+",上架数量："+gcount);
             if (newcount < 0.00) {
                 $("#GCOUNT").tips({
                     side: 3,

@@ -40,4 +40,22 @@
 		WHERE USERNAME = #{USERNAME}
 	</select>
 
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		SALE_ID = #{SALE_ID}
+	</select>
+
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		SALE_ID = #{SALE_ID}
+	</delete>
+
 </mapper>

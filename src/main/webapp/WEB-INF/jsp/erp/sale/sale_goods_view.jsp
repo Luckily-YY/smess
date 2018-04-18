@@ -18,6 +18,9 @@
     <%@ include file="../../system/index/top.jsp" %>
     <!-- 日期框 -->
     <link rel="stylesheet" href="static/ace/css/datepicker.css"/>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/sweet/css/example.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/sweet/css/sweet-alert.css">
+    <script src="${pageContext.request.contextPath}/sweet/js/sweet-alert.min.js"></script>
 </head>
 <body class="no-skin">
 
@@ -193,7 +196,17 @@
     $(top.hangge());//关闭加载状态
 
     function del(id) {
-        alert("你选择了我"+"_"+id);
+        swal({
+                title: "确定操作",
+                text: "你确定要删除该清单吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: '#00FF00',
+                confirmButtonText: 'sure'
+            },
+            function () {
+                window.location.href="${pageContext.request.contextPath}/sale/delsale.do?SALE_ID="+id;
+            });
     }
 
     //打印订单

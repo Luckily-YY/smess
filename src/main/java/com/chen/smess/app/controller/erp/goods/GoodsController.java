@@ -11,6 +11,7 @@ import com.chen.smess.domain.service.erp.spbrand.SpbrandManager;
 import com.chen.smess.domain.service.erp.sptype.SptypeManager;
 import com.chen.smess.domain.service.erp.spunit.SpunitManager;
 import com.chen.smess.domain.service.pictures.PicturesManager;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.omg.PortableServer.LIFESPAN_POLICY_ID;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.ZoneIdEditor;
@@ -178,23 +179,29 @@ public class GoodsController extends BaseController {
         PageData oldpd = new PageData();
         oldpd = goodsService.findById(pd);
         pd.put("TITLE", kucunpd.get("GOODS_NAME"));
+
+
+        BigDecimal zcount = new BigDecimal( kucunpd.getString("ZCOUNT"));  // 库存数量
+        BigDecimal oldcount = new BigDecimal(oldpd.getString("GCOUNT"));   // 货架数量
+        BigDecimal newcount = new BigDecimal(pd.getString("GCOUNT"));       // 添加的数量
+        DecimalFormat format = new DecimalFormat("#.00");
+        Double newZ = newcount.add(oldcount).doubleValue();  //   架上新数量
+
+        String a = format.format(newZ);
+        pd.put("GCOUNT", a);
         goodsService.edit(pd);
 
-        BigDecimal zcount = new BigDecimal( kucunpd.getString("ZCOUNT"));
-        BigDecimal oldcount = new BigDecimal(oldpd.getString("GCOUNT"));
-        BigDecimal newcount = new BigDecimal(pd.getString("GCOUNT"));
-        DecimalFormat format = new DecimalFormat("#.00");
-        Double newZ = newcount.subtract(oldcount).doubleValue();
-        String a = format.format(newZ);
-        BigDecimal newa = new BigDecimal(a);
-        Double newZcount = zcount.subtract(newa).doubleValue();
+        Double newZcount = zcount.subtract(newcount).doubleValue();
         String price = kucunpd.getString("PRICE");
         BigDecimal b1 = new BigDecimal(newZcount.toString());
         BigDecimal b2 = new BigDecimal(price);
-        String zprice = b1.multiply(b2).toString();
+        String zprice = b1.multiply(b2).toString();  //新的 库存总价格
+
+        //System.out.println(zprice+"-------------总价");
+
         kucunpd.put("ZPRICE", zprice);
-        kucunpd.put("ZCOUNT",newcount);
-        kucunService.editKuCun(kucunpd);
+        kucunpd.put("ZCOUNT",newZcount);
+        kucunService.edit(kucunpd);
 
         mv.addObject("msg", "success");
         mv.setViewName("save_result");

@@ -40,17 +40,33 @@ public class SaleController extends BaseController {
     @Resource(name = "saleService")
     private SaleService saleService;
 
+    /**
+     * 打开前台销售页面
+     *
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/salegood")
     public ModelAndView salegood() throws Exception {
-        /*String username = Jurisdiction.getUsername().toString();
-        System.out.println(username+"-------------------");*/
-        ModelAndView mv = new ModelAndView();
+        ModelAndView mv = this.getModelAndView();
         PageData pd = new PageData();
         pd = this.getPageData();
         pd.put("USERNAME", Jurisdiction.getUsername().toString());
         List<PageData> salelist = saleService.listAll(pd);
-        mv.addObject("varList",salelist);
+        mv.addObject("varList", salelist);
         mv.setViewName("erp/sale/sale_goods_view");
+        return mv;
+    }
+
+    /**
+     * 删除清单
+     */
+    @RequestMapping(value = "/delsale")
+    public ModelAndView delsale() throws Exception{
+        ModelAndView mv = new ModelAndView("redirect:salegood");
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        saleService.delete(pd);
         return mv;
     }
 
