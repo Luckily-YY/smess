@@ -2,6 +2,7 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://"
@@ -41,7 +42,7 @@
 
                                 <div class="widget-body" style="height: 180px;">
                                     <div class="widget-main">
-
+                                        <input type="hidden" name="GOODS_ID" id="GOODS_ID" />
                                         <div class="col-xs-6">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right"
@@ -51,7 +52,7 @@
 										<span class="input-icon">
 											<input type="text" name="GOODS_BM" id="GOODS_BM"
                                                    class="nav-search-input form-control form-control input-lg"
-                                                   placeholder="请读取商品编码" style="min-width: 240px;"/>
+                                                   placeholder="请读取商品编码" style="min-width: 240px;"  onchange="getGoods(this.value);"/>
 											<i class="ace-icon fa fa-leaf icon-leaf green"></i>
 										</span>
                                                 </div>
@@ -77,13 +78,13 @@
                                         <div class="col-xs-6">
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label no-padding-right"
-                                                       style="font-size: 16px;">商品数量：</label>
+                                                       style="font-size: 16px;">商品数目：</label>
 
                                                 <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" name="GOODS_COUNT" id="GOODS_COUNT"
                                                    class="nav-search-input form-control form-control input-lg"
-                                                   value="1" style="min-width: 240px;"/>
+                                                   value="1" style="min-width: 240px;" onchange="getPrice();"/>
 											<i class="ace-icon fa fa-magic green"></i>
 										</span>
                                                 </div>
@@ -116,7 +117,7 @@
 										<span class="input-icon">
 											<input type="text" name="ZHEKOU" id="ZHEKOU"
                                                    class="nav-search-input form-control form-control input-lg"
-                                                   value="1" style="min-width: 240px;"/>
+                                                   value="1" style="min-width: 240px;" onchange="getZheKou();"/>
 											<i class="ace-icon fa fa-anchor green"></i>
 										</span>
                                                 </div>
@@ -142,7 +143,7 @@
 
 
                                         <div class="col-xs-11" align="right" style="padding-right: 25px">
-                                            <a class="btn btn-mini btn-purple" onclick="add();">确认商品</a>
+                                            <a id="add" class="btn btn-mini btn-purple" onclick="add();">确认商品</a>
                                         </div>
                                     </div>
                                 </div>
@@ -151,18 +152,30 @@
                     </div>
 
                     <div class="row-fluid col-xs-10">
-                        <div class="widget-box">
+                        <div class="widget-box" style="height:250px;">
                             <div class="widget-header widget-header-blue widget-header-flat">
                                 <h4 class="lighter">购物车清单</h4>
                             </div>
-                            <select class="form-control" id="form-field-select-2" multiple="multiple"
-                                    style="height: 210px" onchange="del(this.value);">
-                                 <c:forEach items="${varList}" var="var">
-                                     <option value="${var.SALE_ID }">
-                                         ${var.GOODS_NAME }-----------------------${var.ZPRICE}
-                                     </option>
-                                 </c:forEach>
-                            </select>
+                            <c:if test="${fn:length(varList) == 1 || fn:length(varList) == 0}">
+                                <select class="form-control" id="form-field-select-2" multiple="multiple"
+                                        style="height: 40px;border-bottom:0px; " onclick="del(this.value);">
+                                    <c:forEach items="${varList}" var="var">
+                                        <option value="${var.SALE_ID }">
+                                                ${var.GOODS_NAME }-----------------------${var.ZPRICE}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </c:if>
+                            <c:if test="${fn:length(varList) > 1}">
+                                <select class="form-control" id="form-field-select-2" multiple="multiple"
+                                        style="height: 210px" onchange="del(this.value);">
+                                    <c:forEach items="${varList}" var="var">
+                                        <option value="${var.SALE_ID }">
+                                                ${var.GOODS_NAME }-----------------------${var.ZPRICE}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </c:if>
                         </div>
                         <div align="right">
                             <a class="btn btn-mini btn-purple" onclick="ddpirnt();">打印清单</a>
@@ -195,6 +208,81 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
+
+    /*获取该编码的详细信息
+    * */
+    function getGoods(bianma) {
+        if ($("#GOODS_BM").val().length == 10 || $("#GOODS_BM").val().length == 12) {
+            if($("#GOODS_BM").val().length == 10)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: 'sale/getGoods.do',
+                    data: {BIANMA: bianma},
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        if ("success" == data.result) {
+                            $("#GOODS_NAME").val(data.pd.GOODS_NAME);
+                            $("#PRICE").val(data.pd.PRICE);
+                            $("#GOODS_ID").val(data.pd.GOODS_ID);
+                            var count = Number("" == $("#GOODS_COUNT").val() ? "0" : $("#GOODS_COUNT").val());
+                            var price = Number("" == $("#PRICE").val() ? "0" : $("#PRICE").val());
+                            $("#Z_PRICE").val(count * price);
+                        } else {
+                            $("#GOODS_BM").tips({
+                                side: 3,
+                                msg: "此商品不存在",
+                                bg: '#FF5080',
+                                time: 8
+                            });
+                        }
+                    }
+                });
+            }
+
+            if($("#GOODS_BM").val().length == 12)
+            {
+                $.ajax({
+                    type: "POST",
+                    url: 'sale/getWeight.do',
+                    data: {WBIANMA: bianma},
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        if ("success" == data.result) {
+                            $("#PRICE").val(data.pd.PRICE);
+                            $("#GOODS_COUNT").val(data.pd.GOODS_COUNT);
+                            $("#GOODS_NAME").val(data.pd.GOODS_NAME);
+                            $("#GOODS_ID").val(data.pd.GOODS_ID);
+                            $("#Z_PRICE").val(data.pd.Z_PRICE);
+                        } else {
+                            $("#GOODS_BM").tips({
+                                side: 3,
+                                msg: "此商品不存在",
+                                bg: '#FF5080',
+                                time: 8
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
+        else{
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '编码长度只能是10位或者12位',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+
+
+    }
+
     function del(id) {
         swal({
                 title: "确定操作",
@@ -205,17 +293,43 @@
                 confirmButtonText: 'sure'
             },
             function () {
-                window.location.href="${pageContext.request.contextPath}/sale/delsale.do?SALE_ID="+id;
+                window.location.href = "${pageContext.request.contextPath}/sale/delsale.do?SALE_ID=" + id;
             });
     }
 
-    //打印订单
-    function ddpirnt(OUTKU_ID) {
+
+
+    /*单价乘以数量
+     * */
+    function getPrice() {
+        var count = Number("" == $("#GOODS_COUNT").val() ? "0" : $("#GOODS_COUNT").val());
+        var price = Number("" == $("#PRICE").val() ? "0" : $("#PRICE").val());
+        $("#Z_PRICE").val(count * price);
+    }
+
+    /*总价乘以折扣
+     * */
+    function getZheKou() {
+        var zhekou = Number("" == $("#ZHEKOU").val() ? "0" : $("#ZHEKOU").val());
+        var zprice = Number("" == $("#Z_PRICE").val() ? "0" : $("#Z_PRICE").val());
+        $("#Z_PRICE").val(zhekou * zprice);
+    }
+
+    /*录入购物清单
+     * */
+    function add() {
+        var id = $("#GOODS_ID").val();
+        alert(id);
+    }
+
+
+    //打印清单
+    function ddpirnt() {
         top.jzts();
         var diag = new top.Dialog();
         diag.Drag = true;
         diag.Title = "打印清单";
-        diag.URL = '<%=basePath%>sale/ddpirnt.do?OUTKU_ID=' + OUTKU_ID;
+        diag.URL = '<%=basePath%>sale/ddpirnt.do?SALERE_ID=' + SALERE_ID;
         diag.Width = 450;
         diag.Height = 399;
         diag.Modal = false;			//有无遮罩窗口

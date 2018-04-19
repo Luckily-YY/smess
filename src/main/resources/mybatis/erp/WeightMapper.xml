@@ -1,46 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="SaleMapper">
+<mapper namespace="WeightMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		ERP_SALE
+		ERP_WEIGHT
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		SALE_ID,
+		WEIGHT_ID,
 		GOODS_ID,
-		SALECOUNT,
-		PRICE,
-		ZPRICE,
-		SALETIME,
+		WBIANMA,
+		WEIGHT,
+		WPRICE,
+		WZPRICE,
 		GOODS_NAME,
-		USERNAME,
-		ZHEKOU
+		CREATEDTIME
 	</sql>
 
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{SALE_ID},
+		#{WEIGHT_ID},
 		#{GOODS_ID},
-		#{SALECOUNT},
-		#{PRICE},
-		#{ZPRICE},
-		#{SALETIME},
+		#{WBIANM},
+		#{WEIGHT},
+		#{WPRICE},
+		#{WZPRICE},
 		#{GOODS_NAME},
-		#{USERNAME},
-		#{ZHEKOU}
+		#{CREATEDTIME}
 	</sql>
 
-	<!-- 列表(全部) -->
-	<select id="listAll" parameterType="pd" resultType="pd">
-		select
-		<include refid="Field"></include>
-		from
-		<include refid="tableName"></include>
-		WHERE USERNAME = #{USERNAME}
-	</select>
+
 
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
@@ -49,7 +40,16 @@
 		from
 		<include refid="tableName"></include>
 		where
-		SALE_ID = #{SALE_ID}
+		WEIGHT_ID = #{WEIGHT_ID}
+	</select>
+	<!-- 通过编码获取数据 -->
+	<select id="findByBm" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		WBIANMA = #{WBIANMA}
 	</select>
 
 	<!-- 删除-->
@@ -57,7 +57,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where
-		SALE_ID = #{SALE_ID}
+		WEIGHT_ID = #{WEIGHT_ID}
 	</delete>
 
 </mapper>

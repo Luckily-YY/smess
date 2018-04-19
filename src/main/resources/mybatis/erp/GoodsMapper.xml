@@ -208,6 +208,25 @@
 		where a.BIANMA = #{BIANMA}
 		order by a.BIANMA asc
 	</select>
+	<!-- 通过产品编码 -->
+	<select id="findByBm" parameterType="pd" resultType="pd">
+		select
+			a.TITLE,
+			a.BIANMA,
+			a.SPTYPE_ID,
+			a.SPBRAND_ID,
+			a.SPUNIT_ID,
+			a.USERNAME,
+			a.GOODS_ID,
+			a.GCOUNT,
+			a.GPRICE,
+			b.NAME
+		from
+		<include refid="tableName"></include> a
+		left join cp_spunit b
+		on a.SPUNIT_ID = b.SPUNIT_ID
+		where a.BIANMA = #{BIANMA}
+	</select>
 
 	<!--查询上一个编码-->
     <select id="findBm" parameterType="pd" resultType="pd">
