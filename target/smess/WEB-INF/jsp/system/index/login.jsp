@@ -240,11 +240,16 @@
                 </c:forEach>
             </c:when>
             <c:otherwise>
-                <div data-src="static/login/images/banner_slide_01.jpg"></div>
-                <div data-src="static/login/images/banner_slide_02.jpg"></div>
-                <div data-src="static/login/images/banner_slide_03.jpg"></div>
-                <div data-src="static/login/images/banner_slide_04.jpg"></div>
-                <div data-src="static/login/images/banner_slide_05.jpg"></div>
+                <div data-src="static/login/newimages/07.jpg"></div>
+                <div data-src="static/login/newimages/06.jpg"></div>
+                <div data-src="static/login/newimages/05.jpg"></div>
+                <div data-src="static/login/newimages/04.jpg"></div>
+                <div data-src="static/login/newimages/03.jpg"></div>
+                <div data-src="static/login/newimages/01.jpg"></div>
+                <div data-src="static/login/newimages/02.jpg"></div>
+                <div data-src="static/login/newimages/09.jpg"></div>
+                <div data-src="static/login/newimages/08.jpg"></div>
+                <div data-src="static/login/newimages/10.jpg"></div>
             </c:otherwise>
         </c:choose>
     </div>

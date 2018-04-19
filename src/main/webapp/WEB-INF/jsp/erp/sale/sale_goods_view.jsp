@@ -163,7 +163,8 @@
                                         style="height: 40px;border-bottom:0px; " onclick="del(this.value);">
                                     <c:forEach items="${varList}" var="var">
                                         <option value="${var.SALE_ID }">
-                                                ${var.GOODS_NAME }***(数目:${var.SALECOUNT })-----------------------${var.ZPRICE}
+                                           ${var.GOODS_NAME }***(&nbsp;数目:&nbsp;${var.SALECOUNT }&nbsp;)
+                                               -----------------------&nbsp;${var.ZPRICE}
                                         </option>
                                     </c:forEach>
                                 </select>
@@ -173,7 +174,8 @@
                                         style="height: 210px" onchange="del(this.value);">
                                     <c:forEach items="${varList}" var="var">
                                         <option value="${var.SALE_ID }">
-                                                ${var.GOODS_NAME }***(数目:${var.SALECOUNT })-----------------------${var.ZPRICE}
+                                           ${var.GOODS_NAME }***(&nbsp;数目:&nbsp;${var.SALECOUNT }&nbsp;)
+                                               -----------------------&nbsp;${var.ZPRICE}
                                         </option>
                                     </c:forEach>
                                 </select>
