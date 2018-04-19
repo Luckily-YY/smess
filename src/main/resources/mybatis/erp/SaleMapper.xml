@@ -52,6 +52,17 @@
 		SALE_ID = #{SALE_ID}
 	</select>
 
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into
+		<include refid="tableName"></include>
+		(
+		<include refid="Field"></include>
+		) values (
+		<include refid="FieldValue"></include>
+		)
+	</insert>
+
 	<!-- 删除-->
 	<delete id="delete" parameterType="pd">
 		delete from

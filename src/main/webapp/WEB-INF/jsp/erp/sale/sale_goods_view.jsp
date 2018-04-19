@@ -39,114 +39,116 @@
                                 <div class="widget-header widget-header-blue widget-header-flat">
                                     <h4 class="lighter">前台销售</h4>
                                 </div>
+                                <form action="sale/addsale.do" name="Form" id="Form" method="post">
+                                    <div class="widget-body" style="height: 180px;">
+                                        <div class="widget-main">
+                                            <input type="hidden" name="GOODS_ID" id="GOODS_ID"/>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right"
+                                                           style="font-size: 16px;">商品编码：</label>
 
-                                <div class="widget-body" style="height: 180px;">
-                                    <div class="widget-main">
-                                        <input type="hidden" name="GOODS_ID" id="GOODS_ID" />
-                                        <div class="col-xs-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label no-padding-right"
-                                                       style="font-size: 16px;">商品编码：</label>
-
-                                                <div class="nav-search">
+                                                    <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" name="GOODS_BM" id="GOODS_BM"
                                                    class="nav-search-input form-control form-control input-lg"
-                                                   placeholder="请读取商品编码" style="min-width: 240px;"  onchange="getGoods(this.value);"/>
+                                                   placeholder="请读取商品编码" style="min-width: 240px;"
+                                                   onchange="getGoods(this.value);"/>
 											<i class="ace-icon fa fa-leaf icon-leaf green"></i>
 										</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label no-padding-right"
-                                                       style="font-size: 16px;">商品名称：</label>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right"
+                                                           style="font-size: 16px;">商品名称：</label>
 
-                                                <div class="nav-search">
+                                                    <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" name="GOODS_NAME" id="GOODS_NAME"
                                                    class="nav-search-input form-control form-control input-lg"
                                                    style="min-width: 240px;"/>
 											<i class="ace-icon fa fa-newspaper-o green"></i>
 										</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="col-xs-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label no-padding-right"
-                                                       style="font-size: 16px;">商品数目：</label>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right"
+                                                           style="font-size: 16px;">商品数目：</label>
 
-                                                <div class="nav-search">
+                                                    <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" name="GOODS_COUNT" id="GOODS_COUNT"
                                                    class="nav-search-input form-control form-control input-lg"
                                                    value="1" style="min-width: 240px;" onchange="getPrice();"/>
 											<i class="ace-icon fa fa-magic green"></i>
 										</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="col-xs-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label no-padding-right"
-                                                       style="font-size: 16px;">商品单价：</label>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right"
+                                                           style="font-size: 16px;">商品单价：</label>
 
-                                                <div class="nav-search">
+                                                    <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" name="PRICE" id="PRICE"
                                                    class="nav-search-input form-control form-control input-lg"
                                                    style="min-width: 240px;"/>
 											<i class="ace-icon fa fa-asterisk green"></i>
 										</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-xs-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label no-padding-right"
-                                                       style="font-size: 16px;">打折优惠：</label>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right"
+                                                           style="font-size: 16px;">打折优惠：</label>
 
-                                                <div class="nav-search">
+                                                    <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" name="ZHEKOU" id="ZHEKOU"
                                                    class="nav-search-input form-control form-control input-lg"
-                                                   value="1" style="min-width: 240px;" onchange="getZheKou();"/>
+                                                   value="10.0" style="min-width: 240px;" onchange="getZheKou();"/>
 											<i class="ace-icon fa fa-anchor green"></i>
 										</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="col-xs-6">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label no-padding-right"
-                                                       style="font-size: 16px;">购买总价：</label>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right"
+                                                           style="font-size: 16px;">购买总价：</label>
 
-                                                <div class="nav-search">
+                                                    <div class="nav-search">
 										<span class="input-icon">
 											<input type="text" name="Z_PRICE" id="Z_PRICE"
                                                    class="nav-search-input form-control form-control input-lg"
                                                    style="min-width: 240px;" readonly/>
 											<i class="ace-icon fa fa-shopping-cart green"></i>
 										</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
 
-                                        <div class="col-xs-11" align="right" style="padding-right: 25px">
-                                            <a id="add" class="btn btn-mini btn-purple" onclick="add();">确认商品</a>
+                                            <div class="col-xs-11" align="right" style="padding-right: 25px">
+                                                <a id="add" class="btn btn-mini btn-purple" onclick="add();">确认商品</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -161,7 +163,7 @@
                                         style="height: 40px;border-bottom:0px; " onclick="del(this.value);">
                                     <c:forEach items="${varList}" var="var">
                                         <option value="${var.SALE_ID }">
-                                                ${var.GOODS_NAME }-----------------------${var.ZPRICE}
+                                                ${var.GOODS_NAME }***(数目:${var.SALECOUNT })-----------------------${var.ZPRICE}
                                         </option>
                                     </c:forEach>
                                 </select>
@@ -171,7 +173,7 @@
                                         style="height: 210px" onchange="del(this.value);">
                                     <c:forEach items="${varList}" var="var">
                                         <option value="${var.SALE_ID }">
-                                                ${var.GOODS_NAME }-----------------------${var.ZPRICE}
+                                                ${var.GOODS_NAME }***(数目:${var.SALECOUNT })-----------------------${var.ZPRICE}
                                         </option>
                                     </c:forEach>
                                 </select>
@@ -210,11 +212,10 @@
 
 
     /*获取该编码的详细信息
-    * */
+     * */
     function getGoods(bianma) {
         if ($("#GOODS_BM").val().length == 10 || $("#GOODS_BM").val().length == 12) {
-            if($("#GOODS_BM").val().length == 10)
-            {
+            if ($("#GOODS_BM").val().length == 10) {
                 $.ajax({
                     type: "POST",
                     url: 'sale/getGoods.do',
@@ -241,8 +242,7 @@
                 });
             }
 
-            if($("#GOODS_BM").val().length == 12)
-            {
+            if ($("#GOODS_BM").val().length == 12) {
                 $.ajax({
                     type: "POST",
                     url: 'sale/getWeight.do',
@@ -269,7 +269,7 @@
             }
         }
 
-        else{
+        else {
             $("#GOODS_BM").tips({
                 side: 3,
                 msg: '编码长度只能是10位或者12位',
@@ -298,13 +298,13 @@
     }
 
 
-
     /*单价乘以数量
      * */
     function getPrice() {
         var count = Number("" == $("#GOODS_COUNT").val() ? "0" : $("#GOODS_COUNT").val());
         var price = Number("" == $("#PRICE").val() ? "0" : $("#PRICE").val());
-        $("#Z_PRICE").val(count * price);
+        var newprice = (count * price).toFixed(2);
+        $("#Z_PRICE").val(newprice);
     }
 
     /*总价乘以折扣
@@ -312,16 +312,45 @@
     function getZheKou() {
         var zhekou = Number("" == $("#ZHEKOU").val() ? "0" : $("#ZHEKOU").val());
         var zprice = Number("" == $("#Z_PRICE").val() ? "0" : $("#Z_PRICE").val());
-        $("#Z_PRICE").val(zhekou * zprice);
+        var newprice = (zhekou * zprice * 0.1).toFixed(2);
+        $("#Z_PRICE").val(newprice);
     }
 
     /*录入购物清单
      * */
     function add() {
-        var id = $("#GOODS_ID").val();
-        alert(id);
+        if ($("#GOODS_BM").val() == "") {
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '请输入编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+        if ($("#GOODS_NAME").val() == "") {
+            $("#GOODS_NAME").tips({
+                side: 3,
+                msg: '请输入商品名称',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_NAME").focus();
+            return false;
+        }
+        if ($("#PRICE").val() == "") {
+            $("#PRICE").tips({
+                side: 3,
+                msg: '请输入商品单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#PRICE").focus();
+            return false;
+        }
+        $("#Form").submit();
     }
-
 
     //打印清单
     function ddpirnt() {

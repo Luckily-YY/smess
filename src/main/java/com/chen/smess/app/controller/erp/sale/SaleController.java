@@ -13,6 +13,7 @@ import com.chen.smess.domain.service.erp.sptype.SptypeManager;
 import com.chen.smess.domain.service.erp.spunit.SpunitManager;
 import com.chen.smess.domain.service.erp.weight.impl.WeightService;
 import com.chen.smess.domain.service.pictures.PicturesManager;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import sun.security.krb5.internal.PAData;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -61,6 +63,30 @@ public class SaleController extends BaseController {
         List<PageData> salelist = saleService.listAll(pd);
         mv.addObject("varList", salelist);
         mv.setViewName("erp/sale/sale_goods_view");
+        return mv;
+    }
+    /**
+     * 添加新的销售清单
+     *
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/addsale")
+    public ModelAndView addsale() throws Exception {
+        ModelAndView mv = new ModelAndView("redirect:salegood");
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        PageData pageData = new PageData();
+        pageData.put("USERNAME", Jurisdiction.getUsername().toString());
+        pageData.put("GOODS_ID",pd.getString("GOODS_ID"));
+        pageData.put("SALE_ID",this.get32UUID());
+        pageData.put("SALECOUNT",pd.getString("GOODS_COUNT"));
+        pageData.put("PRICE",pd.getString("PRICE"));
+        pageData.put("ZPRICE",pd.getString("Z_PRICE"));
+        pageData.put("ZHEKOU",pd.getString("ZHEKOU"));
+        pageData.put("GOODS_NAME",pd.getString("GOODS_NAME"));
+        pageData.put("SALETIME", Tools.date2Str(new Date()));
+        saleService.save(pageData);
         return mv;
     }
 
