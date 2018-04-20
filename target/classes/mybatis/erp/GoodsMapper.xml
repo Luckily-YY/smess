@@ -19,7 +19,8 @@
 		USERNAME,	
 		GOODS_ID,
 		GCOUNT,
-		GPRICE
+		GPRICE,
+		LPRICE
 	</sql>
 
 	<!-- 字段值 -->
@@ -34,17 +35,18 @@
 		#{USERNAME},	
 		#{GOODS_ID},
 		#{GCOUNT},
-		#{GPRICE}
+		#{GPRICE},
+		#{LPRICE}
 	</sql>
 
 	<!-- 新增-->
 	<insert id="save" parameterType="pd">
 		insert into
-	<include refid="tableName"></include>
+		<include refid="tableName"></include>
 		(
-	<include refid="Field"></include>
+		<include refid="Field"></include>
 		) values (
-	<include refid="FieldValue"></include>
+		<include refid="FieldValue"></include>
 		)
 	</insert>
 
@@ -109,6 +111,7 @@
 			a.GOODS_ID,
 			a.GCOUNT,
 			a.GPRICE,
+	  		a.LPRICE,
 			b.NAME BNAME,
 			C.NAME TNAME,
 			d.NAME UNAME
@@ -180,6 +183,7 @@
 			a.GOODS_ID,
 			a.GCOUNT,
 			a.GPRICE,
+			a.LPRICE,
 			b.NAME
 		from
 		<include refid="tableName"></include> a

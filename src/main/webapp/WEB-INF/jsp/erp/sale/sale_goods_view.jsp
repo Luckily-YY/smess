@@ -360,10 +360,10 @@
         var diag = new top.Dialog();
         diag.Drag = true;
         diag.Title = "打印清单";
-        diag.URL = '<%=basePath%>sale/ddpirnt.do?SALERE_ID=' + SALERE_ID;
+        diag.URL = '<%=basePath%>sale/ddpirnt.do?';
         diag.Width = 450;
-        diag.Height = 399;
-        diag.Modal = false;			//有无遮罩窗口
+        diag.Height = 600;
+        diag.Modal = true;			//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
         diag.CancelEvent = function () { //关闭事件

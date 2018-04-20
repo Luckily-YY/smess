@@ -1,4 +1,4 @@
-package com.chen.smess.domain.service.erp.sale;
+package com.chen.smess.domain.service.erp.salereport;
 
 import com.chen.smess.domain.common.utils.PageData;
 import com.chen.smess.domain.model.Page;
@@ -10,7 +10,7 @@ import java.util.List;
  * 说明： 商品出库接口
  * @version
  */
-public interface SaleManager {
+public interface SaleReportManager {
 
 	/**新增
 	 * @param pd
@@ -55,11 +55,11 @@ public interface SaleManager {
 	public PageData findById(PageData pd)throws Exception;
 	
 	/**批量删除
-	 * @param pd
+	 * @param ArrayDATA_IDS
 	 * @throws Exception
 	 */
-	public void deleteAll(PageData pd)throws Exception;
-	
+	public void deleteAll(String[] ArrayDATA_IDS)throws Exception;
+
 	/**总金额
 	 * @param pd
 	 * @throws Exception

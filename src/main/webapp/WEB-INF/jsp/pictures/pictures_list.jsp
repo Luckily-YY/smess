@@ -169,7 +169,7 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<!-- 页面底部js¨ -->
-	<%@ include file="../../system/index/foot.jsp"%>
+	<%@ include file="../system/index/foot.jsp"%>
 	<!-- ace scripts -->
 	<script src="static/ace/js/ace/ace.js"></script>
 	</body>

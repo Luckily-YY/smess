@@ -71,4 +71,25 @@
 		SALE_ID = #{SALE_ID}
 	</delete>
 
+
+	<!-- 删除-->
+	<delete id="deleteAll" parameterType="pd">
+		delete from
+		<include refid="tableName"></include>
+		where
+		USERNAME = #{USERNAME}
+	</delete>
+
+	<!--计算该销售清单的总价-->
+	<select id="priceSum" parameterType="pd" resultType="pd">
+		select
+		sum(ZPRICE) SALEPRICE
+		from
+		<include refid="tableName"></include>
+		where 1=1
+		AND
+		USERNAME = #{USERNAME}
+
+	</select>
+
 </mapper>

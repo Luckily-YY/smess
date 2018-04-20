@@ -74,6 +74,7 @@ public class GoodsController extends BaseController {
         pd.put("USERNAME", Jurisdiction.getUsername());    //用户名
         PageData goods = kucunService.findByGoodsId(pd);
         pd.put("TITLE", goods.get("GOODS_NAME"));
+        pd.put("LPRICE",pd.getString("PRICE"));
         goodsService.save(pd);
         BigDecimal zcount = new BigDecimal(pd.getString("ZCOUNT"));
         BigDecimal gcount = new BigDecimal(pd.getString("GCOUNT"));

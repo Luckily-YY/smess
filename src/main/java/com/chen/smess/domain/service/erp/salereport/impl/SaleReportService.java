@@ -1,9 +1,10 @@
-package com.chen.smess.domain.service.erp.sale.impl;
+package com.chen.smess.domain.service.erp.salereport.impl;
 
 import com.chen.smess.domain.common.utils.PageData;
 import com.chen.smess.domain.mapper.DaoSupport;
 import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.sale.SaleManager;
+import com.chen.smess.domain.service.erp.salereport.SaleReportManager;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,8 +15,8 @@ import java.util.List;
  * 说明： 商品出库
  * @version
  */
-@Service("saleService")
-public class SaleService implements SaleManager {
+@Service("saleReportService")
+public class SaleReportService implements SaleReportManager{
 
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
@@ -25,7 +26,7 @@ public class SaleService implements SaleManager {
 	 * @throws Exception
 	 */
 	public void save(PageData pd)throws Exception{
-		dao.save("SaleMapper.save", pd);
+		dao.save("SaleReportMapper.save", pd);
 	}
 	
 	/**删除
@@ -33,7 +34,7 @@ public class SaleService implements SaleManager {
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception{
-		dao.delete("SaleMapper.delete", pd);
+		dao.delete("SaleReportMapper.delete", pd);
 	}
 	
 	/**修改
@@ -41,7 +42,7 @@ public class SaleService implements SaleManager {
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception{
-		dao.update("SaleMapper.edit", pd);
+		dao.update("SaleReportMapper.edit", pd);
 	}
 	
 	/**列表
@@ -50,7 +51,7 @@ public class SaleService implements SaleManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> list(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("SaleMapper.datalistPage", page);
+		return (List<PageData>)dao.findForList("SaleReportMapper.datalistPage", page);
 	}
 	
 	/**商品销售报表
@@ -59,7 +60,7 @@ public class SaleService implements SaleManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> salesReport(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("SaleMapper.SalesReportlistPage", page);
+		return (List<PageData>)dao.findForList("SaleReportMapper.SalesReportlistPage", page);
 	}
 	
 	/**列表(全部)
@@ -68,7 +69,7 @@ public class SaleService implements SaleManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> listAll(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("SaleMapper.listAll", pd);
+		return (List<PageData>)dao.findForList("SaleReportMapper.listAll", pd);
 	}
 	
 	/**通过id获取数据
@@ -76,23 +77,23 @@ public class SaleService implements SaleManager {
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception{
-		return (PageData)dao.findForObject("SaleMapper.findById", pd);
+		return (PageData)dao.findForObject("SaleReportMapper.findById", pd);
 	}
 	
 	/**批量删除
-	 * @param pd
+	 * @param ArrayDATA_IDS
 	 * @throws Exception
 	 */
-	public void deleteAll(PageData pd)throws Exception{
-		dao.delete("SaleMapper.deleteAll", pd);
+	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
+		dao.delete("SaleReportMapper.deleteAll", ArrayDATA_IDS);
 	}
-	
+
 	/**总金额
 	 * @param pd
 	 * @throws Exception
 	 */
 	public PageData priceSum(PageData pd) throws Exception {
-		return (PageData)dao.findForObject("SaleMapper.priceSum", pd);
+		return (PageData)dao.findForObject("SaleReportMapper.priceSum", pd);
 	}
 
 	/**
@@ -102,7 +103,7 @@ public class SaleService implements SaleManager {
 	 * @throws Exception
 	 */
 	public List<PageData> getChoose(Page page) throws Exception{
-		return (List<PageData>)dao.findForList("SaleMapper.listPage", page);
+		return (List<PageData>)dao.findForList("SaleReportMapper.listPage", page);
 	}
 
 }

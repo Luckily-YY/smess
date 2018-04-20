@@ -55,7 +55,8 @@
 		<div class="main-content">
 			<div class="main-content-inner">
 					<!-- 检索  -->
-					<form action="pictures/list.do" method="post" name="Form" id="Form">
+					<form action="pictures/listfortc.do" method="post" name="Form" id="Form">
+					<input name="xzvalue" id="xzvalue" value="" type="hidden" />
 					<table style="margin-top:5px;">
 						<tr>
 							<td>
@@ -74,16 +75,9 @@
 					<table id="simple-table" class="table table-striped table-bordered table-hover"  style="margin-top:0px;">
 						<thead>
 							<tr>
-								<th class="center" onclick="selectAll()" style="width:35px;">
-								<label><input type="checkbox" id="zcheckbox" class="ace" /><span class="lbl"></span></label>
-								</th>
 								<th class="center" style="width:50px;">序号</th>
 								<th class="center" >图片</th>
 								<th class="center" >标题</th>
-								<th class="center" >ID</th>
-								<th class="center" >创建时间</th>
-								<th class="center" >属于</th>
-								<th class="center" >备注</th>
 								<th class="center">操作</th>
 							</tr>
 						</thead>
@@ -94,33 +88,13 @@
 								<c:if test="${QX.cha == 1 }">
 								<c:forEach items="${varList}" var="var" varStatus="vs">
 									<tr>
-										<td class='center' style="width: 30px;">
-											<label><input type='checkbox' name='ids' class="ace" value="${var.PICTURES_ID}" /><span class="lbl"></span></label>
-										</td>
 										<td class='center' style="width: 30px;">${vs.index+1}</td>
 										<td class="center">
 										<a href="<%=basePath%>uploadFiles/uploadImgs/${var.PATH}" title="${var.TITLE}" class="bwGal"><img src="<%=basePath%>uploadFiles/uploadImgs/${var.PATH}" alt="${var.TITLE}" width="100"></a>
 										</td>
 										<td class="center">${var.TITLE}</td>
-										<td class="center">${var.PICTURES_ID}</td>
-										<td class="center">${var.CREATETIME}</td>
-										<td class="center">${var.MASTER_ID}</td>
-										<td class="center">${var.BZ}</td>
 										<td class="center" style="width:130px;">
-										<c:if test="${QX.edit != 1 && QX.del != 1 }">
-										<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
-										</c:if>
-											<c:if test="${QX.edit == 1 }">
-											<a style="cursor:pointer;" class="green" onclick="edit('${var.PICTURES_ID}');" title="编辑">
-												<i class="ace-icon fa fa-pencil bigger-130"></i>
-											</a>
-											</c:if>
-											&nbsp;
-											<c:if test="${QX.del == 1 }">
-											<a style="cursor:pointer;" class="red" onclick="del('${var.PICTURES_ID}','${var.PATH}');" title="删除">
-												<i class="ace-icon fa fa-trash-o bigger-130"></i>
-											</a>
-											</c:if>
+											<a class="btn btn-xs btn-info" title="选择" onclick="xuanTp('<%=basePath%>uploadFiles/uploadImgs/${var.PATH}');">选择 </a>
 										</td>
 									</tr>
 								
@@ -145,12 +119,6 @@
 				<table style="width:100%;">
 					<tr>
 						<td style="vertical-align:top;">
-							<c:if test="${QX.add == 1 }">
-							<a class="btn btn-sm btn-success" onclick="add();">新增</a>
-							</c:if>
-							<c:if test="${QX.del == 1 }">
-							<a title="批量删除" class="btn btn-sm btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
-							</c:if>
 						</td>
 						<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 					</tr>
@@ -169,7 +137,7 @@
 	<!-- /.main-container -->
 	<!-- basic scripts -->
 	<!-- 页面底部js¨ -->
-	<%@ include file="../../system/index/foot.jsp"%>
+	<%@ include file="../system/index/foot.jsp"%>
 	<!-- ace scripts -->
 	<script src="static/ace/js/ace/ace.js"></script>
 	</body>
@@ -182,103 +150,10 @@
 			$("#Form").submit();
 		}
 		
-		//新增
-		function add(){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>pictures/goAdd.do';
-			 diag.Width = 800;
-			 diag.Height = 490;
-			 diag.CancelEvent = function(){ //关闭事件
-				 if('${page.currentPage}' == '0'){
-					 top.jzts();
-					 setTimeout("self.location=self.location",100);
-				 }else{
-					 nextPage(${page.currentPage});
-				 }
-				diag.close();
-			 };
-			 diag.show();
-		}
-		
-		//删除
-		function del(Id,PATH){
-			
-			if(confirm("确定要删除?")){ 
-				top.jzts();
-				var url = "<%=basePath%>pictures/delete.do?PICTURES_ID="+Id+"&PATH="+PATH+"&tm="+new Date().getTime();
-				$.get(url,function(data){
-					nextPage(${page.currentPage});
-				});
-			}
-		}
-		
-		//修改
-		function edit(Id){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>pictures/goEdit.do?PICTURES_ID='+Id;
-			 diag.Width = 600;
-			 diag.Height = 465;
-			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 nextPage(${page.currentPage});
-				}
-				diag.close();
-			 };
-			 diag.show();
-		}
-		
-		//全选 （是/否）
-		function selectAll(){
-			 var checklist = document.getElementsByName ("ids");
-			   if(document.getElementById("zcheckbox").checked){
-			   for(var i=0;i<checklist.length;i++){
-			      checklist[i].checked = 1;
-			   } 
-			 }else{
-			  for(var j=0;j<checklist.length;j++){
-			     checklist[j].checked = 0;
-			  }
-			 }
-		}
-		//批量操作
-		function makeAll(msg){
-			if(confirm(msg)){ 
-					var str = '';
-					for(var i=0;i < document.getElementsByName('ids').length;i++)
-					{
-						  if(document.getElementsByName('ids')[i].checked){
-						  	if(str=='') str += document.getElementsByName('ids')[i].value;
-						  	else str += ',' + document.getElementsByName('ids')[i].value;
-						  }
-					}
-					if(str==''){
-						alert("您没有选择任何内容!"); 
-						return;
-					}else{
-						if(msg == '确定要删除选中的数据吗?'){
-							top.jzts();
-							$.ajax({
-								type: "POST",
-								url: '<%=basePath%>pictures/deleteAll.do?tm='+new Date().getTime(),
-						    	data: {DATA_IDS:str},
-								dataType:'json',
-								//beforeSend: validateData,
-								cache: false,
-								success: function(data){
-									 $.each(data.list, function(i, list){
-											nextPage(${page.currentPage});
-									 });
-								}
-							});
-						}
-					}
-			}
+		//选择
+		function xuanTp(value){
+			$("#xzvalue").val(value);
+			top.Dialog.close();
 		}
 	</script>
 	<style type="text/css">

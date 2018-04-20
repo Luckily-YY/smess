@@ -578,6 +578,7 @@ public class OutKuController extends BaseController {
         titles.add("商品名称");    //1
         titles.add("销量");        //2
         titles.add("销售额");    //3
+        titles.add("出库时间");    //4
         dataMap.put("titles", titles);
         String keywords = pd.getString("keywords");        //关键词检索条件
         if (null != keywords && !"".equals(keywords)) {
@@ -601,6 +602,7 @@ public class OutKuController extends BaseController {
             vpd.put("var1", varOList.get(i).getString("GOODS_NAME"));        //1
             vpd.put("var2", varOList.get(i).get("ZCOUNT").toString());        //2
             vpd.put("var3", varOList.get(i).get("ZPRICE").toString() + "元");    //3
+            vpd.put("var4", varOList.get(i).get("OUTTIME").toString());    //4
             varList.add(vpd);
         }
         dataMap.put("varList", varList);

@@ -264,27 +264,7 @@
             $("#BIANMA").focus();
             return false;
         }
-        $("#DESCRIPTION").val(getContent());
-        if ($("#DESCRIPTION").val() == "") {
-            $("#DESCRIPTION").tips({
-                side: 3,
-                msg: '请输入商品描述',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#DESCRIPTION").focus();
-            return false;
-        }
-        if ($("#SHORTDESC").val() == "") {
-            $("#SHORTDESC").tips({
-                side: 3,
-                msg: '请输入简述',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#SHORTDESC").focus();
-            return false;
-        }
+
 
         $.ajax({
             type: "POST",

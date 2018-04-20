@@ -13,7 +13,7 @@
 <head>
 <base href="<%=basePath%>">
 <!-- jsp文件头和头部 -->
-<%@ include file="../../system/index/top.jsp"%>
+<%@ include file="../system/index/top.jsp"%>
 </head>
 <body class="no-skin">
 	<!-- /section:basics/navbar.layout -->
@@ -77,7 +77,7 @@
 
 <!-- basic scripts -->
 <!-- 页面底部js¨ -->
-<%@ include file="../../system/index/foot.jsp"%>
+<%@ include file="../system/index/foot.jsp"%>
 <!-- ace scripts -->
 <script src="static/ace/js/ace/ace.js"></script>
 <!-- 上传控件 -->

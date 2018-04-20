@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SaleReportMapper">
+	
+	<!--表名 -->
+	<sql id="tableName">
+		ERP_SALEREPORT
+	</sql>
+	
+	<!-- 字段 -->
+	<sql id="Field">
+		SALEREPORT_ID,
+		GOODS_ID,
+		SALECOUNT,
+		SALETIME,
+		SALEPRICE,
+		GOODS_NAME,
+		USERNAME
+	</sql>
+
+	<!-- 字段值 -->
+	<sql id="FieldValue">
+		#{SALEREPORT_ID},
+		#{GOODS_ID},
+		#{SALECOUNT},
+		#{SALETIME},
+		#{SALEPRICE},
+		#{GOODS_NAME},
+		#{USERNAME}
+	</sql>
+
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+	</select>
+
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into
+		<include refid="tableName"></include>
+		(
+		<include refid="Field"></include>
+		) values (
+		<include refid="FieldValue"></include>
+		)
+	</insert>
+
+
+	<!-- 总金额 -->
+	<select id="priceSum" parameterType="pd" resultType="pd">
+		select
+		sum(SALEPRICE) SALEPRICE
+		from
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="keywords!= null and keywords != ''"><!-- 关键词检索 -->
+			and
+			(
+			GOODS_NAME LIKE CONCAT(CONCAT('%', #{keywords}),'%')
+			)
+		</if>
+		<if test="lastStart!=null and lastStart!=''"><!-- 开始时间检索 -->
+			and SALETIME &gt;= #{lastStart}
+		</if>
+		<if test="lastEnd!=null and lastEnd!=''"><!-- 结束时间检索 -->
+			and SALETIME &lt;= #{lastEnd}
+		</if>
+		<if test="onemonth!=null and onemonth!=''"><!-- 某一月检索 -->
+			and SALETIME like CONCAT(#{onemonth},'%')
+		</if>
+		<if test="days!=null and days!=''"><!-- 几天内 -->
+			and DATE_SUB(CURDATE(), INTERVAL ${days} DAY) &lt;= date(SALETIME)
+		</if>
+	</select>
+
+
+	<!-- 商品销售报表-->
+	<select id="SalesReportlistPage" parameterType="page" resultType="pd">
+		select
+		GOODS_NAME,
+		sum(SALECOUNT) SALECOUNT,
+		sum(SALEPRICE) SALEPRICE
+		from
+		<include refid="tableName"></include>
+		where 1=1
+		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
+			and
+			(
+			GOODS_NAME LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+			)
+		</if>
+		<if test="pd.lastStart!=null and pd.lastStart!=''"><!-- 开始时间检索 -->
+			and SALETIME &gt;= #{pd.lastStart}
+		</if>
+		<if test="pd.lastEnd!=null and pd.lastEnd!=''"><!-- 结束时间检索 -->
+			and SALETIME &lt;= #{pd.lastEnd}
+		</if>
+		<if test="pd.days!=null and pd.days!=''"><!-- 几天内的订单 -->
+			and DATE_SUB(CURDATE(), INTERVAL ${pd.days} DAY) &lt;= date(SALETIME)
+		</if>
+		GROUP BY GOODS_ID
+		<if test="pd.forderby!=null and pd.forderby!=''"><!-- 排序 -->
+			${pd.forderby}
+		</if>
+	</select>
+
+</mapper>

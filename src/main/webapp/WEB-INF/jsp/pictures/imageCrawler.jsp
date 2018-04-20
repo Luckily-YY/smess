@@ -16,7 +16,7 @@
 <!-- jsp文件头和头部 -->
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="static/ace/css/colorbox.css" />
-<%@ include file="../../system/index/top.jsp"%>
+<%@ include file="../system/index/top.jsp"%>
 </head>
 <body class="no-skin">
 
@@ -82,7 +82,7 @@
 
 	<!-- basic scripts -->
 	<!-- 页面底部js¨ -->
-	<%@ include file="../../system/index/foot.jsp"%>
+	<%@ include file="../system/index/foot.jsp"%>
 	<script src="static/ace/js/jquery.colorbox.js"></script>
 	<!-- ace scripts -->
 	<script src="static/ace/js/ace/ace.js"></script>
