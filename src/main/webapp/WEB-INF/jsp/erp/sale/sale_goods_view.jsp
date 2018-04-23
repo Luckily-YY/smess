@@ -52,7 +52,7 @@
 										<span class="input-icon">
 											<input type="text" name="GOODS_BM" id="GOODS_BM"
                                                    class="nav-search-input form-control form-control input-lg"
-                                                   placeholder="请读取商品编码" style="min-width: 240px;"
+                                                   placeholder="模拟扫描商品编码" style="min-width: 240px;"
                                                    onchange="getGoods(this.value);"/>
 											<i class="ace-icon fa fa-leaf icon-leaf green"></i>
 										</span>

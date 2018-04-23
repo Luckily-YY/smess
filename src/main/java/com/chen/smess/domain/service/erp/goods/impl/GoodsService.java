@@ -77,6 +77,14 @@ public class GoodsService implements GoodsManager {
 	public List<PageData> listByBm(PageData pd)throws Exception{
 		return (List<PageData>)dao.findForList("GoodsMapper.listByBm", pd);
 	}
+	/**通过产品计量单位
+	 * @param pd
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unchecked")
+	public List<PageData> weightList(PageData pd)throws Exception{
+		return (List<PageData>)dao.findForList("GoodsMapper.weightList", pd);
+	}
 
 	/**通过id获取数据
 	 * @param pd

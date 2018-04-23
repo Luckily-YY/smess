@@ -23,7 +23,7 @@
 	<sql id="FieldValue">
 		#{WEIGHT_ID},
 		#{GOODS_ID},
-		#{WBIANM},
+		#{WBIANMA},
 		#{WEIGHT},
 		#{WPRICE},
 		#{WZPRICE},
@@ -31,7 +31,25 @@
 		#{CREATEDTIME}
 	</sql>
 
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into
+		<include refid="tableName"></include>
+		(
+		<include refid="Field"></include>
+		) values (
+		<include refid="FieldValue"></include>
+		)
+	</insert>
 
+	<!--查询上一个编码-->
+	<select id="findBm" parameterType="pd" resultType="pd">
+		SELECT WBIANMA
+		FROM
+		<include refid="tableName"></include>
+		ORDER BY CREATEDTIME
+		DESC LIMIT 1
+	</select>
 
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">

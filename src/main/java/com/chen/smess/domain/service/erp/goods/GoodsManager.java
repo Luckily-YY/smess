@@ -52,6 +52,11 @@ public interface GoodsManager{
 	 * @throws Exception
 	 */
 	public List<PageData> listByBm(PageData pd)throws Exception;
+	/**通过产品计量单位
+	 * @param pd
+	 * @throws Exception
+	 */
+	public List<PageData> weightList(PageData pd)throws Exception;
 
 	/**通过id获取数据
 	 * @param pd

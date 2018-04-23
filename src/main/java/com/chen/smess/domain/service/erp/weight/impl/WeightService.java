@@ -64,6 +64,13 @@ public class WeightService implements WeightManager {
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("WeightMapper.findById", pd);
 	}
+	/**通查询最后一个编码
+	 * @param pd
+	 * @throws Exception
+	 */
+	public PageData findBm(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("WeightMapper.findBm", pd);
+	}
 	/**通过编码获取数据
 	 * @param pd
 	 * @throws Exception

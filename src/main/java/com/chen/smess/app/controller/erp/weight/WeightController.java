@@ -1,0 +1,175 @@
+package com.chen.smess.app.controller.erp.weight;
+
+import com.chen.smess.app.controller.base.BaseController;
+import com.chen.smess.domain.common.utils.*;
+import com.chen.smess.domain.model.Page;
+import com.chen.smess.domain.service.erp.goods.GoodsManager;
+import com.chen.smess.domain.service.erp.sale.SaleManager;
+import com.chen.smess.domain.service.erp.salereport.SaleReportManager;
+import com.chen.smess.domain.service.erp.weight.WeightManager;
+import com.hazelcast.collection.impl.txnqueue.operations.TxnOfferOperation;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.annotation.Resource;
+import javax.swing.text.html.FormSubmitEvent;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+
+/**
+ * 说明：商品称量
+ */
+@Controller
+@RequestMapping(value = "/weight")
+public class WeightController extends BaseController {
+
+    @Resource(name = "goodsService")
+    private GoodsManager goodsService;
+    @Resource(name = "weightService")
+    private WeightManager weightService;
+
+    /**
+     * 打开前台称量页面
+     *
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/weightShow")
+    public ModelAndView weightShow() throws Exception {
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        pd.put("USERNAME", Jurisdiction.getUsername().toString());
+        pd.put("keyone", "克");
+        pd.put("keytwo", "g");
+        pd.put("keythree", "斤");
+        List<PageData> goodsList = goodsService.weightList(pd);
+        PageData bm = weightService.findBm(pd);
+        mv.addObject("goodsList", goodsList);
+        mv.addObject("pd",bm);
+        mv.setViewName("erp/weight/weight_view");
+        return mv;
+    }
+
+
+    /**
+     * 通过产品编码
+     *
+     * @throws Exception
+     */
+    @RequestMapping(value = "/getGoods")
+    @ResponseBody
+    public Object getGoods() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "通过产品编码获取信息");
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        pd.put("USERNAME", Jurisdiction.getUsername().toString());
+        pd.put("keyone", "克");
+        pd.put("keytwo", "g");
+        pd.put("keythree", "斤");
+        String errInfo = "success";
+        //从库存读取数据
+        List<PageData> list = goodsService.weightList(pd);
+        if(list != null && list.size()>0 && list.size()<2) {
+            for (PageData pageData : list) {
+                pageData.put("GOODS_NAME", pageData.getString("TITLE"));
+                pageData.put("GOODS_ID", pageData.getString("GOODS_ID"));
+                pageData.put("PRICE", pageData.getString("GPRICE"));
+                map.put("pd", pageData);
+            }
+        }else {
+            errInfo = "error";
+        }
+        map.put("result", errInfo);
+        return AppUtil.returnObject(new PageData(), map);
+    }
+
+    /**
+     * 通过产品编码
+     *
+     * @throws Exception
+     */
+    @RequestMapping(value = "/getGoodsById")
+    @ResponseBody
+    public Object getGoodsById() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "通过产品编码获取信息");
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        String errInfo = "success";
+        PageData pageData = goodsService.findById(pd);
+        if (pageData != null){
+            map.put("pd",pageData);
+        }else{
+            errInfo = "error";
+        }
+        map.put("result", errInfo);
+        return AppUtil.returnObject(new PageData(), map);
+    }
+
+    /**
+     * 去打印清单页面
+     *
+     * @param
+     * @throws Exception
+     */
+    @RequestMapping(value = "/ddpirnt")
+    public ModelAndView ddpirnt() throws Exception {
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        pd.put("USERNAME", Jurisdiction.getUsername().toString());
+        pd.put("WEIGHT_ID",this.get32UUID());
+        pd.put("CREATEDTIME", Tools.date2Str(new Date()));
+        weightService.save(pd);
+        PageData gpd = goodsService.findByIdToCha(pd);
+        pd.put("NAME",gpd.getString("UNAME"));
+        String barcodeImgId = pd.getString("GOODS_ID") + ".png";                                    //barcodeImgId此处条形码的图片名
+        String filePath = PathUtil.getClasspath() + Const.FILEPATHTBARCODE + barcodeImgId;        //存放路径
+        BarcodeUtil.generateFile(pd.getString("WBIANMA"), filePath);
+        mv.addObject("pd", pd);
+        mv.setViewName("erp/weight/weight_ddprint");
+        return mv;
+    }
+
+    /**
+     * 通过产品编码
+     *
+     * @throws Exception
+     */
+    @RequestMapping(value = "/findsameBm")
+    @ResponseBody
+    public Object findsameBm() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "通过产品编码获取信息");
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        String errInfo = "success";
+        PageData pageData = weightService.findByBm(pd);
+        if(pageData != null)
+        {
+            errInfo = "error";
+            map.put("result", errInfo);
+        }
+        else {
+            map.put("result", errInfo);
+        }
+        return AppUtil.returnObject(new PageData(), map);
+    }
+
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(format, true));
+    }
+}

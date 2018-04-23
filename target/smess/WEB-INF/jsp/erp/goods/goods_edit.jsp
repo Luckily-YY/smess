@@ -299,39 +299,39 @@
             $("#GCOUNT").focus();
             return false;
         }
-        $.ajax({
-            type: "POST",
-            url: 'goods/findsameBm.do',
-            data: {BIANMA: $("#BIANMA").val(), GOODS_ID: $("#GOODS_ID").val()},
-            dataType: 'json',
-            cache: false,
-            success: function (data) {
-                if ("success" == data.result) {
-                    $("#Form").submit();
-                    $("#zhongxin").hide();
-                    $("#zhongxin2").show();
-                }
-                else if ("IDerror" == data.result) {
-                    $("#GOODS").tips({
-                        side: 3,
-                        msg: '该商品已经上架，请直接修改',
-                        bg: '#FF5080',
-                        time: 15
-                    });
-                    $("#GOODS").focus();
-                    return false;
-                } else {
-                    $("#BIANMA").tips({
-                        side: 3,
-                        msg: "此商品编号已被使用,请关闭窗口后重试",
-                        bg: '#FF5080',
-                        time: 15
-                    });
-                    $("#BIANMA").focus();
-                    return false;
-                }
+           $.ajax({
+        type: "POST",
+        url: 'goods/findsameBm.do',
+        data: {BIANMA: $("#BIANMA").val(), GOODS_ID: $("#GOODS_ID").val()},
+        dataType: 'json',
+        cache: false,
+        success: function (data) {
+            if ("success" == data.result) {
+                $("#Form").submit();
+                $("#zhongxin").hide();
+                $("#zhongxin2").show();
             }
-        });
+            else if ("IDerror" == data.result) {
+                $("#GOODS").tips({
+                    side: 3,
+                    msg: '该商品已经上架，请直接修改',
+                    bg: '#FF5080',
+                    time: 15
+                });
+                $("#GOODS").focus();
+                return false;
+            } else {
+                $("#BIANMA").tips({
+                    side: 3,
+                    msg: "此商品编号已被使用,请关闭窗口后重试",
+                    bg: '#FF5080',
+                    time: 15
+                });
+                $("#BIANMA").focus();
+                return false;
+            }
+        }
+    });
     }
 
         //修改
