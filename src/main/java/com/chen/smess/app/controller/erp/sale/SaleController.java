@@ -178,7 +178,7 @@ public class SaleController extends BaseController {
     }
 
     /**
-     * 通过产品编码
+     * 调用打印机
      *
      * @throws Exception
      */

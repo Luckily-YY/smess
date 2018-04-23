@@ -295,7 +295,19 @@
         var bianma = $("#WBIANMA").val();
         var name = $("#GOODS_NAME").val();
 
-        $.ajax({
+        if(bianma.length != 12)
+        {
+            $("#WBIANMA").tips({
+                side: 3,
+                msg: "编号长度必须为12位",
+                bg: '#FF5080',
+                time: 3
+            });
+            $("#WBIANMA").focus();
+            return false;
+        }
+        else
+        {$.ajax({
             type: "POST",
             url: 'weight/findsameBm.do',
             data: {WBIANMA: bianma},
@@ -309,13 +321,14 @@
                         side: 3,
                         msg: "此编号已被使用,请刷新后重试",
                         bg: '#FF5080',
-                        time: 15
+                        time: 6
                     });
                     $("#WBIANMA").focus();
                     return false;
                 }
             }
-        });
+        });}
+
     }
 
 

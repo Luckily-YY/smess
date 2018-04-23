@@ -87,7 +87,7 @@
                         <table id="table_report" align="center">
                             <tr>
                                 <td style="text-align: center;" colspan="10">
-                                    <a class="btn btn-mini btn-primary" onClick="printSale();">打印</a>
+                                    <a class="btn btn-mini btn-primary" onClick="printWeight();">打印</a>
                                     <a class="btn btn-mini btn-danger" onclick="top.Dialog.close();">取消</a>
                                 </td>
                             </tr>
@@ -116,11 +116,16 @@
 <script type="text/javascript">
     $(top.hangge());
 
-    function printSale() {
+    function printWeight() {
 
         $.ajax({
             type: "POST",
-            url: 'sale/printSale.do',
+            url: 'weight/printWeight.do',
+
+            data: {WEIGHT_ID: "${pd.WEIGHT_ID}",GOODS_ID: "${pd.GOODS_ID}",
+                    WBIANMA: "${pd.WBIANMA}",WEIGHT: "${pd.WEIGHT}",
+                    WPRICE: "${pd.WPRICE}",WZPRICE: "${pd.WZPRICE}",
+                    GOODS_NAME: "${pd.GOODS_NAME}",CREATEDTIME: "${pd.CREATEDTIME}"},
             dataType: 'json',
             cache: false,
             success: function (data) {

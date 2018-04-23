@@ -130,7 +130,6 @@ public class WeightController extends BaseController {
         pd.put("USERNAME", Jurisdiction.getUsername().toString());
         pd.put("WEIGHT_ID",this.get32UUID());
         pd.put("CREATEDTIME", Tools.date2Str(new Date()));
-        weightService.save(pd);
         PageData gpd = goodsService.findByIdToCha(pd);
         pd.put("NAME",gpd.getString("UNAME"));
         String barcodeImgId = pd.getString("GOODS_ID") + ".png";                                    //barcodeImgId此处条形码的图片名
@@ -163,6 +162,31 @@ public class WeightController extends BaseController {
         else {
             map.put("result", errInfo);
         }
+        return AppUtil.returnObject(new PageData(), map);
+    }
+
+    /**
+     * 调用打印机
+     *
+     * @throws Exception
+     */
+    @RequestMapping(value = "/printWeight")
+    @ResponseBody
+    public Object printWeight() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "打印购物清单");
+        Map<String, Object> map = new HashMap<String, Object>();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        pd.put("USERNAME",Jurisdiction.getUsername().toString());
+        String errInfo = "success";
+        try {
+            System.out.println(pd.toString()+"++++++++++++++++++++");
+            weightService.save(pd);
+        } catch (Exception e) {
+            errInfo = "error";
+
+        }
+        map.put("result", errInfo);
         return AppUtil.returnObject(new PageData(), map);
     }
 
