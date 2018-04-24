@@ -30,6 +30,14 @@
 
                         <div style="padding-top: 13px; height: 330px;" align="center">
                             <table style="margin-top:5px;border: 0px;">
+                                <tr style="width: 440px;font-size: 22px;">
+                                    <td colspan="3" align="center">
+                                        <b>品名</b>
+                                    </td>
+                                    <td colspan="3" align="center">
+                                        <b>${pd.GOODS_NAME}</b>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <th class="center">包装日期：</th>
                                     <th class="center">${pd.CREATEDTIME}</th>

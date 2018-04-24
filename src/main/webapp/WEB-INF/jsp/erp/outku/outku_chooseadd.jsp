@@ -151,6 +151,10 @@
 <script type="text/javascript" src="static/js/jquery.tips.js"></script>
 <script type="text/javascript">
     $(top.hangge());
+
+    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
+    var number=/^\d*$/; //纯数字
+
     //保存
     function save() {
         if ($("#GOODS_ID").val() == "") {
@@ -173,6 +177,18 @@
             $("#OUTPRICE").focus();
             return false;
         }
+
+        if(!point.test($("#OUTPRICE").val())){
+            $("#OUTPRICE").tips({
+                side: 3,
+                msg: '请输入正确的出售价格',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTPRICE").focus();
+            return false;
+        }
+
         if ($("#OUTCOUNT").val() == "") {
             $("#OUTCOUNT").tips({
                 side: 3,
@@ -183,6 +199,43 @@
             $("#OUTCOUNT").focus();
             return false;
         }
+
+        if(!point.test($("#OUTCOUNT").val())){
+            $("#OUTCOUNT").tips({
+                side: 3,
+                msg: '请输入正确的销售数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTCOUNT").focus();
+            return false;
+        }
+
+        var OUTCOUNT = Number("" == $("#OUTCOUNT").val() ? "0" : $("#OUTCOUNT").val());
+        var OUTPRICE = Number("" == $("#OUTPRICE").val() ? "0" : $("#OUTPRICE").val());
+
+        if (0 - OUTCOUNT > 0) {
+            $("#OUTCOUNT").tips({
+                side: 3,
+                msg: '数量不能小于零',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTCOUNT").focus();
+            return false;
+        }
+        if (0 - OUTPRICE > 0) {
+            $("#OUTPRICE").tips({
+                side: 3,
+                msg: '单价不能小于零',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#OUTPRICE").focus();
+            return false;
+        }
+        $("#ZPRICE").val(OUTCOUNT * OUTPRICE);
+
 
         $.ajax({
             type: "POST",
@@ -248,6 +301,18 @@
                 $("#OUTPRICE").focus();
                 return false;
             }
+
+            if(!point.test($("#OUTPRICE").val())){
+                $("#OUTPRICE").tips({
+                    side: 3,
+                    msg: '请输入正确的出售价格',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#OUTPRICE").focus();
+                return false;
+            }
+
             if ($("#OUTCOUNT").val() == "") {
                 $("#OUTCOUNT").tips({
                     side: 3,
@@ -258,6 +323,42 @@
                 $("#OUTCOUNT").focus();
                 return false;
             }
+            if(!point.test($("#OUTCOUNT").val())){
+                $("#OUTCOUNT").tips({
+                    side: 3,
+                    msg: '请输入正确的出售数量',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#OUTCOUNT").focus();
+                return false;
+            }
+
+            var OUTCOUNT = Number("" == $("#OUTCOUNT").val() ? "0" : $("#OUTCOUNT").val());
+            var OUTPRICE = Number("" == $("#OUTPRICE").val() ? "0" : $("#OUTPRICE").val());
+
+            if (0 - OUTCOUNT > 0) {
+                $("#OUTCOUNT").tips({
+                    side: 3,
+                    msg: '数量不能小于零',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#OUTCOUNT").focus();
+                return false;
+            }
+            if (0 - OUTPRICE > 0) {
+                $("#OUTPRICE").tips({
+                    side: 3,
+                    msg: '单价不能小于零',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#OUTPRICE").focus();
+                return false;
+            }
+            $("#ZPRICE").val(OUTCOUNT * OUTPRICE);
+
             $.ajax({
                 type: "POST",
                 url: 'goods/getById.do',

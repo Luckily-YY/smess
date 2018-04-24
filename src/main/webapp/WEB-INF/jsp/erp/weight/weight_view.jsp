@@ -187,6 +187,10 @@
     $(top.hangge());//关闭加载状态
 
 
+
+    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
+    var number=/^\d*$/; //纯数字
+
     /*通过id获取信息
      * */
     function setGoogsName(id) {
@@ -266,6 +270,18 @@
             return false;
         }
 
+        if(!number.test($("#GOODS_BM").val()))
+        {
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '请输入正确格式的编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+
         if ($("#GOODS_WEIGHT").val() == "") {
             $("#GOODS_WEIGHT").tips({
                 side: 3,
@@ -276,10 +292,35 @@
             $("#GOODS_WEIGHT").focus();
             return false;
         }
+
+        if(!point.test($("#GOODS_WEIGHT").val()))
+        {
+            $("#GOODS_WEIGHT").tips({
+                side: 3,
+                msg: '请输入正确格式的重量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_WEIGHT").focus();
+            return false;
+        }
+
         if ($("#WBIANMA").val() == "") {
             $("#WBIANMA").tips({
                 side: 3,
                 msg: '请输入信息编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#WBIANMA").focus();
+            return false;
+        }
+
+        if(!number.test($("#WBIANMA").val()))
+        {
+            $("#WBIANMA").tips({
+                side: 3,
+                msg: '请输入正确格式的编码',
                 bg: '#AE81FF',
                 time: 2
             });

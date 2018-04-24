@@ -103,6 +103,7 @@
 <script type="text/javascript">
     $(top.hangge());
 
+    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;
 
     //保存
     function save(id) {
@@ -111,6 +112,17 @@
             $("#GCOUNT").tips({
                 side: 3,
                 msg: '请输入下架数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GCOUNT").focus();
+            return false;
+        }
+
+        if(!point.test($("#GCOUNT").val())){
+            $("#GCOUNT").tips({
+                side: 3,
+                msg: '请输入正确的数量',
                 bg: '#AE81FF',
                 time: 2
             });

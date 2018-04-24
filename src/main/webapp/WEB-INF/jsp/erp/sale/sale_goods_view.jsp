@@ -212,10 +212,35 @@
 <script type="text/javascript">
     $(top.hangge());//关闭加载状态
 
+    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
+    var number=/^\d*$/; //纯数字
 
     /*获取该编码的详细信息
      * */
     function getGoods(bianma) {
+        if($("#GOODS_BM").val() == ""){
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '请输入编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+
+        if(!number.test($("#GOODS_BM").val()))
+        {
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '请输入正确格式的编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+
         if ($("#GOODS_BM").val().length == 10 || $("#GOODS_BM").val().length == 12) {
             if ($("#GOODS_BM").val().length == 10) {
                 $.ajax({
@@ -331,6 +356,19 @@
             $("#GOODS_BM").focus();
             return false;
         }
+
+        if(!number.test($("#GOODS_BM").val()))
+        {
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '请输入正确格式的编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+
         if ($("#GOODS_NAME").val() == "") {
             $("#GOODS_NAME").tips({
                 side: 3,
@@ -351,6 +389,19 @@
             $("#PRICE").focus();
             return false;
         }
+
+        if(!point.test($("#PRICE").val()))
+        {
+            $("#PRICE").tips({
+                side: 3,
+                msg: '请输入正确格式的单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#PRICE").focus();
+            return false;
+        }
+
         $("#Form").submit();
     }
 

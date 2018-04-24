@@ -131,6 +131,9 @@
 <script type="text/javascript">
     $(top.hangge());
 
+    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
+    var number=/^\d*$/; //纯数字
+
     //计算总价
     function jisuanz() {
         var INCOUNT = Number("" == $("#INCOUNT").val() ? "0" : $("#INCOUNT").val());
@@ -184,6 +187,19 @@
             $("#INCOUNT").focus();
             return false;
         }
+
+        if(!point.test($("#INCOUNT").val()))
+        {
+            $("#INCOUNT").tips({
+                side: 3,
+                msg: '请输入正确的数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#INCOUNT").focus();
+            return false;
+        }
+
         if ($("#PRICE").val() == "") {
             $("#PRICE").tips({
                 side: 3,
@@ -194,6 +210,19 @@
             $("#PRICE").focus();
             return false;
         }
+
+        if(!point.test($("#PRICE").val()))
+        {
+            $("#PRICE").tips({
+                side: 3,
+                msg: '请输入正确的单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#PRICE").focus();
+            return false;
+        }
+
         if ($("#ZPRICE").val() == "") {
             $("#ZPRICE").tips({
                 side: 3,
@@ -204,6 +233,19 @@
             $("#ZPRICE").focus();
             return false;
         }
+
+        if(!point.test($("#ZPRICE").val()))
+        {
+            $("#ZPRICE").tips({
+                side: 3,
+                msg: '请输入正确的总价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#ZPRICE").focus();
+            return false;
+        }
+
         if ($("#BZ").val() == "") {
             $("#BZ").tips({
                 side: 3,
@@ -244,6 +286,18 @@
             $("#INCOUNT").focus();
             return false;
         }
+        if(!point.test($("#INCOUNT").val()))
+        {
+            $("#INCOUNT").tips({
+                side: 3,
+                msg: '请输入正确的数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#INCOUNT").focus();
+            return false;
+        }
+
         if ($("#PRICE").val() == "") {
             $("#PRICE").tips({
                 side: 3,
@@ -254,10 +308,36 @@
             $("#PRICE").focus();
             return false;
         }
+
+        if(!point.test($("#PRICE").val()))
+        {
+            $("#PRICE").tips({
+                side: 3,
+                msg: '请输入正确的单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#PRICE").focus();
+            return false;
+        }
+
         if ($("#ZPRICE").val() == "") {
             $("#ZPRICE").tips({
                 side: 3,
                 msg: '请输入总价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#ZPRICE").focus();
+            return false;
+        }
+
+
+        if(!point.test($("#ZPRICE").val()))
+        {
+            $("#ZPRICE").tips({
+                side: 3,
+                msg: '请输入正确的总价',
                 bg: '#AE81FF',
                 time: 2
             });
@@ -279,36 +359,6 @@
         $("#zhongxin2").show();
     }
 
-
-    /*  $(function () {
-     $("#ZPRICE").attr("readonly", "readonly");
-     $("#ZPRICE").css("color", "gray");
-     //下拉框
-     if (!ace.vars['touch']) {
-     $('.chosen-select').chosen({allow_single_deselect: true});
-     $(window)
-     .off('resize.chosen')
-     .on('resize.chosen', function () {
-     $('.chosen-select').each(function () {
-     var $this = $(this);
-     $this.next().css({'width': $this.parent().width()});
-     });
-     }).trigger('resize.chosen');
-     $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
-     if (event_name != 'sidebar_collapsed') return;
-     $('.chosen-select').each(function () {
-     var $this = $(this);
-     $this.next().css({'width': $this.parent().width()});
-     });
-     });
-     $('#chosen-multiple-style .btn').on('click', function (e) {
-     var target = $(this).find('input[type=radio]');
-     var which = parseInt(target.val());
-     if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
-     else $('#form-field-select-4').removeClass('tag-input-style');
-     });
-     }
-     });*/
 </script>
 </body>
 </html>

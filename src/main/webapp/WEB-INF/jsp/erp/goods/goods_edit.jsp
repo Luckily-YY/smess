@@ -202,6 +202,9 @@
 <script type="text/javascript">
     $(top.hangge());
 
+    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
+    var number=/^\d*$/; //纯数字
+
     //通过商品id读取数据
     function getGoods(id) {
         $.ajax({
@@ -262,6 +265,63 @@
                 time: 2
             });
             $("#BIANMA").focus();
+            return false;
+        }
+
+        if(!number.test($("#BIANMA").val())){
+            $("#BIANMA").tips({
+                side: 3,
+                msg: '请输入正确的商品编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#BIANMA").focus();
+            return false;
+        }
+
+
+        if ($("#GCOUNT").val() == "") {
+            $("#GCOUNT").tips({
+                side: 3,
+                msg: '请输入商品数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GCOUNT").focus();
+            return false;
+        }
+
+        if(!point.test($("#GCOUNT").val())){
+            $("#GCOUNT").tips({
+                side: 3,
+                msg: '请输入正确的商品数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#BIANMA").focus();
+            return false;
+        }
+
+
+        if ($("#GPRICE").val() == "") {
+            $("#GPRICE").tips({
+                side: 3,
+                msg: '请输入商品单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GPRICE").focus();
+            return false;
+        }
+
+        if(!point.test($("#GPRICE").val())){
+            $("#GPRICE").tips({
+                side: 3,
+                msg: '请输入正确的商品单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GPRICE").focus();
             return false;
         }
 
@@ -366,6 +426,66 @@
                 $("#BIANMA").focus();
                 return false;
             }
+
+            if(!number.test($("#BIANMA").val())){
+                $("#BIANMA").tips({
+                    side: 3,
+                    msg: '请输入正确的商品编码',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#BIANMA").focus();
+                return false;
+            }
+
+
+
+            if ($("#GCOUNT").val() == "") {
+                $("#GCOUNT").tips({
+                    side: 3,
+                    msg: '请输入商品数量',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GCOUNT").focus();
+                return false;
+            }
+
+            if(!point.test($("#GCOUNT").val())){
+                $("#GCOUNT").tips({
+                    side: 3,
+                    msg: '请输入正确的商品数量',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#BIANMA").focus();
+                return false;
+            }
+
+
+            if ($("#GPRICE").val() == "") {
+                $("#GPRICE").tips({
+                    side: 3,
+                    msg: '请输入商品单价',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GPRICE").focus();
+                return false;
+            }
+
+            if(!point.test($("#GPRICE").val())){
+                $("#GPRICE").tips({
+                    side: 3,
+                    msg: '请输入正确的商品单价',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GPRICE").focus();
+                return false;
+            }
+
+
             $("#DESCRIPTION").val(getContent());
             if ($("#DESCRIPTION").val() == "") {
                 $("#DESCRIPTION").tips({

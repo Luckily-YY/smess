@@ -136,8 +136,18 @@
                                                             &nbsp;&nbsp;(暂无单位)
                                                         </c:if>
                                                     </td>
-                                                    <td class='center'>${var.TNAME}</td>
-                                                    <td class='center'>${var.BNAME}</td>
+                                                    <c:if test="${var.TNAME == null || var.TNAME == ''}">
+                                                        <td class='center'>(暂无类别)</td>
+                                                    </c:if>
+                                                    <c:if test="${var.BNAME != null }">
+                                                        <td class='center'>${var.TNAME}</td>
+                                                    </c:if>
+                                                    <c:if test="${var.BNAME == null || var.BNAME == ''}">
+                                                        <td class='center'>(暂无品牌)</td>
+                                                    </c:if>
+                                                    <c:if test="${var.BNAME != null }">
+                                                        <td class='center'>${var.BNAME}</td>
+                                                    </c:if>
                                                     <td class='center'>
                                                         <a class="btn btn-mini btn-success"
                                                            onclick="edit('${var.KUCUN_ID}');">
