@@ -139,7 +139,7 @@
                                                     <c:if test="${var.TNAME == null || var.TNAME == ''}">
                                                         <td class='center'>(暂无类别)</td>
                                                     </c:if>
-                                                    <c:if test="${var.BNAME != null }">
+                                                    <c:if test="${var.TNAME != null }">
                                                         <td class='center'>${var.TNAME}</td>
                                                     </c:if>
                                                     <c:if test="${var.BNAME == null || var.BNAME == ''}">

@@ -214,7 +214,7 @@
 	</select>
 
 
-	<!-- 通过产品计量单位查询-->
+	<!-- 通过产品计量单位或者无计量单位查询-->
 	<select id="weightList" parameterType="pd" resultType="pd">
 		select
 		a.TITLE,
@@ -243,6 +243,42 @@
 		)
 	</select>
 
+	<!-- 通过产品计量单位查询-->
+	<select id="weightListfind" parameterType="pd" resultType="pd">
+		select
+		a.TITLE,
+		a.BIANMA,
+		a.SPTYPE_ID,
+		a.SPBRAND_ID,
+		a.SPUNIT_ID,
+		a.USERNAME,
+		a.GOODS_ID,
+		a.GCOUNT,
+		a.GPRICE,
+		b.NAME
+		from
+		<include refid="tableName"></include> a
+		left join cp_spunit b
+		on a.SPUNIT_ID = b.SPUNIT_ID
+		where (1=1
+		<if test="BIANMA!= null and BIANMA!= ''">
+			and a.BIANMA = #{BIANMA}
+		</if>
+		AND
+		(
+		a.SPUNIT_ID is NULL
+		)) OR
+		(1=1
+		<if test="BIANMA!= null and BIANMA!= ''">
+			and a.BIANMA = #{BIANMA}
+		</if>
+		AND
+		(
+		b.NAME  LIKE CONCAT(CONCAT('%', #{keyone}),'%') OR
+		b.NAME  LIKE CONCAT(CONCAT('%', #{keytwo}),'%')  OR
+		b.NAME  LIKE CONCAT(CONCAT('%', #{keythree}),'%')
+		))
+	</select>
 
 	<!-- 通过产品编码 -->
 	<select id="findByBm" parameterType="pd" resultType="pd">

@@ -31,6 +31,12 @@
 		#{CREATEDTIME}
 	</sql>
 
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+	</select>
 	<!-- 新增-->
 	<insert id="save" parameterType="pd">
 		insert into

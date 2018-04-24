@@ -51,8 +51,15 @@ public class WeightController extends BaseController {
         pd.put("keyone", "克");
         pd.put("keytwo", "g");
         pd.put("keythree", "斤");
+        PageData bm = new PageData();
         List<PageData> goodsList = goodsService.weightList(pd);
-        PageData bm = weightService.findBm(pd);
+        List<PageData> exitlist = weightService.listAll(pd);
+        if (exitlist != null && exitlist.size()>0) {
+            bm = weightService.findBm(pd);
+        }
+        else {
+            bm.put("WBIANMA","000000000000");
+        }
         mv.addObject("goodsList", goodsList);
         mv.addObject("pd",bm);
         mv.setViewName("erp/weight/weight_view");
