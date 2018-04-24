@@ -202,8 +202,8 @@
 <script type="text/javascript">
     $(top.hangge());
 
-    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
-    var number=/^\d*$/; //纯数字
+    var point = /^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
+    var number = /^\d*$/; //纯数字
 
     //通过商品id读取数据
     function getGoods(id) {
@@ -268,7 +268,7 @@
             return false;
         }
 
-        if(!number.test($("#BIANMA").val())){
+        if (!number.test($("#BIANMA").val())) {
             $("#BIANMA").tips({
                 side: 3,
                 msg: '请输入正确的商品编码',
@@ -291,7 +291,7 @@
             return false;
         }
 
-        if(!point.test($("#GCOUNT").val())){
+        if (!point.test($("#GCOUNT").val())) {
             $("#GCOUNT").tips({
                 side: 3,
                 msg: '请输入正确的商品数量',
@@ -314,7 +314,7 @@
             return false;
         }
 
-        if(!point.test($("#GPRICE").val())){
+        if (!point.test($("#GPRICE").val())) {
             $("#GPRICE").tips({
                 side: 3,
                 msg: '请输入正确的商品单价',
@@ -359,220 +359,219 @@
             $("#GCOUNT").focus();
             return false;
         }
-           $.ajax({
-        type: "POST",
-        url: 'goods/findsameBm.do',
-        data: {BIANMA: $("#BIANMA").val(), GOODS_ID: $("#GOODS_ID").val()},
-        dataType: 'json',
-        cache: false,
-        success: function (data) {
-            if ("success" == data.result) {
-                $("#Form").submit();
-                $("#zhongxin").hide();
-                $("#zhongxin2").show();
-            }
-            else if ("IDerror" == data.result) {
-                $("#GOODS").tips({
-                    side: 3,
-                    msg: '该商品已经上架，请直接修改',
-                    bg: '#FF5080',
-                    time: 15
-                });
-                $("#GOODS").focus();
-                return false;
-            } else {
-                $("#BIANMA").tips({
-                    side: 3,
-                    msg: "此商品编号已被使用,请关闭窗口后重试",
-                    bg: '#FF5080',
-                    time: 15
-                });
-                $("#BIANMA").focus();
-                return false;
-            }
-        }
-    });
-    }
-
-        //修改
-        function edit(old,BIANMA) {
-            if ($("#TITLE").val() == "") {
-                $("#TITLE").tips({
-                    side: 3,
-                    msg: '请输入商品名称',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#TITLE").focus();
-                return false;
-            }
-            if ($("#GOODS").val() == "") {
-                $("#GOODS").tips({
-                    side: 3,
-                    msg: '请输入商品名称',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#GOODS").focus();
-                return false;
-            }
-            if ($("#BIANMA").val() == "") {
-                $("#BIANMA").tips({
-                    side: 3,
-                    msg: '请输入商品编码',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#BIANMA").focus();
-                return false;
-            }
-
-            if(!number.test($("#BIANMA").val())){
-                $("#BIANMA").tips({
-                    side: 3,
-                    msg: '请输入正确的商品编码',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#BIANMA").focus();
-                return false;
-            }
-
-
-
-            if ($("#GCOUNT").val() == "") {
-                $("#GCOUNT").tips({
-                    side: 3,
-                    msg: '请输入商品数量',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#GCOUNT").focus();
-                return false;
-            }
-
-            if(!point.test($("#GCOUNT").val())){
-                $("#GCOUNT").tips({
-                    side: 3,
-                    msg: '请输入正确的商品数量',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#BIANMA").focus();
-                return false;
-            }
-
-
-            if ($("#GPRICE").val() == "") {
-                $("#GPRICE").tips({
-                    side: 3,
-                    msg: '请输入商品单价',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#GPRICE").focus();
-                return false;
-            }
-
-            if(!point.test($("#GPRICE").val())){
-                $("#GPRICE").tips({
-                    side: 3,
-                    msg: '请输入正确的商品单价',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#GPRICE").focus();
-                return false;
-            }
-
-
-            $("#DESCRIPTION").val(getContent());
-            if ($("#DESCRIPTION").val() == "") {
-                $("#DESCRIPTION").tips({
-                    side: 3,
-                    msg: '请输入商品描述',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#DESCRIPTION").focus();
-                return false;
-            }
-            if ($("#SHORTDESC").val() == "") {
-                $("#SHORTDESC").tips({
-                    side: 3,
-                    msg: '请输入简述',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#SHORTDESC").focus();
-                return false;
-            }
-            $.ajax({
-                type: "POST",
-                url: 'goods/getById.do',
-                data: {GOODS_ID: $("#GOODS").val()},
-                dataType: 'json',
-                cache: false,
-                success: function (data) {
-                    if ("success" == data.result) {
-                        $("#ZCOUNT").val(data.pd.ZCOUNT);
-                    } else {
-                        $("#GOODS").tips({
-                            side: 3,
-                            msg: "此商品不存在",
-                            bg: '#FF5080',
-                            time: 15
-                        });
-                    }
-                }
-            });
-
-            var zcount = $("#ZCOUNT").val();
-            var gcount = $("#GCOUNT").val();
-           // var count = (gcount - old).toFixed(2);
-            var newcount = (zcount - gcount).toFixed(2);
-            alert("库存："+zcount+",上架数量："+gcount);
-            if (newcount < 0.00) {
-                $("#GCOUNT").tips({
-                    side: 3,
-                    msg: '添加的商品数量不能大于库存数量',
-                    bg: '#AE81FF',
-                    time: 2
-                });
-                $("#GCOUNT").focus();
-                return false;
-            }
-
-                if (BIANMA != $("#BIANMA").val()) {
-                    $.ajax({
-                        type: "POST",
-                        url: 'goods/changeBm.do',
-                        data: {BIANMA: $("#BIANMA").val()},
-                        dataType: 'json',
-                        cache: false,
-                        success: function (data) {
-                            if ("success" == data.result) {
-                                $("#Form").submit();
-                                $("#zhongxin").hide();
-                                $("#zhongxin2").show();
-                            } else {
-                                $("#BIANMA").tips({
-                                    side: 3,
-                                    msg: "此商品编号已被使用,请关闭窗口后重试",
-                                    bg: '#FF5080',
-                                    time: 15
-                                });
-                                $("#BIANMA").focus();
-                                return false;
-                            }
-                        }
-                    });
-                }
-                else {
+        $.ajax({
+            type: "POST",
+            url: 'goods/findsameBm.do',
+            data: {BIANMA: $("#BIANMA").val(), GOODS_ID: $("#GOODS_ID").val()},
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                if ("success" == data.result) {
                     $("#Form").submit();
                     $("#zhongxin").hide();
                     $("#zhongxin2").show();
                 }
+                else if ("IDerror" == data.result) {
+                    $("#GOODS").tips({
+                        side: 3,
+                        msg: '该商品已经上架，请直接修改',
+                        bg: '#FF5080',
+                        time: 15
+                    });
+                    $("#GOODS").focus();
+                    return false;
+                } else {
+                    $("#BIANMA").tips({
+                        side: 3,
+                        msg: "此商品编号已被使用,请关闭窗口后重试",
+                        bg: '#FF5080',
+                        time: 15
+                    });
+                    $("#BIANMA").focus();
+                    return false;
+                }
+            }
+        });
+    }
+
+    //修改
+    function edit(old, BIANMA) {
+        if ($("#TITLE").val() == "") {
+            $("#TITLE").tips({
+                side: 3,
+                msg: '请输入商品名称',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#TITLE").focus();
+            return false;
+        }
+        if ($("#GOODS").val() == "") {
+            $("#GOODS").tips({
+                side: 3,
+                msg: '请输入商品名称',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS").focus();
+            return false;
+        }
+        if ($("#BIANMA").val() == "") {
+            $("#BIANMA").tips({
+                side: 3,
+                msg: '请输入商品编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#BIANMA").focus();
+            return false;
+        }
+
+        if (!number.test($("#BIANMA").val())) {
+            $("#BIANMA").tips({
+                side: 3,
+                msg: '请输入正确的商品编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#BIANMA").focus();
+            return false;
+        }
+
+
+        if ($("#GCOUNT").val() == "") {
+            $("#GCOUNT").tips({
+                side: 3,
+                msg: '请输入商品数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GCOUNT").focus();
+            return false;
+        }
+
+        if (!point.test($("#GCOUNT").val())) {
+            $("#GCOUNT").tips({
+                side: 3,
+                msg: '请输入正确的商品数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#BIANMA").focus();
+            return false;
+        }
+
+
+        if ($("#GPRICE").val() == "") {
+            $("#GPRICE").tips({
+                side: 3,
+                msg: '请输入商品单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GPRICE").focus();
+            return false;
+        }
+
+        if (!point.test($("#GPRICE").val())) {
+            $("#GPRICE").tips({
+                side: 3,
+                msg: '请输入正确的商品单价',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GPRICE").focus();
+            return false;
+        }
+
+
+        $("#DESCRIPTION").val(getContent());
+        if ($("#DESCRIPTION").val() == "") {
+            $("#DESCRIPTION").tips({
+                side: 3,
+                msg: '请输入商品描述',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#DESCRIPTION").focus();
+            return false;
+        }
+        if ($("#SHORTDESC").val() == "") {
+            $("#SHORTDESC").tips({
+                side: 3,
+                msg: '请输入简述',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#SHORTDESC").focus();
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            url: 'goods/getById.do',
+            data: {GOODS_ID: $("#GOODS").val()},
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                if ("success" == data.result) {
+                    $("#ZCOUNT").val(data.pd.ZCOUNT);
+                } else {
+                    $("#GOODS").tips({
+                        side: 3,
+                        msg: "此商品不存在",
+                        bg: '#FF5080',
+                        time: 15
+                    });
+                }
+            }
+        });
+
+        var zcount = $("#ZCOUNT").val();
+        var gcount = $("#GCOUNT").val();
+        // var count = (gcount - old).toFixed(2);
+        var newcount = (zcount - gcount).toFixed(2);
+        alert("库存：" + zcount + ",上架数量：" + gcount);
+        if (newcount < 0.00) {
+            $("#GCOUNT").tips({
+                side: 3,
+                msg: '添加的商品数量不能大于库存数量',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GCOUNT").focus();
+            return false;
+        }
+
+        if (BIANMA != $("#BIANMA").val()) {
+            $.ajax({
+                type: "POST",
+                url: 'goods/changeBm.do',
+                data: {BIANMA: $("#BIANMA").val()},
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    if ("success" == data.result) {
+                        $("#Form").submit();
+                        $("#zhongxin").hide();
+                        $("#zhongxin2").show();
+                    } else {
+                        $("#BIANMA").tips({
+                            side: 3,
+                            msg: "此商品编号已被使用,请关闭窗口后重试",
+                            bg: '#FF5080',
+                            time: 15
+                        });
+                        $("#BIANMA").focus();
+                        return false;
+                    }
+                }
+            });
+        }
+        else {
+            $("#Form").submit();
+            $("#zhongxin").hide();
+            $("#zhongxin2").show();
+        }
     }
     $(function () {
         //日期框
