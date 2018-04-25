@@ -97,6 +97,18 @@
         GOODS_ID = #{GOODS_ID}
     </select>
 
+
+    <!-- 通过编码获取数据 -->
+    <select id="findDataByBm" parameterType="pd" resultType="pd">
+        select
+        <include refid="Field"></include>
+        from
+        <include refid="tableName"></include>
+        where
+        BIANMA = #{BIANMA}
+    </select>
+
+
     <!-- 通过ID获取数据(查看详细信息) -->
     <select id="findByIdToCha" parameterType="pd" resultType="pd">
         select

@@ -63,6 +63,11 @@ public interface GoodsManager{
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception;
+	/**通过编码获取数据
+	 * @param pd
+	 * @throws Exception
+	 */
+	public PageData findDataByBm(PageData pd)throws Exception;
 
 	/**通过id获取数据(查看详细信息)
 	 * @param pd

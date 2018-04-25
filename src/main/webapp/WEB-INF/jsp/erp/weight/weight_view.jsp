@@ -190,6 +190,7 @@
 
     var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
     var number=/^\d*$/; //纯数字
+    var gid = "";
 
     /*通过id获取信息
      * */
@@ -221,6 +222,37 @@
     /*获取该编码的详细信息
      * */
     function getGoods(bianma) {
+        if ($("#GOODS_BM").val() == "") {
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '请输入编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+        if($("#GOODS_BM").val().length != 10){
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '商品编码长度为10位',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
+        if(!number.test($("#GOODS_BM").val()))
+        {
+            $("#GOODS_BM").tips({
+                side: 3,
+                msg: '请输入正确格式的编码',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#GOODS_BM").focus();
+            return false;
+        }
         $.ajax({
             type: "POST",
             url: 'weight/getGoods.do',
@@ -232,6 +264,7 @@
                     $("#GOODS_NAME").val(data.pd.GOODS_NAME);
                     $("#GOODS_PRICE").val(data.pd.PRICE);
                     $("#SGOODS_ID").val(data.pd.GOODS_ID);
+                    gid = data.pd.GOODS_ID;
                 } else {
                     $("#GOODS_BM").tips({
                         side: 3,
@@ -316,6 +349,16 @@
             return false;
         }
 
+        if ($("#WBIANMA").val().length != 12) {
+            $("#WBIANMA").tips({
+                side: 3,
+                msg: '信息编码长度为12位',
+                bg: '#AE81FF',
+                time: 2
+            });
+            $("#WBIANMA").focus();
+            return false;
+        }
         if(!number.test($("#WBIANMA").val()))
         {
             $("#WBIANMA").tips({
@@ -329,7 +372,6 @@
         }
 
 
-        var gid = $("#SGOODS_ID").val();
         var weight = $("#GOODS_WEIGHT").val();
         var zprice = $("#GOODS_Z").val();
         var price = $("#GOODS_PRICE").val();

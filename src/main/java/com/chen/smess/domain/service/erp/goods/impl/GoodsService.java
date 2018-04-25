@@ -93,6 +93,13 @@ public class GoodsService implements GoodsManager {
 	public PageData findById(PageData pd)throws Exception{
 		return (PageData)dao.findForObject("GoodsMapper.findById", pd);
 	}
+	/**通过编码获取数据
+	 * @param pd
+	 * @throws Exception
+	 */
+	public PageData findDataByBm(PageData pd)throws Exception{
+		return (PageData)dao.findForObject("GoodsMapper.findDataByBm", pd);
+	}
 
 	/**通过id获取数据(查看详细信息)
 	 * @param pd

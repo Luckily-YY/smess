@@ -54,14 +54,13 @@ public class WeightController extends BaseController {
         PageData bm = new PageData();
         List<PageData> goodsList = goodsService.weightList(pd);
         List<PageData> exitlist = weightService.listAll(pd);
-        if (exitlist != null && exitlist.size()>0) {
+        if (exitlist != null && exitlist.size() > 0) {
             bm = weightService.findBm(pd);
-        }
-        else {
-            bm.put("WBIANMA","000000000000");
+        } else {
+            bm.put("WBIANMA", "000000000000");
         }
         mv.addObject("goodsList", goodsList);
-        mv.addObject("pd",bm);
+        mv.addObject("pd", bm);
         mv.setViewName("erp/weight/weight_view");
         return mv;
     }
@@ -79,44 +78,54 @@ public class WeightController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         PageData pd = new PageData();
         pd = this.getPageData();
-        pd.put("USERNAME", Jurisdiction.getUsername().toString());
-        pd.put("keyone", "克");
-        pd.put("keytwo", "g");
-        pd.put("keythree", "斤");
         String errInfo = "success";
-        //从库存读取数据
-        List<PageData> list = goodsService.weightList(pd);
-        if(list != null && list.size()>0 && list.size()<2) {
-            for (PageData pageData : list) {
-                pageData.put("GOODS_NAME", pageData.getString("TITLE"));
-                pageData.put("GOODS_ID", pageData.getString("GOODS_ID"));
-                pageData.put("PRICE", pageData.getString("GPRICE"));
-                map.put("pd", pageData);
+        pd.put("USERNAME", Jurisdiction.getUsername().toString());
+
+        PageData dataByBm = goodsService.findDataByBm(pd);
+        if (!dataByBm.getString("SPUNIT_ID").toString().isEmpty()) {
+            pd.put("keyone", "克");
+            pd.put("keytwo", "g");
+            pd.put("keythree", "斤");
+            //从库存读取数据
+            List<PageData> list = goodsService.weightList(pd);
+            if (list != null && list.size() > 0 && list.size() < 2) {
+                for (PageData pageData : list) {
+                    pageData.put("GOODS_NAME", pageData.getString("TITLE"));
+                    pageData.put("GOODS_ID", pageData.getString("GOODS_ID"));
+                    pageData.put("PRICE", pageData.getString("GPRICE"));
+                    map.put("pd", pageData);
+                }
+            } else {
+                errInfo = "error";
             }
-        }else {
-            errInfo = "error";
+        } else {
+            dataByBm.put("GOODS_NAME", dataByBm.getString("TITLE"));
+            dataByBm.put("GOODS_ID", dataByBm.getString("GOODS_ID"));
+            dataByBm.put("PRICE", dataByBm.getString("GPRICE"));
+            dataByBm.put("UNAME", "kg");
+            map.put("pd", dataByBm);
         }
         map.put("result", errInfo);
         return AppUtil.returnObject(new PageData(), map);
     }
 
     /**
-     * 通过产品编码
+     * 通过产品id
      *
      * @throws Exception
      */
     @RequestMapping(value = "/getGoodsById")
     @ResponseBody
     public Object getGoodsById() throws Exception {
-        logBefore(logger, Jurisdiction.getUsername() + "通过产品编码获取信息");
+        logBefore(logger, Jurisdiction.getUsername() + "通过产品id获取信息");
         Map<String, Object> map = new HashMap<String, Object>();
         PageData pd = new PageData();
         pd = this.getPageData();
         String errInfo = "success";
         PageData pageData = goodsService.findById(pd);
-        if (pageData != null){
-            map.put("pd",pageData);
-        }else{
+        if (pageData != null) {
+            map.put("pd", pageData);
+        } else {
             errInfo = "error";
         }
         map.put("result", errInfo);
@@ -135,10 +144,16 @@ public class WeightController extends BaseController {
         PageData pd = new PageData();
         pd = this.getPageData();
         pd.put("USERNAME", Jurisdiction.getUsername().toString());
-        pd.put("WEIGHT_ID",this.get32UUID());
+        pd.put("WEIGHT_ID", this.get32UUID());
         pd.put("CREATEDTIME", Tools.date2Str(new Date()));
         PageData gpd = goodsService.findByIdToCha(pd);
-        pd.put("NAME",gpd.getString("UNAME"));
+        PageData goodpd = goodsService.findById(pd);
+        PageData dataByBm = goodsService.findDataByBm(pd);
+        if (goodpd.getString("SPUNIT_ID") != null) {
+            pd.put("NAME", gpd.getString("UNAME"));
+        } else {
+            pd.put("NAME", "kg");
+        }
         String barcodeImgId = pd.getString("GOODS_ID") + ".png";                                    //barcodeImgId此处条形码的图片名
         String filePath = PathUtil.getClasspath() + Const.FILEPATHTBARCODE + barcodeImgId;        //存放路径
         BarcodeUtil.generateFile(pd.getString("WBIANMA"), filePath);
@@ -161,12 +176,10 @@ public class WeightController extends BaseController {
         pd = this.getPageData();
         String errInfo = "success";
         PageData pageData = weightService.findByBm(pd);
-        if(pageData != null)
-        {
+        if (pageData != null) {
             errInfo = "error";
             map.put("result", errInfo);
-        }
-        else {
+        } else {
             map.put("result", errInfo);
         }
         return AppUtil.returnObject(new PageData(), map);
@@ -184,10 +197,10 @@ public class WeightController extends BaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         PageData pd = new PageData();
         pd = this.getPageData();
-        pd.put("USERNAME",Jurisdiction.getUsername().toString());
+        pd.put("USERNAME", Jurisdiction.getUsername().toString());
         String errInfo = "success";
         try {
-            System.out.println(pd.toString()+"++++++++++++++++++++");
+            System.out.println(pd.toString() + "++++++++++++++++++++");
             weightService.save(pd);
         } catch (Exception e) {
             errInfo = "error";
