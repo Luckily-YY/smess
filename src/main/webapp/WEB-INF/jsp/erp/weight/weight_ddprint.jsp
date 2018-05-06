@@ -44,7 +44,7 @@
                                     <th class="center">&nbsp;&nbsp;&nbsp;</th>
                                     <th class="center">&nbsp;&nbsp;&nbsp;</th>
                                     <th class="center">保质日期：</th>
-                                    <th class="center">${pd.CREATEDTIME}</th>
+                                    <th class="center">${pd.LASTTIME}</th>
                                 </tr>
                             </table>
                             <table id="simple-table" style="margin-top:5px;border: 0px;width: 440px;" align="center" >

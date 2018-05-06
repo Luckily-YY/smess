@@ -145,10 +145,15 @@ public class WeightController extends BaseController {
         pd = this.getPageData();
         pd.put("USERNAME", Jurisdiction.getUsername().toString());
         pd.put("WEIGHT_ID", this.get32UUID());
-        pd.put("CREATEDTIME", Tools.date2Str(new Date()));
+        Date date = new Date();
+        pd.put("CREATEDTIME", Tools.date2Str(date));
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(calendar.DATE, 1);
+        date = calendar.getTime();
+        pd.put("LASTTIME", Tools.date2Str(date));
         PageData gpd = goodsService.findByIdToCha(pd);
         PageData goodpd = goodsService.findById(pd);
-        PageData dataByBm = goodsService.findDataByBm(pd);
         if (goodpd.getString("SPUNIT_ID") != null) {
             pd.put("NAME", gpd.getString("UNAME"));
         } else {
@@ -200,7 +205,6 @@ public class WeightController extends BaseController {
         pd.put("USERNAME", Jurisdiction.getUsername().toString());
         String errInfo = "success";
         try {
-            System.out.println(pd.toString() + "++++++++++++++++++++");
             weightService.save(pd);
         } catch (Exception e) {
             errInfo = "error";

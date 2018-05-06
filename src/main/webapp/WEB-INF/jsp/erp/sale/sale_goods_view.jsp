@@ -182,7 +182,7 @@
                             </c:if>
                         </div>
                         <div align="right">
-                            <a class="btn btn-mini btn-purple" onclick="ddpirnt();">打印清单</a>
+                            <a class="btn btn-mini btn-purple" onclick="ddpirnt();">结账收款</a>
                         </div>
                     </div>
 

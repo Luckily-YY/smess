@@ -22,7 +22,8 @@ public class Jurisdiction {
 	public static boolean hasJurisdiction(String menuUrl){
 		//判断是否拥有当前点击菜单的权限（内部过滤,防止通过url进入跳过菜单权限）
 		/**
-		 * 根据点击的菜单的xxx.do去菜单中的URL去匹配，当匹配到了此菜单，判断是否有此菜单的权限，没有的话跳转到404页面
+		 * 根据点击的菜单的xxx.do去菜单中的URL去匹配，当匹配到了此菜单，
+		 * 判断是否有此菜单的权限，没有的话跳转到404页面
 		 * 根据按钮权限，授权按钮(当前点的菜单和角色中各按钮的权限匹对)
 		 */
 		String USERNAME = getUsername();	//获取当前登录者loginname

@@ -206,6 +206,7 @@
                     $("#GOODS_BM").val(data.pd.BIANMA);
                     $("#GOODS_NAME").val(data.pd.TITLE);
                     $("#GOODS_PRICE").val(data.pd.GPRICE);
+                    gid = data.pd.GOODS_ID;
                 } else {
                     $("#SGOODS_ID").tips({
                         side: 3,

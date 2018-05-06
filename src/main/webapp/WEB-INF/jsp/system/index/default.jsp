@@ -31,6 +31,9 @@ setTimeout("top.hangge()",500);
 				<div class="page-content">
 					<div class="row">
 						<div class="col-xs-12">
+							<div id="main" style="width: 650px;height:30px;">
+								<h3>销售金额统计</h3>
+							</div>
 							<div  style="width: 1000px;padding-top: 15px;">
 								<table class="table table-striped table-bordered table-hover">
 									<tr>
@@ -47,9 +50,11 @@ setTimeout("top.hangge()",500);
 									</tr>
 								</table>
 							</div>
-							<div id="main" style="width: 650px;height:300px;"></div>
-							
-							<script type="text/javascript">
+							<div id="main" style="width: 650px;height:50px;">
+								<h3>销售统计图形展示</h3>
+							</div>
+							<%--客户数量展示--%>
+						<%--	<script type="text/javascript">
 						        // 基于准备好的dom，初始化echarts实例
 						        var myChart = echarts.init(document.getElementById('main'));
 						
@@ -83,7 +88,7 @@ setTimeout("top.hangge()",500);
 
 						        // 使用刚指定的配置项和数据显示图表。
 						        myChart.setOption(option);
-						    </script>
+						    </script>--%>
 							
 						</div>
 						<!-- /.col -->
