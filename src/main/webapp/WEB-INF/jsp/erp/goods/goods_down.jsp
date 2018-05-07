@@ -103,7 +103,8 @@
 <script type="text/javascript">
     $(top.hangge());
 
-    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;
+    var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;//包括小数
+    var number=/^\d*$/; //纯数字
 
     //保存
     function save(id) {
@@ -118,18 +119,30 @@
             $("#GCOUNT").focus();
             return false;
         }
-
-        if(!point.test($("#GCOUNT").val())){
-            $("#GCOUNT").tips({
-                side: 3,
-                msg: '请输入正确的数量',
-                bg: '#AE81FF',
-                time: 2
-            });
-            $("#GCOUNT").focus();
-            return false;
+        if(${pd.CHECKCOUNT == '1'}) {
+            if (!point.test($("#GCOUNT").val())) {
+                $("#GCOUNT").tips({
+                    side: 3,
+                    msg: '请输入正确的数目',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GCOUNT").focus();
+                return false;
+            }
         }
-
+        if(${pd.CHECKCOUNT == '0'}) {
+            if (!number.test($("#GCOUNT").val())) {
+                $("#GCOUNT").tips({
+                    side: 3,
+                    msg: '请输入正确的数量',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GCOUNT").focus();
+                return false;
+            }
+        }
         $.ajax({
             type: "POST",
             url: 'goods/checkById.do',

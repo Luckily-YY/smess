@@ -4,13 +4,9 @@ import com.chen.smess.app.controller.base.BaseController;
 import com.chen.smess.domain.common.utils.*;
 import com.chen.smess.domain.model.Page;
 import com.chen.smess.domain.service.erp.goods.GoodsManager;
-import com.chen.smess.domain.service.erp.goods.impl.GoodsService;
 import com.chen.smess.domain.service.erp.sale.SaleManager;
-import com.chen.smess.domain.service.erp.sale.impl.SaleService;
 import com.chen.smess.domain.service.erp.salereport.SaleReportManager;
-import com.chen.smess.domain.service.erp.salereport.impl.SaleReportService;
 import com.chen.smess.domain.service.erp.weight.WeightManager;
-import com.chen.smess.domain.service.erp.weight.impl.WeightService;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -165,9 +162,13 @@ public class SaleController extends BaseController {
         ModelAndView mv = this.getModelAndView();
         PageData pd = new PageData();
         pd = this.getPageData();
+        String price1 = pd.getString("ZPRICE1").toString();
+        String price2 = pd.getString("ZPRICE2").toString();
         pd.put("USERNAME", Jurisdiction.getUsername().toString());
         List<PageData> salelist = saleService.listAll(pd);
         pd = saleService.priceSum(pd);
+        pd.put("ZPRICE1",price1);
+        pd.put("ZPRICE2",price2);
         if(pd != null) {
             pd.put("TIME", Tools.date2Str(new Date()));
         }
@@ -323,6 +324,27 @@ public class SaleController extends BaseController {
         mv = new ModelAndView(erv, dataMap);
         return mv;
     }
+
+    /**
+     * 打开结算
+     *
+     * @param
+     * @throws Exception
+     */
+    @RequestMapping(value = "/openSale")
+    public ModelAndView openSale() throws Exception {
+        logBefore(logger, Jurisdiction.getUsername() + "打开结算账单页面");
+        ModelAndView mv = this.getModelAndView();
+        PageData pd = new PageData();
+        pd = this.getPageData();
+        pd.put("USERNAME",Jurisdiction.getUsername().toString());
+        pd = saleService.priceSum(pd);
+        mv.addObject("pd", pd);
+        mv.setViewName("erp/sale/sale_account");
+        return mv;
+    }
+
+
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

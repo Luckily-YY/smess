@@ -182,7 +182,7 @@
                             </c:if>
                         </div>
                         <div align="right">
-                            <a class="btn btn-mini btn-purple" onclick="ddpirnt();">结账收款</a>
+                            <a class="btn btn-mini btn-purple" onclick="openSale();">结账收款</a>
                         </div>
                     </div>
 
@@ -405,15 +405,16 @@
         $("#Form").submit();
     }
 
-    //打印清单
-    function ddpirnt() {
+
+    //结算
+    function openSale() {
         top.jzts();
         var diag = new top.Dialog();
         diag.Drag = true;
-        diag.Title = "打印清单";
-        diag.URL = '<%=basePath%>sale/ddpirnt.do?';
-        diag.Width = 450;
-        diag.Height = 600;
+        diag.Title = "结算收款";
+        diag.URL = '<%=basePath%>sale/openSale.do?';
+        diag.Width = 350;
+        diag.Height = 300;
         diag.Modal = true;			//有无遮罩窗口
         diag.ShowMaxButton = true;	//最大化按钮
         diag.ShowMinButton = true;		//最小化按钮
@@ -422,6 +423,7 @@
         };
         diag.show();
     }
+
 
 </script>
 

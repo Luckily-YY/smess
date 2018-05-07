@@ -38,6 +38,14 @@
                                     <th class="center">购买时间：</th>
                                     <th class="center">${pd.TIME}</th>
                                 </tr>
+                                <tr>
+                                    <th class="center">实收金额：</th>
+                                    <th class="center">${pd.ZPRICE1}</th>
+                                    <th class="center">&nbsp;&nbsp;&nbsp;</th>
+                                    <th class="center">&nbsp;&nbsp;&nbsp;</th>
+                                    <th class="center">找零：</th>
+                                    <th class="left">${pd.ZPRICE2}</th>
+                                </tr>
                             </table>
                             <table id="simple-table" style="margin-top:5px;border: 0px;" >
                                 <thead>

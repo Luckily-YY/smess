@@ -79,12 +79,12 @@
 													</a>
 													</c:if>
 												</div>
+												<c:if test="${QX.edit == 1 || QX.del == 1 }">
 												<div class="hidden-md hidden-lg">
 													<div class="inline pos-rel">
 														<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
 															<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
 														</button>
-			
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 															<c:if test="${QX.edit == 1 }">
 															<li>
@@ -107,6 +107,7 @@
 														</ul>
 													</div>
 												</div>
+												</c:if>
 											</td>
 										</tr>
 									

@@ -357,6 +357,16 @@ public class GoodsController extends BaseController {
         PageData pd = new PageData();
         pd = this.getPageData();
         PageData pageData = goodsService.findById(pd);
+        String CHECKCOUNT = "0";
+        pageData.put("keyone", "克");
+        pageData.put("keytwo", "g");
+        pageData.put("keythree", "斤");
+        List<PageData> check = goodsService.weightList(pageData);
+        if (check != null && check.size()>0)
+        {
+            CHECKCOUNT = "1";
+        }
+        pageData.put("CHECKCOUNT",CHECKCOUNT);
         String count = pageData.getString("GCOUNT");
         String[] str = count.split("\\.");
         if (str[1].toString().equals("00")) {
