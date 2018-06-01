@@ -214,7 +214,7 @@
 
     var point=/^\d*\.{0,1}\d{0,1}\d{0,1}$/;  //两位小数
     var number=/^\d*$/; //纯数字
-
+    var checkcount = '';
     /*获取该编码的详细信息
      * */
     function getGoods(bianma) {
@@ -254,6 +254,7 @@
                             $("#GOODS_NAME").val(data.pd.GOODS_NAME);
                             $("#PRICE").val(data.pd.PRICE);
                             $("#GOODS_ID").val(data.pd.GOODS_ID);
+                            checkcount = data.pd.CHECKCOUNT;
                             var count = Number("" == $("#GOODS_COUNT").val() ? "0" : $("#GOODS_COUNT").val());
                             var price = Number("" == $("#PRICE").val() ? "0" : $("#PRICE").val());
                             $("#Z_PRICE").val(count * price);
@@ -283,6 +284,7 @@
                             $("#GOODS_NAME").val(data.pd.GOODS_NAME);
                             $("#GOODS_ID").val(data.pd.GOODS_ID);
                             $("#Z_PRICE").val(data.pd.Z_PRICE);
+                            checkcount = data.pd.CHECKCOUNT;
                         } else {
                             $("#GOODS_BM").tips({
                                 side: 3,
@@ -389,7 +391,30 @@
             $("#PRICE").focus();
             return false;
         }
-
+        if(checkcount == "1") {
+            if (!point.test($("#GOODS_COUNT").val())) {
+                $("#GOODS_COUNT").tips({
+                    side: 3,
+                    msg: '请输入正确的数目',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GOODS_COUNT").focus();
+                return false;
+            }
+        }
+        if(checkcount == "0") {
+            if (!number.test($("#GOODS_COUNT").val())) {
+                $("#GOODS_COUNT").tips({
+                    side: 3,
+                    msg: '请输入正确的数量',
+                    bg: '#AE81FF',
+                    time: 2
+                });
+                $("#GOODS_COUNT").focus();
+                return false;
+            }
+        }
         if(!point.test($("#PRICE").val()))
         {
             $("#PRICE").tips({

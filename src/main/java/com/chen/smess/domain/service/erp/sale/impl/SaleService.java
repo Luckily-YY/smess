@@ -104,6 +104,14 @@ public class SaleService implements SaleManager {
 	public List<PageData> getChoose(Page page) throws Exception{
 		return (List<PageData>)dao.findForList("SaleMapper.listPage", page);
 	}
+	/**
+	 * 通过商品id与销售者查找货物清单
+	 * @param pd
+	 * @return
+	 */
+	public PageData findByGoodsId(PageData pd) throws Exception {
+		return (PageData)dao.findForObject("SaleMapper.findByGoodsId", pd);
+	}
 
 }
 

@@ -52,6 +52,18 @@
 		SALE_ID = #{SALE_ID}
 	</select>
 
+	<!-- 通过商品ID获取数据 -->
+	<select id="findByGoodsId" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+		GOODS_ID = #{GOODS_ID}
+		AND
+		USERNAME = #{USERNAME}
+	</select>
+
 	<!-- 新增-->
 	<insert id="save" parameterType="pd">
 		insert into
@@ -62,6 +74,17 @@
 		<include refid="FieldValue"></include>
 		)
 	</insert>
+
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		ZPRICE = #{ZPRICE},
+		SALECOUNT = #{SALECOUNT}
+		where
+		SALE_ID = #{SALE_ID}
+	</update>
 
 	<!-- 删除-->
 	<delete id="delete" parameterType="pd">

@@ -73,5 +73,11 @@ public interface SaleManager {
 	 */
     public List<PageData> getChoose(Page page) throws Exception;
 
+	/**
+	 * 通过商品id与销售者查找货物清单
+	 * @param pd
+	 * @return
+	 */
+	public PageData findByGoodsId(PageData pd) throws Exception;
 }
 

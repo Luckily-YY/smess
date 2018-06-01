@@ -118,10 +118,12 @@
                                                     <td class='center'>${var.USERNAME}</td>
                                                     <td class='center'>${var.BZ}</td>
                                                     <td class='center'>
+                                                        <c:if test="${QX.edit == 1 }">
                                                         <a class="btn btn-mini btn-success"
                                                            onclick="edit('${var.INTOKU_ID}');">
                                                             <i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
                                                         </a>
+                                                        </c:if>
                                                         <c:if test="${QX.del == 1 }">
                                                         <a class="btn btn-mini btn-danger"
                                                            onclick="del('${var.INTOKU_ID}','${var.GOODS_NAME}');">

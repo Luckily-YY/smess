@@ -78,6 +78,21 @@ public class SaleController extends BaseController {
         pageData.put("ZHEKOU", pd.getString("ZHEKOU"));
         pageData.put("GOODS_NAME", pd.getString("GOODS_NAME"));
         pageData.put("SALETIME", Tools.date2Str(new Date()));
+        PageData goods = saleService.findByGoodsId(pageData);
+        if (goods != null){
+            String salecount = goods.getString("SALECOUNT").toString();
+            BigDecimal count = new BigDecimal(salecount);
+            BigDecimal newcount = new BigDecimal(pd.getString("GOODS_COUNT").toString());
+            String newsalecount = count.add(newcount).toString();
+            goods.put("SALECOUNT",newsalecount);
+            String zprice = goods.getString("ZPRICE");
+            BigDecimal zj = new BigDecimal(zprice);
+            BigDecimal oldzj = new BigDecimal(pd.getString("Z_PRICE").toString());
+            String newzj = zj.add(oldzj).toString();
+            goods.put("ZPRICE",newzj);
+            saleService.edit(goods);
+            return mv;
+        }
         saleService.save(pageData);
         return mv;
     }
@@ -110,6 +125,16 @@ public class SaleController extends BaseController {
         //从库存读取数据
         PageData pageData = goodsService.findByBm(pd);
         if (pageData != null) {
+            String CHECKCOUNT = "0";
+            pageData.put("keyone", "克");
+            pageData.put("keytwo", "g");
+            pageData.put("keythree", "斤");
+            List<PageData> check = goodsService.weightList(pageData);
+            if (check != null && check.size()>0)
+            {
+                CHECKCOUNT = "1";
+            }
+            pageData.put("CHECKCOUNT",CHECKCOUNT);
             pageData.put("GOODS_NAME", pageData.getString("TITLE"));
             pageData.put("GOODS_ID", pageData.getString("GOODS_ID"));
             pageData.put("PRICE", pageData.getString("GPRICE"));
@@ -137,6 +162,16 @@ public class SaleController extends BaseController {
         //从库存读取数据
         PageData pageData = weightService.findByBm(pd);
         if (pageData != null) {
+            String CHECKCOUNT = "0";
+            pageData.put("keyone", "克");
+            pageData.put("keytwo", "g");
+            pageData.put("keythree", "斤");
+            List<PageData> check = goodsService.weightList(pageData);
+            if (check != null && check.size()>0)
+            {
+                CHECKCOUNT = "1";
+            }
+            pageData.put("CHECKCOUNT",CHECKCOUNT);
             pageData.put("GOODS_NAME", pageData.getString("GOODS_NAME"));
             pageData.put("GOODS_ID", pageData.getString("GOODS_ID"));
             pageData.put("GOODS_COUNT", pageData.getString("WEIGHT"));
